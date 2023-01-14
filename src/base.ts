@@ -1,8 +1,9 @@
 /**
  * @file Contains the base Expecto wrapper class.
  *
- * @copyright Matthew A. Miller ©️ 2023
+ * @copyright 2023 Matthew A. Miller
  */
+
 import { assert } from "std/testing/asserts.ts";
 import { DEEP, Flags, hasFlag, NOT } from "./flags.ts";
 

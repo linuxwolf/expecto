@@ -1,3 +1,7 @@
+/**
+ * @copyright 2023 Matthew A. Miller
+ */
+
 import { assert, equal } from "std/testing/asserts.ts";
 import { beforeEach, describe, it } from "std/testing/bdd.ts";
 

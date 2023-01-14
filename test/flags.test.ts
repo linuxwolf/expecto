@@ -1,7 +1,7 @@
 import { assert, equal } from "std/testing/asserts.ts";
 import { beforeEach, describe, it } from "std/testing/bdd.ts";
 
-import { Flags } from "../src/flags.ts";
+import { Flags, hasFlag } from "../src/flags.ts";
 
 describe("flags", () => {
   describe("class Flags", () => {
@@ -61,6 +61,24 @@ describe("flags", () => {
         assert(!flags.get("deep"));
         assert(!flags.get("negate"));
       });
+    });
+  });
+
+  describe("hasFlag()", () => {
+    let flags: Flags;
+
+    beforeEach(() => {
+      flags = new Flags();
+      flags.set("foo");
+    });
+
+    it("checks a Flags if name is set", () => {
+      assert(hasFlag(flags, "foo"));
+      assert(!hasFlag(flags, "bar"));
+    });
+    it("checks an array if name is set", () => {
+      assert(hasFlag(flags.all(), "foo"));
+      assert(!hasFlag(flags.all(), "bar"));
     });
   });
 });

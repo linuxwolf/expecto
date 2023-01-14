@@ -6,7 +6,8 @@ import { DEEP, NOT } from "../src/flags.ts";
 
 describe("base", () => {
   class ExpectoUnderTest<T> extends ExpectoBase<T> {
-    override exportFlags() { return super.exportFlags(); }
+    override flags() { return super.flags(); }
+    override hasFlag(name: string) { return super.hasFlag(name); }
     override assert(expr: boolean, msg?: string) { return super.assert(expr, msg); }
   }
 
@@ -43,38 +44,48 @@ describe("base", () => {
       });
 
       it("starts with no flags", () => {
-        const result = expecto.exportFlags();
+        const result = expecto.flags();
         assert(equal(result, []));
+        assert(!expecto.hasFlag(DEEP));
+        assert(!expecto.hasFlag(NOT));
       });
       describe(".deep", () => {
         it("sets the DEEP flag", () => {
-          assert(!expecto.exportFlags().includes(DEEP));
+          assert(!expecto.flags().includes(DEEP));
           assert(expecto.deep === expecto);
-          assert(equal(expecto.exportFlags(), [DEEP]));
+          assert(equal(expecto.flags(), [DEEP]));
+          assert(expecto.hasFlag(DEEP));
         });
         it("keeps the DEEP flag once set", () => {
-          assert(!expecto.exportFlags().includes(DEEP));
+          assert(!expecto.flags().includes(DEEP));
+          assert(!expecto.hasFlag(DEEP));
 
-          expecto.deep;
-          assert(expecto.exportFlags().includes(DEEP));
           assert(expecto.deep === expecto);
-          assert(expecto.exportFlags().includes(DEEP));
+          assert(expecto.flags().includes(DEEP));
+          assert(expecto.deep === expecto);
+          assert(expecto.flags().includes(DEEP));
+          assert(expecto.hasFlag(DEEP));
         });
       });
       describe(".not", () => {
         it("sets the NOT flag", () => {
-          assert(!expecto.exportFlags().includes(NOT));
+          assert(!expecto.flags().includes(NOT));
+          assert(!expecto.hasFlag(NOT));
           assert(expecto.not === expecto);
-          assert(expecto.exportFlags().includes(NOT));
+          assert(expecto.flags().includes(NOT));
+          assert(expecto.hasFlag(NOT));
         });
         it("toggles the NOT flag on each property access", () => {
-          assert(!expecto.exportFlags().includes(NOT));
+          assert(!expecto.flags().includes(NOT));
+          assert(!expecto.hasFlag(NOT));
 
           assert(expecto.not === expecto);
-          assert(expecto.exportFlags().includes(NOT));
+          assert(expecto.flags().includes(NOT));
+          assert(expecto.hasFlag(NOT));
 
           assert(expecto.not === expecto);
-          assert(!expecto.exportFlags().includes(NOT));
+          assert(!expecto.flags().includes(NOT));
+          assert(!expecto.hasFlag(NOT));
         });
       });
     });

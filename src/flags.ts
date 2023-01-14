@@ -81,3 +81,11 @@ export class Flags {
     this.#values = {};
   }
 }
+
+export function hasFlag(flags: Flags | string[], name: string): boolean {
+  if (flags instanceof Flags) {
+    flags = flags.all();
+  }
+
+  return flags.includes(name);
+}

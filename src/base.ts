@@ -4,7 +4,7 @@
  * @copyright Matthew A. Miller ©️ 2023
  */
 import { assert } from "std/testing/asserts.ts";
-import { DEEP, Flags, NOT } from "./flags.ts";
+import { DEEP, Flags, hasFlag, NOT } from "./flags.ts";
 
 /**
  * Base Expecto wrapper class.
@@ -101,8 +101,12 @@ export class ExpectoBase<T> {
    * 
    * @returns The array of currently-set flags.
    */
-  protected exportFlags(): string[] {
+  protected flags(): string[] {
     return new Flags(this.#flags).all();
+  }
+
+  protected hasFlag(name: string): boolean {
+    return hasFlag(this.#flags, name);
   }
 
   /**

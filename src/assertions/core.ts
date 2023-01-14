@@ -1,3 +1,8 @@
+/**
+ * @file The core assertions mixin.
+ *
+ * @copyright 2023 Matthew A. Miller
+ */
 
 // deno-lint-ignore-file no-explicit-any
 

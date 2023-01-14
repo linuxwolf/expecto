@@ -4,6 +4,8 @@
  * @copyright 2023 Matthew A. Miller
  */
 
+// deno-lint-ignore-file no-explicit-any
+
 import { assert } from "std/testing/asserts.ts";
 import { DEEP, Flags, hasFlag, NOT } from "./flags.ts";
 
@@ -32,28 +34,28 @@ export class ExpectoBase<T> {
   /**
    * Gets this ExpectoBase; helps readability of expect assertions.
    */
-  get a(): ExpectoBase<T> {
+  get a(): any {
     return this;
   }
 
   /**
    * Gets this ExpectoBase; helps readability of expect assertions.
    */
-  get an(): ExpectoBase<T> {
+  get an(): any {
     return this;
   }
 
   /**
    * Gets this ExpectoBase; helps readability of expect assertions.
    */
-  get and(): ExpectoBase<T> {
+  get and(): any {
     return this;
   }
 
   /**
    * Gets this ExpectoBase; helps readability of expect assertions.
    */
-  get be(): ExpectoBase<T> {
+  get be(): any {
     return this;
   }
 
@@ -114,7 +116,7 @@ export class ExpectoBase<T> {
    * Applies the {@link NOT} flag to subsequent assertions; hints that
    * checks should be negated.
    */
-  get not(): ExpectoBase<T> {
+  get not(): any {
     this.#flags.toggle(NOT);
     return this;
   }
@@ -123,7 +125,7 @@ export class ExpectoBase<T> {
    * Applies the {@link DEEP} flag to subsequent assertions; hints that
    * checks should perform deep comparisons, if applicable.
    */
-  get deep(): ExpectoBase<T> {
+  get deep(): any {
     this.#flags.set(DEEP);
     return this;
   }
@@ -137,7 +139,7 @@ export class ExpectoBase<T> {
    * @param [msg] The message if the assertion fails.
    * @returns This `ExpectoBase`
    */
-  protected assert(expr: boolean, msg?: string): ExpectoBase<T> {
+  protected assert(expr: boolean, msg?: string): any {
     this.#flags.clear();
 
     assert(expr, msg);
@@ -149,5 +151,4 @@ export class ExpectoBase<T> {
 /**
  * Type for the constructor of an ExpectoBase type.
  */
-// deno-lint-ignore no-explicit-any
 export type ExpectoConstructor<T> = new (...args: any[]) => ExpectoBase<T>;

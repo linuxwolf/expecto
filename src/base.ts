@@ -62,35 +62,35 @@ export class ExpectoBase<T> {
   /**
    * Gets this ExpectoBase; helps readability of expect assertions.
    */
-  get has(): ExpectoBase<T> {
+  get has(): any {
     return this;
   }
 
   /**
    * Gets this ExpectoBase; helps readability of expect assertions.
    */
-  get have(): ExpectoBase<T> {
+  get have(): any {
     return this;
   }
 
   /**
    * Gets this ExpectoBase; helps readability of expect assertions.
    */
-  get is(): ExpectoBase<T> {
+  get is(): any {
     return this;
   }
 
   /**
    * Gets this ExpectoBase; helps readability of expect assertions.
    */
-  get that(): ExpectoBase<T> {
+  get that(): any {
     return this;
   }
 
   /**
    * Gets this ExpectoBase; helps readability of expect assertions.
    */
-  get to(): ExpectoBase<T> {
+  get to(): any {
     return this;
   }
 

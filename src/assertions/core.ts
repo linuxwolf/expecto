@@ -42,7 +42,10 @@ export default function core<
       return this;
     }
 
-    throw<E extends Error>(errType?: new (...args: any[]) => E, msg?: string): any {
+    throw<E extends Error>(
+      errType?: new (...args: any[]) => E,
+      msg?: string,
+    ): any {
       const not = this.hasFlag(NOT);
       if (typeof this.actual !== "function") {
         throw new TypeError(`${Deno.inspect(this.actual)} not a function`);

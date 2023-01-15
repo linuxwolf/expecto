@@ -74,7 +74,8 @@ export default function typing<
     get false(): any {
       const not = this.hasFlag(NOT);
 
-      let result = (typeof this.actual === "boolean") && (this.actual === false);
+      let result = (typeof this.actual === "boolean") &&
+        (this.actual === false);
       if (not) result = !result;
 
       const oper = not ? "is false" : "is not false";

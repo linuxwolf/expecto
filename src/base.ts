@@ -22,7 +22,7 @@ export class ExpectoBase<T> {
 
   /**
    * Creates a new ExpectoBase wrapping the given value.
-   * 
+   *
    * @param actual The value to test.
    */
   constructor(actual: T) {
@@ -98,10 +98,10 @@ export class ExpectoBase<T> {
 
   /**
    * Exports a snapshot of the flags current applied to this ExpectoBase.
-   * 
+   *
    * **NOTE:** as a snapshot, the array does not change if other flags
    * are later set or unset on this `ExpectoBase`.
-   * 
+   *
    * @returns The array of currently-set flags.
    */
   protected flags(): string[] {
@@ -134,7 +134,7 @@ export class ExpectoBase<T> {
   /**
    * Asserts that `expr` evaluates to `true`; if not throws an {@link
    * AssertionError}.
-   * 
+   *
    * @param expr The expression to evaluate.
    * @param [msg] The message if the assertion fails.
    * @returns This `ExpectoBase`

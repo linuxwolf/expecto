@@ -2,7 +2,7 @@
  * @copyright 2023 Matthew A. Miller
  */
 
-import { assert, AssertionError, equal } from "std/testing/asserts.ts";
+import { assert, AssertionError, equal, fail } from "std/testing/asserts.ts";
 import { beforeEach, describe, it } from "std/testing/bdd.ts";
 
 import { ExpectoBase } from "../src/base.ts";
@@ -10,9 +10,15 @@ import { DEEP, NOT } from "../src/flags.ts";
 
 describe("base", () => {
   class ExpectoUnderTest<T> extends ExpectoBase<T> {
-    override flags() { return super.flags(); }
-    override hasFlag(name: string) { return super.hasFlag(name); }
-    override assert(expr: boolean, msg?: string) { return super.assert(expr, msg); }
+    override flags() {
+      return super.flags();
+    }
+    override hasFlag(name: string) {
+      return super.hasFlag(name);
+    }
+    override assert(expr: boolean, msg?: string) {
+      return super.assert(expr, msg);
+    }
   }
 
   describe("class ExpectoBase", () => {
@@ -108,7 +114,7 @@ describe("base", () => {
       it("throws on failure", () => {
         try {
           expecto.assert(false);
-          assert(false, "expected error not thrown");
+          fail("expected error not thrown");
         } catch (err) {
           assert(err instanceof AssertionError);
         }
@@ -116,7 +122,7 @@ describe("base", () => {
       it("throws with message on failure", () => {
         try {
           expecto.assert(false, "oopsie");
-          assert(false, "expected error not thrown");
+          fail("expected error not thrown");
         } catch (err) {
           assert(err instanceof AssertionError);
           assert(err.message.includes("oopsie"));

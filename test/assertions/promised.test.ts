@@ -2,7 +2,7 @@
  * @copyright 2023 Matthew A. Miller
  */
 
-import { assert, AssertionError } from "std/testing/asserts.ts";
+import { assert, AssertionError, fail } from "std/testing/asserts.ts";
 import { describe, it } from "std/testing/bdd.ts";
 
 import promised from "../../src/assertions/promised.ts";
@@ -24,7 +24,8 @@ describe("assertions/promised", () => {
   describe(".rejected()", () => {
     const passTarget = () => (Promise.reject(new TestError("I reject")));
     const failNonTarget = () => (Promise.resolve("I fulfill"));
-    const failDiffTarget = () => (Promise.reject(new RangeError("I reject differently")));
+    const failDiffTarget =
+      () => (Promise.reject(new RangeError("I reject differently")));
 
     describe("basics", () => {
       describe("successes", () => {
@@ -43,32 +44,32 @@ describe("assertions/promised", () => {
         });
       });
       describe("failures", () => {
-        it("throws if target is not a Promise or a function", async () => {
+        it("fails if target is not a Promise or a function", async () => {
           let test;
-  
+
           test = new ExpectoPromised(42);
           try {
             await test.rejected();
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
-  
+
           test = new ExpectoPromised(new Date());
           try {
             await test.rejected();
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
         });
-        it("throws if Promise fulfills", async () => {
+        it("fails if Promise fulfills", async () => {
           const target = failNonTarget();
           const test = new ExpectoPromised(target);
-  
+
           try {
             await test.rejected();
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -76,31 +77,31 @@ describe("assertions/promised", () => {
         it("throws with message if Promise fulfills", async () => {
           const target = failNonTarget();
           const test = new ExpectoPromised(target);
-  
+
           try {
             await test.rejected(undefined, "unexpected success");
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
             assert(err.message.includes("unexpected success"));
           }
         });
-        it("throws if function fulfills", async () => {
+        it("fails if function fulfills", async () => {
           const test = new ExpectoPromised(failNonTarget);
-  
+
           try {
             await test.rejected();
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
         });
         it("throws with message if function fulfills", async () => {
           const test = new ExpectoPromised(failNonTarget);
-  
+
           try {
             await test.rejected(undefined, "unexpected success");
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
             assert(err.message.includes("unexpected success"));
@@ -128,13 +129,13 @@ describe("assertions/promised", () => {
         });
       });
       describe("failures", () => {
-        it("throws if Promise rejects with different error", async () => {
+        it("fails if Promise rejects with different error", async () => {
           const target = failDiffTarget();
           const test = new ExpectoPromised(target);
-          
+
           try {
             await test.rejected(TestError);
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -142,31 +143,31 @@ describe("assertions/promised", () => {
         it("throws with message if Promise rejects with different error", async () => {
           const target = failDiffTarget();
           const test = new ExpectoPromised(target);
-          
+
           try {
             await test.rejected(TestError, "unexpected result");
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
             assert(err.message.includes("unexpected result"));
           }
         });
-        it("throws if function rejects with different error", async () => {
+        it("fails if function rejects with different error", async () => {
           const test = new ExpectoPromised(failDiffTarget);
-          
+
           try {
             await test.rejected(TestError);
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
         });
         it("throws with message if function rejects with different error", async () => {
           const test = new ExpectoPromised(failDiffTarget);
-          
+
           try {
             await test.rejected(TestError, "unexpected result");
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
             assert(err.message.includes("unexpected result"));
@@ -201,23 +202,23 @@ describe("assertions/promised", () => {
         });
       });
       describe("failures", () => {
-        it("throws if Promise fulfills", async () => {
+        it("fails if Promise fulfills", async () => {
           const target = failNonTarget();
           const test = new ExpectoPromised(target);
 
           try {
             await test.not.rejected();
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
         });
-        it("throws if function fulfills", async () => {
+        it("fails if function fulfills", async () => {
           const test = new ExpectoPromised(failNonTarget);
 
           try {
             await test.not.rejected();
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -250,23 +251,23 @@ describe("assertions/promised", () => {
         });
       });
       describe("failures", () => {
-        it("throws if Promise rejects with TestError", async () => {
+        it("fails if Promise rejects with TestError", async () => {
           const target = passTarget();
           const test = new ExpectoPromised(target);
 
           try {
             await test.not.rejected(TestError);
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
         });
-        it("throws if function rejects with TestError", async () => {
+        it("fails if function rejects with TestError", async () => {
           const test = new ExpectoPromised(passTarget);
 
           try {
             await test.not.rejected(TestError);
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }

@@ -2,7 +2,7 @@
  * @copyright 2023 Matthew A. Miller
  */
 
-import { assert, AssertionError } from "std/testing/asserts.ts";
+import { assert, AssertionError, fail } from "std/testing/asserts.ts";
 import { describe, it } from "std/testing/bdd.ts";
 
 import core from "../../src/assertions/core.ts";
@@ -25,7 +25,7 @@ describe("assertions/core", () => {
           const test = new ExpectoCore(target);
           try {
             test.equal(new Date("2022-11-22T01:23:45.678Z"));
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -34,7 +34,7 @@ describe("assertions/core", () => {
           const test = new ExpectoCore(target);
           try {
             test.equal(new Date(), "oopsies!");
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
             assert(err.message.includes("oopsies!"));
@@ -70,7 +70,7 @@ describe("assertions/core", () => {
 
           try {
             test.not.equal(target);
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -80,7 +80,9 @@ describe("assertions/core", () => {
       describe("negated AND deeply", () => {
         it("passes on 'failure'", () => {
           const test = new ExpectoCore(target);
-          const result = test.not.deep.equal(new Date("2022-11-22T01:23:45.678Z"));
+          const result = test.not.deep.equal(
+            new Date("2022-11-22T01:23:45.678Z"),
+          );
           assert(result === test);
         });
         it("throws on 'success'", () => {
@@ -88,7 +90,7 @@ describe("assertions/core", () => {
 
           try {
             test.not.deep.equal(target);
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -107,9 +109,13 @@ describe("assertions/core", () => {
         }
       }
 
-      const passTarget = () => { throw new TestError("I failed"); };
-      const failNoneTarget = () => { /* I don't throw ... */ };
-      const failDiffTarget = () => { throw new RangeError("I failed differently"); }
+      const passTarget = () => {
+        throw new TestError("I failed");
+      };
+      const failNoneTarget = () => {/* I don't throw ... */};
+      const failDiffTarget = () => {
+        throw new RangeError("I failed differently");
+      };
 
       describe("basics", () => {
         it("passes on successful throw", () => {
@@ -131,7 +137,7 @@ describe("assertions/core", () => {
 
           try {
             test.throw();
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof TypeError);
           }
@@ -141,7 +147,7 @@ describe("assertions/core", () => {
 
           try {
             test.throw();
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -151,7 +157,7 @@ describe("assertions/core", () => {
 
           try {
             test.throw(TestError);
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -174,7 +180,7 @@ describe("assertions/core", () => {
 
           try {
             test.not.throw();
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -184,7 +190,7 @@ describe("assertions/core", () => {
 
           try {
             test.not.throw(TestError);
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }

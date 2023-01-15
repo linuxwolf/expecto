@@ -16,7 +16,7 @@ describe("registry", () => {
     beforeEach(() => {
       registry = new Registry();
     });
-  
+
     it("returns a generic ExpectoBase by default", () => {
       assert(registry.type === ExpectoBase);
 
@@ -26,8 +26,10 @@ describe("registry", () => {
     it("applies a mixin and creates an instance with it", () => {
       function dummy<T>(Base: ExpectoConstructor<T>): ExpectoConstructor<T> {
         return class DummyExpecto<T> extends Base {
-          dummy(): DummyExpecto<T> { return this; }
-        }
+          dummy(): DummyExpecto<T> {
+            return this;
+          }
+        };
       }
 
       let result = registry.create(target);

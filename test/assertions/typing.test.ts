@@ -2,7 +2,7 @@
  * @copyright 2023 Matthew A. Miller
  */
 
-import { assert, AssertionError } from "std/testing/asserts.ts";
+import { assert, AssertionError, fail } from "std/testing/asserts.ts";
 import { describe, it } from "std/testing/bdd.ts";
 
 import typing from "../../src/assertions/typing.ts";
@@ -16,66 +16,66 @@ describe("assertions/typing", () => {
       describe("basics", () => {
         it("passes if actual is not undefined or null", () => {
           let test, result;
-  
+
           test = new ExpectoTyping(true);
           result = test.exists;
           assert(result === test);
-  
+
           test = new ExpectoTyping(123123412341n);
           result = test.exists;
           assert(result === test);
-  
+
           test = new ExpectoTyping(42);
           result = test.exists;
           assert(result === test);
-  
+
           test = new ExpectoTyping("some string");
           result = test.exists;
           assert(result === test);
-  
+
           test = new ExpectoTyping({});
           result = test.exists;
           assert(result === test);
-  
+
           test = new ExpectoTyping([]);
           result = test.exists;
           assert(result === test);
         });
         it("passes on falsy things that do exist", () => {
           let test, result;
-  
+
           test = new ExpectoTyping(false);
           result = test.exists;
           assert(result === test);
-  
+
           test = new ExpectoTyping(0n);
           result = test.exists;
           assert(result === test);
-  
+
           test = new ExpectoTyping(0);
           result = test.exists;
           assert(result === test);
-  
+
           test = new ExpectoTyping("");
           result = test.exists;
           assert(result === test);
         });
-        it("throws if null", () => {
+        it("fails if null", () => {
           const test = new ExpectoTyping(null);
-  
+
           try {
             test.exists;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
         });
-        it("throws if undefined", () => {
+        it("fails if undefined", () => {
           const test = new ExpectoTyping(undefined);
-  
+
           try {
             test.exists;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -93,12 +93,12 @@ describe("assertions/typing", () => {
           const result = test.not.exists;
           assert(result === test);
         });
-        it("throws if defined", () => {
+        it("fails if defined", () => {
           const test = new ExpectoTyping(new Date());
 
           try {
             test.exists;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -113,13 +113,13 @@ describe("assertions/typing", () => {
           const result = test.undefined;
           assert(result === test);
         });
-        it("throws if truthy defined", () => {
+        it("fails if truthy defined", () => {
           let test;
 
           test = new ExpectoTyping(true);
           try {
             test.undefined;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -127,34 +127,34 @@ describe("assertions/typing", () => {
           test = new ExpectoTyping(42);
           try {
             test.undefined;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
-          
+
           test = new ExpectoTyping("some string");
           try {
             test.undefined;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
-          
+
           test = new ExpectoTyping(new Date());
           try {
             test.undefined;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
         });
-        it("throws if falsy defined", () => {
+        it("fails if falsy defined", () => {
           let test;
 
           test = new ExpectoTyping(false);
           try {
             test.undefined;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -162,7 +162,7 @@ describe("assertions/typing", () => {
           test = new ExpectoTyping(0);
           try {
             test.undefined;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -170,7 +170,7 @@ describe("assertions/typing", () => {
           test = new ExpectoTyping(null);
           try {
             test.undefined;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -178,7 +178,7 @@ describe("assertions/typing", () => {
           test = new ExpectoTyping("");
           try {
             test.undefined;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -196,11 +196,11 @@ describe("assertions/typing", () => {
           test = new ExpectoTyping(42);
           result = test.not.undefined;
           assert(result === test);
-          
+
           test = new ExpectoTyping("some string");
           result = test.not.undefined;
           assert(result === test);
-          
+
           test = new ExpectoTyping(new Date());
           result = test.not.undefined;
           assert(result === test);
@@ -224,12 +224,12 @@ describe("assertions/typing", () => {
           result = test.not.undefined;
           assert(result === test);
         });
-        it("throws if undefined", () => {
+        it("fails if undefined", () => {
           const test = new ExpectoTyping(undefined);
 
           try {
             test.not.undefined;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -250,7 +250,7 @@ describe("assertions/typing", () => {
           test = new ExpectoTyping(true);
           try {
             test.null;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -258,7 +258,7 @@ describe("assertions/typing", () => {
           test = new ExpectoTyping(123);
           try {
             test.null;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -266,7 +266,7 @@ describe("assertions/typing", () => {
           test = new ExpectoTyping("some string");
           try {
             test.null;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -274,7 +274,7 @@ describe("assertions/typing", () => {
           test = new ExpectoTyping(new Date());
           try {
             test.null;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -285,7 +285,7 @@ describe("assertions/typing", () => {
           test = new ExpectoTyping(undefined);
           try {
             test.null;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -293,7 +293,7 @@ describe("assertions/typing", () => {
           test = new ExpectoTyping(false);
           try {
             test.null;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -301,7 +301,7 @@ describe("assertions/typing", () => {
           test = new ExpectoTyping(0);
           try {
             test.null;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -309,7 +309,7 @@ describe("assertions/typing", () => {
           test = new ExpectoTyping("");
           try {
             test.null;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -359,7 +359,7 @@ describe("assertions/typing", () => {
 
           try {
             test.not.null;
-            assert(false, "expected error not null");
+            fail("expected error not null");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -380,7 +380,7 @@ describe("assertions/typing", () => {
           test = new ExpectoTyping(undefined);
           try {
             test.true;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -388,7 +388,7 @@ describe("assertions/typing", () => {
           test = new ExpectoTyping(false);
           try {
             test.true;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -396,7 +396,7 @@ describe("assertions/typing", () => {
           test = new ExpectoTyping(0);
           try {
             test.true;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -404,7 +404,7 @@ describe("assertions/typing", () => {
           test = new ExpectoTyping("");
           try {
             test.true;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -415,7 +415,7 @@ describe("assertions/typing", () => {
           test = new ExpectoTyping(42);
           try {
             test.true;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -423,7 +423,7 @@ describe("assertions/typing", () => {
           test = new ExpectoTyping("some string");
           try {
             test.true;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -431,7 +431,7 @@ describe("assertions/typing", () => {
           test = new ExpectoTyping(new Date());
           try {
             test.true;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -479,7 +479,7 @@ describe("assertions/typing", () => {
 
           try {
             test.not.true;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -500,7 +500,7 @@ describe("assertions/typing", () => {
           test = new ExpectoTyping(true);
           try {
             test.false;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -508,7 +508,7 @@ describe("assertions/typing", () => {
           test = new ExpectoTyping(42);
           try {
             test.false;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -516,7 +516,7 @@ describe("assertions/typing", () => {
           test = new ExpectoTyping("some string");
           try {
             test.false;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -524,7 +524,7 @@ describe("assertions/typing", () => {
           test = new ExpectoTyping(new Date());
           try {
             test.false;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -535,7 +535,7 @@ describe("assertions/typing", () => {
           test = new ExpectoTyping(undefined);
           try {
             test.false;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -543,7 +543,7 @@ describe("assertions/typing", () => {
           test = new ExpectoTyping(null);
           try {
             test.false;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -551,7 +551,7 @@ describe("assertions/typing", () => {
           test = new ExpectoTyping("");
           try {
             test.false;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -599,7 +599,7 @@ describe("assertions/typing", () => {
 
           try {
             test.not.false;
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -633,7 +633,7 @@ describe("assertions/typing", () => {
           result = test.typeOf("string");
           assert(result === test);
 
-          test = new ExpectoTyping({"foo": "foo value"});
+          test = new ExpectoTyping({ "foo": "foo value" });
           result = test.typeOf("object");
           assert(result === test);
 
@@ -646,14 +646,14 @@ describe("assertions/typing", () => {
 
           try {
             test.typeOf("number");
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
 
           try {
             test.typeOf("foo");
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -663,7 +663,7 @@ describe("assertions/typing", () => {
         it("passes on incorrect typeOf", () => {
           const test = new ExpectoTyping(new Date());
           let result;
-          
+
           result = test.not.typeOf("boolean");
           assert(result === test);
 
@@ -675,7 +675,7 @@ describe("assertions/typing", () => {
 
           try {
             test.not.typeOf("object");
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -710,7 +710,7 @@ describe("assertions/typing", () => {
 
           try {
             test.instanceOf(Date);
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -722,7 +722,7 @@ describe("assertions/typing", () => {
 
           try {
             test.not.instanceOf(SubType);
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
@@ -732,14 +732,14 @@ describe("assertions/typing", () => {
 
           try {
             test.not.instanceOf(BaseType);
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }
 
           try {
             test.not.instanceOf(Object);
-            assert(false, "expected error not thrown");
+            fail("expected error not thrown");
           } catch (err) {
             assert(err instanceof AssertionError);
           }

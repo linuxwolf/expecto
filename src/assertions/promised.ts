@@ -12,8 +12,8 @@ import { MixinConstuctor } from "../mixin.ts";
 
 function maybePromise(check: any): boolean {
   return !!check &&
-         (typeof check === "object") &&
-         (typeof check.then === "function");
+    (typeof check === "object") &&
+    (typeof check.then === "function");
 }
 
 export default function promised<

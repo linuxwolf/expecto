@@ -112,12 +112,26 @@ export class ExpectoBase<T> {
     return hasFlag(this.#flags, name);
   }
 
+  protected applyFlags(other: ExpectoBase<T>) {
+    this.#flags.apply(other.#flags);
+  }
+
+  protected setFlag(name: string) {
+    this.#flags.set(name);
+  }
+  protected unsetFlag(name: string) {
+    this.#flags.unset(name);
+  }
+  protected toggleFlag(name: string): boolean {
+    return this.#flags.toggle(name);
+  }
+
   /**
    * Applies the {@link NOT} flag to subsequent assertions; hints that
    * checks should be negated.
    */
   get not(): any {
-    this.#flags.toggle(NOT);
+    this.toggleFlag(NOT);
     return this;
   }
 
@@ -126,7 +140,7 @@ export class ExpectoBase<T> {
    * checks should perform deep comparisons, if applicable.
    */
   get deep(): any {
-    this.#flags.set(DEEP);
+    this.setFlag(DEEP);
     return this;
   }
 

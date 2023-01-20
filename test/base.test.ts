@@ -16,6 +16,15 @@ describe("base", () => {
     override hasFlag(name: string) {
       return super.hasFlag(name);
     }
+    override setFlag(name: string) {
+        return super.setFlag(name);
+    }
+    override unsetFlag(name: string) {
+      return super.unsetFlag(name);
+    }
+    override toggleFlag(name: string) {
+        return super.toggleFlag(name);
+    }
     override assert(expr: boolean, msg?: string) {
       return super.assert(expr, msg);
     }
@@ -58,6 +67,22 @@ describe("base", () => {
         assert(equal(result, []));
         assert(!expecto.hasFlag(DEEP));
         assert(!expecto.hasFlag(NOT));
+      });
+      describe(".setFlag() / .unsetFlag() \ .toggleFlag()", () => {
+        it("sets/unset an arbitrary flag", () => {
+          assert(!expecto.flags().includes("foo"));
+          expecto.setFlag("foo");
+          assert(expecto.flags().includes("foo"));
+          expecto.unsetFlag("foo");
+          assert(!expecto.flags().includes("foo"));
+        });
+        it("toggles an arbitrary flag", () => {
+          assert(!expecto.flags().includes("foo"));
+          assert(expecto.toggleFlag("foo") === true);
+          assert(expecto.flags().includes("foo"));
+          assert(expecto.toggleFlag("foo") === false);
+          assert(!expecto.flags().includes("foo"));
+        });
       });
       describe(".deep", () => {
         it("sets the DEEP flag", () => {

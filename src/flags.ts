@@ -75,6 +75,21 @@ export class Flags {
   }
 
   /**
+   * Applies all of the set values from the other Flags to this one.
+   * 
+   * Any values already set on this instance are retained, and all values from
+   * `other` are applied on top.
+   * 
+   * @param other The other Flags to apply from.
+   */
+  apply(other: Flags) {
+    this.#values = {
+      ...this.#values,
+      ...other.#values,
+    };
+  }
+
+  /**
    * Clears all of the set flags.
    */
   clear() {

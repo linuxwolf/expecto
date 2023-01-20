@@ -65,6 +65,14 @@ describe("flags", () => {
         assert(!flags.get("deep"));
         assert(!flags.get("negate"));
       });
+      it("apply()s values from another Flags", () => {
+        const source = new Flags();
+        source.set("foo");
+        source.set("bar");
+        const flags = new Flags();
+        flags.apply(source);
+        assert(equal(flags.all(), ["bar", "foo"]));
+      })
     });
   });
 

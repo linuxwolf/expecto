@@ -2,11 +2,11 @@
  * @copyright 2023 Matthew A. Miller
  */
 
-import { assert } from "std/testing/asserts.ts";
-import { beforeEach, describe, it } from "std/testing/bdd.ts";
-import { ExpectoBase, ExpectoConstructor } from "../src/base.ts";
+import { assert } from "../deps/test/asserts.ts";
+import { beforeEach, describe, it } from "../deps/test/bdd.ts";
 
 import { Registry } from "../src/registry.ts";
+import { ExpectoBase, ExpectoConstructor } from "../src/base.ts";
 
 describe("registry", () => {
   const target = new Date();

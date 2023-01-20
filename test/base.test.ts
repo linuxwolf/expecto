@@ -2,8 +2,8 @@
  * @copyright 2023 Matthew A. Miller
  */
 
-import { assert, AssertionError, equal, fail } from "std/testing/asserts.ts";
-import { beforeEach, describe, it } from "std/testing/bdd.ts";
+import { assert, AssertionError, equal, fail } from "../deps/test/asserts.ts";
+import { beforeEach, describe, it } from "../deps/test/bdd.ts";
 
 import { ExpectoBase } from "../src/base.ts";
 import { DEEP, NOT } from "../src/flags.ts";

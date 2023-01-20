@@ -2,8 +2,8 @@
  * @copyright 2023 Matthew A. Miller
  */
 
-import { assert, AssertionError, fail } from "std/testing/asserts.ts";
-import { describe, it } from "std/testing/bdd.ts";
+import { assert, AssertionError, fail } from "../../deps/test/asserts.ts";
+import { describe, it } from "../../deps/test/bdd.ts";
 
 import typing from "../../src/assertions/typing.ts";
 import { ExpectoBase } from "../../src/base.ts";

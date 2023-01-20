@@ -6,7 +6,7 @@
 
 // deno-lint-ignore-file no-explicit-any
 
-import { equal } from "std/testing/asserts.ts";
+import { equal } from "../../deps/src/asserts.ts";
 import { ExpectoConstructor } from "../base.ts";
 import { DEEP, NOT } from "../flags.ts";
 import { MixinConstuctor } from "../mixin.ts";

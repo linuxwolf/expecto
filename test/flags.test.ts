@@ -2,8 +2,8 @@
  * @copyright 2023 Matthew A. Miller
  */
 
-import { assert, equal } from "std/testing/asserts.ts";
-import { beforeEach, describe, it } from "std/testing/bdd.ts";
+import { assert, equal } from "../deps/test/asserts.ts";
+import { beforeEach, describe, it } from "../deps/test/bdd.ts";
 
 import { Flags, hasFlag } from "../src/flags.ts";
 

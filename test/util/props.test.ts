@@ -2,8 +2,8 @@
  * @copyright 2023 Matthew A. Miller
  */
 
-import { assert, equal } from "std/testing/asserts.ts";
-import { describe, it } from "std/testing/bdd.ts";
+import { assert, equal } from "../../deps/test/asserts.ts";
+import { describe, it } from "../../deps/test/bdd.ts";
 
 import { findPropertyDescriptor } from "../../src/util/props.ts";
 

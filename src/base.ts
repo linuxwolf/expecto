@@ -6,7 +6,7 @@
 
 // deno-lint-ignore-file no-explicit-any
 
-import { assert } from "std/testing/asserts.ts";
+import { assert } from "../deps/src/asserts.ts";
 import { DEEP, Flags, hasFlag, NOT } from "./flags.ts";
 
 /**

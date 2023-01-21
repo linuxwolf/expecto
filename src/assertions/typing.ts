@@ -19,7 +19,7 @@ export default function typing<
       super(...args);
     }
 
-    get exists(): any {
+    get exists(): this {
       const not = this.hasFlag(NOT);
 
       let result = (this.actual !== null) && (this.actual !== undefined);
@@ -32,7 +32,7 @@ export default function typing<
       return this;
     }
 
-    get undefined(): any {
+    get undefined(): this {
       const not = this.hasFlag(NOT);
 
       let result = this.actual === undefined;
@@ -45,7 +45,7 @@ export default function typing<
       return this;
     }
 
-    get null(): any {
+    get null(): this {
       const not = this.hasFlag(NOT);
 
       let result = this.actual === null;
@@ -58,7 +58,7 @@ export default function typing<
       return this;
     }
 
-    get true(): any {
+    get true(): this {
       const not = this.hasFlag(NOT);
 
       let result = (typeof this.actual === "boolean") && (this.actual === true);
@@ -71,7 +71,7 @@ export default function typing<
       return this;
     }
 
-    get false(): any {
+    get false(): this {
       const not = this.hasFlag(NOT);
 
       let result = (typeof this.actual === "boolean") &&
@@ -85,7 +85,7 @@ export default function typing<
       return this;
     }
 
-    typeOf(typing: string): ExpectoTyping<T> {
+    typeOf(typing: string): this {
       const not = this.hasFlag(NOT);
 
       let result = (typeof this.actual) === typing;
@@ -98,7 +98,7 @@ export default function typing<
       return this;
     }
 
-    instanceOf(instType: new (...args: any[]) => any): ExpectoTyping<T> {
+    instanceOf(instType: new (...args: any[]) => any): this {
       const not = this.hasFlag(NOT);
 
       let result = this.actual instanceof instType;

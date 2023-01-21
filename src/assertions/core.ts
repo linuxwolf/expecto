@@ -20,7 +20,7 @@ export default function core<
       super(...args);
     }
 
-    equal(expected: T, msg?: string): any {
+    equal(expected: T, msg?: string): this {
       const deep = this.hasFlag(DEEP);
       const not = this.hasFlag(NOT);
 
@@ -43,9 +43,9 @@ export default function core<
     }
 
     throw<E extends Error>(
-      errType?: new (...args: any[]) => E,
+      errType?: new (...args: unknown[]) => E,
       msg?: string,
-    ): any {
+    ): this {
       const not = this.hasFlag(NOT);
       if (typeof this.actual !== "function") {
         throw new TypeError(`${Deno.inspect(this.actual)} not a function`);

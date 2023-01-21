@@ -27,18 +27,45 @@ describe("assertions/promised", () => {
 
   describe(".eventually", () => {
     describe("basics", () => {
-      it("returns the thenable proxy", async () => {
+      it("works with a Promise", async () => {
+        const test = new ExpectoPromised(Promise.resolve(42)).eventually;
+        assert(typeof test.then === "function");
+
+        const result = await test;
+        assert(result instanceof ExpectoPromised);
+        assert(result.actual === 42);
+      });
+      it("works with a function returning a promise", async () => {
+        const test = new ExpectoPromised(async () => await Promise.resolve(42)).eventually;
+        assert(typeof test.then === "function");
+
+        const result = await test;
+        assert(result instanceof ExpectoPromised);
+        assert(result.actual === 42);
+      });
+      it("works with a value", async () => {
         const test = new ExpectoPromised(42).eventually;
         assert(typeof test.then === "function");
 
         const result = await test;
         assert(result instanceof ExpectoPromised);
+        assert(result.actual === 42);
       });
+      it("works with a function returning a value", async () => {
+        const test = new ExpectoPromised(() => (42)).eventually;
+        assert(typeof test.then === "function");
+
+        const result = await test;
+        assert(result instanceof ExpectoPromised);
+        assert(result.actual === 42);
+      });
+    });
+    describe("within the chain", () => {
       it("delays subsequent checks until fulfilled", async () => {
         const test = new ExpectoPromised(42);
         const spyEqual = sinon.spy(ExpectoCore.prototype, "equal");
 
-        let result = test.eventually.equal(42);
+        let result: typeof test | PromiseLike<typeof test> = test.eventually.to.equal(42);
         assert(result instanceof ExpectoPromised);
         assert(spyEqual.callCount === 0);
 
@@ -49,6 +76,78 @@ describe("assertions/promised", () => {
         assert(spyEqual.calledWith(42));
 
         spyEqual.restore();
+      });
+    });
+    describe("not deferred", () => {
+      it("does not defer Object properties", () => {
+        const test = new ExpectoPromised(42).eventually;
+        assert(typeof test.toString() === "string");
+      });
+    });
+    describe("edges", () => {
+      it("always resolves to the same value", async () => {
+        const test = new ExpectoPromised(() => Promise.resolve(42)).eventually;
+        const first = await test;
+        assert(first.actual === 42);
+        const second = await test;
+        assert(second.actual === 42);
+        assert(first === second);
+      });
+    });
+  });
+
+  describe(".rejected", () => {
+    const passTarget = () => (Promise.reject(new TestError("I reject")));
+    const failNonTarget = () => (Promise.resolve("I fulfill"));
+
+    describe("basics", () => {
+      describe("successes", () => {
+        it("passes if Promise rejects", async () => {
+          const target = passTarget();
+          const test = new ExpectoPromised(target);
+          const result = await test.rejected;
+          assert(result instanceof ExpectoPromised);
+          assert(result.actual instanceof TestError);
+        });
+        it("passes if function rejects", async () => {
+          const test = new ExpectoPromised(passTarget);
+          const result = await test.rejected;
+          assert(result instanceof ExpectoPromised);
+          assert(result.actual instanceof TestError);
+        });
+      });
+
+      describe("failures", () => {
+        it("fails if target is not a Promise or a function", async () => {
+          let test;
+
+          test = new ExpectoPromised(42);
+          try {
+            await test.rejectedWith();
+            fail("expected error not thrown");
+          } catch (err) {
+            assert(err instanceof AssertionError);
+          }
+
+          test = new ExpectoPromised(new Date());
+          try {
+            await test.rejectedWith();
+            fail("expected error not thrown");
+          } catch (err) {
+            assert(err instanceof AssertionError);
+          }
+        });
+        it("fails if Promise fulfills", async () => {
+          const target = failNonTarget();
+          const test = new ExpectoPromised(target);
+
+          try {
+            await test.rejected;
+            fail("expected error not thrown");
+          } catch (err) {
+            assert(err instanceof AssertionError);
+          }
+        });
       });
     });
   });

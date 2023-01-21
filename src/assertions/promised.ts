@@ -6,34 +6,11 @@
 
 // deno-lint-ignore-file no-explicit-any
 
-import { ExpectoBase, ExpectoConstructor } from "../base.ts";
+import { ExpectoConstructor } from "../base.ts";
 import { NOT } from "../flags.ts";
 import { MixinConstuctor } from "../mixin.ts";
 import { findPropertyDescriptor } from "../util/props.ts";
-
-function maybePromise(check: any): boolean {
-  return !!check &&
-    (typeof check === "object") &&
-    (typeof check.then === "function");
-}
-
-function promisify(value: any): Promise<any> | (() => Promise<any>) {
-  if (maybePromise(value)) {
-    return value as Promise<any>;
-  } else if (typeof value === "function") {
-    return value;
-  }
-
-  return Promise.resolve(value);
-}
-
-function createFor<T, X extends ExpectoBase<T>>(base: X, target: T) {
-  const ctor = Object.getPrototypeOf(base).constructor;
-  const result = new ctor(target);
-  result.applyFlags(base);
-
-  return result;
-}
+import { maybePromise, promisify } from "../util/promising.ts";
 
 type OpFunction = (current: any) => any;
 
@@ -49,7 +26,7 @@ function createApplyOp(target: (...args: any[]) => any, args: any[]): OpFunction
 }
 
 type ResolveFunction<T = any> = (value?: any) => T;
-type RejectFunction<T = never> = (reason?: any) => never;
+type RejectFunction<T = never> = (reason?: any) => T;
 type ThenFunction<ResolveType = any, RejectType = never> = (resolve: ResolveFunction<ResolveType>, reject: RejectFunction<RejectType>) => void;
 
 class ExpectoProxyHandler {
@@ -71,7 +48,8 @@ class ExpectoProxyHandler {
           .then((result) => (this.#result = result))
           .then(resolve, reject);
       } else {
-        Promise.resolve(this.#result);
+        Promise.resolve(this.#result)
+          .then(resolve, reject);
       }
     };
   }
@@ -88,7 +66,8 @@ class ExpectoProxyHandler {
     }
 
     // skip Object properties
-    if (Object.getOwnPropertyNames({}).includes(propKey)) {
+    if (Object.getOwnPropertyNames(Object.prototype).includes(propKey) ||
+        Object.getOwnPropertyNames(Object).includes(propKey)) {
       return Reflect.get(target, propKey, receiver);
     }
 
@@ -143,9 +122,16 @@ export default function promised<
       super(...args);
     }
 
+    #derived(target: any) {
+      const ctor = Object.getPrototypeOf(this).constructor;
+      const result = new ctor(target);
+      result.applyFlags(this);
+    
+      return result;
+        }
+
     #proxify(startWith?: OpFunction): typeof Proxy {
-      const base = ((this as unknown) as ExpectoBase<Promise<any>>);
-      const resolved = createFor(base, promisify(this.actual));
+      const resolved = this.#derived(this.actual);
       const handler = resolved.#handler = new ExpectoProxyHandler(resolved);
       if (startWith) {
         handler.push(startWith);
@@ -157,8 +143,8 @@ export default function promised<
 
     get eventually(): any {
       const proxy = this.#proxify(async (current) => {
-        const result = await current.actual;
-        return createFor(current, result);
+        const result = await promisify(current.actual);
+        return this.#derived(result);
       });
       return proxy;
     }
@@ -178,16 +164,7 @@ export default function promised<
         let result;
 
         try {
-          const actual = current.actual
-          let resolved: Promise<any>;
-          if (maybePromise(actual)) {
-            resolved = current.actual;
-          } else if (typeof actual === "function") {
-            resolved = current.actual();
-          } else {
-            resolved = Promise.resolve(actual);
-          }
-
+          const resolved = promisify(current.actual);
           result = await resolved;
         } catch (err) {
           if (errType) {
@@ -210,11 +187,11 @@ export default function promised<
         current.assert(caught, msg);
 
         if (failure) {
-          return createFor(current, failure);
+          return this.#derived(failure);
         }
 
         if (result !== undefined) {
-          return createFor(current, result);
+          return this.#derived(result);
         }
 
         return current;

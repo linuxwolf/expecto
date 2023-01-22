@@ -1,0 +1,22 @@
+name: Build and Test
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Check out code"
+        uses: actions/checkout@v3
+      - name: "Setup Deno"
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: "1.29.4"
+      - name: "Linting"
+        run: deno lint
+      - name: "Format check"
+        run: deno fmt --check
+      - name: "Unit tests"
+        run: deno test

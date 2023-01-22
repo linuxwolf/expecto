@@ -14,7 +14,7 @@ jobs:
         uses: denoland/setup-deno@v1
         with:
           deno-version: "1.29.4"
-      - name: "Linting"
+      - name: "Lint check"
         run: deno lint
       - name: "Format check"
         run: deno fmt --check
@@ -27,16 +27,16 @@ jobs:
         uses: denoland/setup-deno@v1
         with:
           deno-version: "1.29.4"
-      - name: "unit tests"
+      - name: "Run unit tests"
         run: deno test --coverage=coverage/profile
-      - name: "generate coverage reports"
+      - name: "Generate coverage reports"
         run: |
           deno coverage \
             --include=src \
             --exclude=deps \
             --lcov --output=coverage/lcov \
             coverage/profile
-      - name: "report coverage"
+      - name: "Report coverage"
         uses: codecov/codecov-action@v3
         with:
           files: coverage/lcov

@@ -4,29 +4,67 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+env:
+  DENO_DIR: ./.cache
+  DENO_VER: "1.29.4"
 jobs:
-  coding-checks:
+  caching:
+    name: "Cache Updates"
     runs-on: ubuntu-latest
     steps:
       - name: "Check out code"
         uses: actions/checkout@v3
+      - name: "Setup cache"
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.DENO_DIR }}
+          key: deno-${{ hashFiles('deno.lock' )}}
       - name: "Setup Deno"
         uses: denoland/setup-deno@v1
         with:
-          deno-version: "1.29.4"
+          ${{ env.DENO_VER }}
+      - name: "Update cache"
+        run: |
+          deno cache --reload \
+            deps/src/all.ts deps/test/all.ts
+  coding-checks:
+    name: "Coding Checks"
+    runs-on: ubuntu-latest
+    needs:
+      - caching
+    steps:
+      - name: "Check out code"
+        uses: actions/checkout@v3
+      - name: "Setup cache"
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.DENO_DIR }}
+          key: deno-${{ hashFiles('deno.lock') }}
+      - name: "Setup Deno"
+        uses: denoland/setup-deno@v1
+        with:
+          ${{ env.DENO_VER }}
       - name: "Lint check"
         run: deno lint
       - name: "Format check"
         run: deno fmt --check
-  unittest:
+  unit-test:
+    name: "Testing"
     runs-on: ubuntu-latest
+    needs:
+      - caching
     steps:
       - name: "Check out code"
         uses: actions/checkout@v3
+      - name: "Setup cache"
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.DENO_DIR }}
+          key: deno-${{ hashFiles('deno.lock') }}
       - name: "Setup Deno"
         uses: denoland/setup-deno@v1
         with:
-          deno-version: "1.29.4"
+          ${{ env.DENO_VER }}
       - name: "Run unit tests"
         run: deno test --coverage=coverage/profile
       - name: "Generate coverage reports"

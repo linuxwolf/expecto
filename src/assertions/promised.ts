@@ -131,8 +131,8 @@ class ExpectoProxyHandler {
 
 // deno-lint-ignore no-explicit-any
 function thenify<ResolveType = any, RejectType = never>(
-  then: ThenFunction<ResolveType, RejectType>,
-  target: any,
+  then: ThenFunction<ResolveType, RejectType>, // deno-lint-ignore no-explicit-any
+  target: any, // deno-lint-ignore no-explicit-any
 ): any {
   target.then = then;
   return target;
@@ -142,9 +142,8 @@ export default function promised<
   TargetType,
   BaseType extends ExpectoConstructor<TargetType>,
 >(Base: BaseType) {
-  // deno-lint-ignore no-explicit-any
-  const MixIn = class ExpectoPromised<T extends TargetType>
-    extends (Base as any) {
+  const MixIn = class ExpectoPromised<T extends TargetType> extends // deno-lint-ignore no-explicit-any
+  (Base as any) {
     #handler?: ExpectoProxyHandler;
 
     // deno-lint-ignore no-explicit-any

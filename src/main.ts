@@ -4,7 +4,6 @@
  * @copyright 2023 Matthew A. Miller
  */
 
-import { ExpectoBase } from "./base.ts";
 import { RegisterFunction, Registry } from "./registry.ts";
 import _std from "./assertions/_std.ts";
 

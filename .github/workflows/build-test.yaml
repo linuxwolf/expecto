@@ -28,4 +28,15 @@ jobs:
         with:
           deno-version: "1.29.4"
       - name: "unit tests"
-        run: deno test
+        run: deno test --coverage=coverage/profile
+      - name: "generate coverage reports"
+        run: |
+          deno coverage \
+            --include=src \
+            --exclude=deps \
+            --lcov --output=coverage/lcov
+      - name: "report coverage"
+        uses: codecov/codecov-action@v3
+        with:
+          files: coverage/lcov
+          gcov: true

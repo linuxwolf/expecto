@@ -8,7 +8,7 @@
 
 import { ExpectoConstructor } from "../base.ts";
 import { NOT } from "../flags.ts";
-import { MixinConstuctor } from "../mixin.ts";
+import { MixinConstructor } from "../mixin.ts";
 
 export default function typing<
   T,
@@ -112,5 +112,5 @@ export default function typing<
     }
   };
 
-  return MixIn as MixinConstuctor<typeof MixIn, BaseType>;
+  return MixIn as MixinConstructor<typeof MixIn, BaseType>;
 }

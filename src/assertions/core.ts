@@ -9,7 +9,7 @@
 import { equal } from "../../deps/src/asserts.ts";
 import { ExpectoConstructor } from "../base.ts";
 import { DEEP, NOT } from "../flags.ts";
-import { MixinConstuctor } from "../mixin.ts";
+import { MixinConstructor } from "../mixin.ts";
 
 export default function core<
   T,
@@ -87,5 +87,5 @@ export default function core<
     }
   };
 
-  return MixIn as MixinConstuctor<typeof MixIn, BaseType>;
+  return MixIn as MixinConstructor<typeof MixIn, BaseType>;
 }

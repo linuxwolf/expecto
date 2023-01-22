@@ -6,7 +6,7 @@
 
 import { ExpectoBase, ExpectoConstructor } from "../base.ts";
 import { NOT } from "../flags.ts";
-import { MixinConstuctor } from "../mixin.ts";
+import { MixinConstructor } from "../mixin.ts";
 import { findPropertyDescriptor } from "../util/props.ts";
 import { promisify } from "../util/promising.ts";
 
@@ -234,5 +234,5 @@ export default function promised<
     }
   };
 
-  return MixIn as MixinConstuctor<typeof MixIn, BaseType>;
+  return MixIn as MixinConstructor<typeof MixIn, BaseType>;
 }

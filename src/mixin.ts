@@ -10,6 +10,7 @@ type Properties<BaseType> = BaseType extends new (props: infer P) => any ? P
 type Instance<BaseType> = BaseType extends new (...args: any[]) => infer I ? I
   : never;
 
-export type MixinConstuctor<A, B> = new (
+/** Type of an Expecto mixin class; used in a Mixin factory method */
+export type MixinConstructor<A, B> = new (
   props: Properties<A> & Properties<B>,
 ) => Instance<A> & Instance<B>;

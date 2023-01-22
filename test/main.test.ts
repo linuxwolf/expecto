@@ -7,7 +7,7 @@ import { beforeEach, describe, it } from "../deps/test/bdd.ts";
 import sinon from "../deps/test/sinon.ts";
 
 import { ExpectoConstructor } from "../src/base.ts";
-import { MixinConstuctor } from "../src/mixin.ts";
+import { MixinConstructor } from "../src/mixin.ts";
 import { expect, reset, use } from "../src/main.ts";
 
 function dummy<T, BaseType extends ExpectoConstructor<T>>(Base: BaseType) {
@@ -23,7 +23,7 @@ function dummy<T, BaseType extends ExpectoConstructor<T>>(Base: BaseType) {
     }
   };
 
-  return MixIn as MixinConstuctor<typeof MixIn, BaseType>;
+  return MixIn as MixinConstructor<typeof MixIn, BaseType>;
 }
 
 describe("main", () => {

@@ -34,7 +34,8 @@ jobs:
           deno coverage \
             --include=src \
             --exclude=deps \
-            --lcov --output=coverage/lcov
+            --lcov --output=coverage/lcov \
+            coverage/profile
       - name: "report coverage"
         uses: codecov/codecov-action@v3
         with:

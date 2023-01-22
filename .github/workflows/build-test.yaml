@@ -22,7 +22,7 @@ jobs:
       - name: "Setup Deno"
         uses: denoland/setup-deno@v1
         with:
-          ${{ env.DENO_VER }}
+          deno-version: ${{ env.DENO_VER }}
       - name: "Update cache"
         run: |
           deno cache --reload \
@@ -43,7 +43,7 @@ jobs:
       - name: "Setup Deno"
         uses: denoland/setup-deno@v1
         with:
-          ${{ env.DENO_VER }}
+          deno-version: ${{ env.DENO_VER }}
       - name: "Lint check"
         run: deno lint
       - name: "Format check"
@@ -64,7 +64,7 @@ jobs:
       - name: "Setup Deno"
         uses: denoland/setup-deno@v1
         with:
-          ${{ env.DENO_VER }}
+          deno-version: ${{ env.DENO_VER }}
       - name: "Run unit tests"
         run: deno test --coverage=coverage/profile
       - name: "Generate coverage reports"

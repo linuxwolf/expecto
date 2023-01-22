@@ -10,7 +10,7 @@ import { ExpectoConstructor } from "../base.ts";
 import { NOT } from "../flags.ts";
 import { MixinConstuctor } from "../mixin.ts";
 import { findPropertyDescriptor } from "../util/props.ts";
-import { maybePromise, promisify } from "../util/promising.ts";
+import { promisify } from "../util/promising.ts";
 
 type OpFunction = (current: any) => any;
 
@@ -68,6 +68,12 @@ class ExpectoProxyHandler {
     // skip Object properties
     if (Object.getOwnPropertyNames(Object.prototype).includes(propKey) ||
         Object.getOwnPropertyNames(Object).includes(propKey)) {
+      return Reflect.get(target, propKey, receiver);
+    }
+
+    // skip actual & flag-related properties
+    // TODO: Somehow do this within plugins
+    if (["actual", "flags", "hasFlag", "setFlag", "unsetFlag", "appllyFlags"].includes(propKey)) {
       return Reflect.get(target, propKey, receiver);
     }
 

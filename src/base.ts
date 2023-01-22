@@ -106,20 +106,47 @@ export class ExpectoBase<T> {
     return new Flags(this.#flags).all();
   }
 
+  /**
+   * Checks if the given flag is set.
+   * 
+   * @param name The name of the flag
+   * @returns `true` if the flag is set
+   */
   protected hasFlag(name: string): boolean {
     return hasFlag(this.#flags, name);
   }
 
+  /**
+   * Applies the flags from another Expecto onto this one.
+   * 
+   * @param other The other Expecto to apply flags from
+   */
   protected applyFlags(other: ExpectoBase<T>) {
     this.#flags.apply(other.#flags);
   }
 
+  /**
+   * Sets the given flag on this Expecto.
+   * 
+   * @param name The name of the flag
+   */
   protected setFlag(name: string) {
     this.#flags.set(name);
   }
+  /**
+   * Unsets the given flag on this Expecto.
+   * 
+   * @param name The name of the flag
+   */
   protected unsetFlag(name: string) {
     this.#flags.unset(name);
   }
+  /**
+   * Toggles the given flag on this Expecto.
+   * 
+   * @param name The name of the flag
+   * @returns `true` if the flag is now set; `false` otherwise
+   */
   protected toggleFlag(name: string): boolean {
     return this.#flags.toggle(name);
   }

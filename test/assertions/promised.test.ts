@@ -83,9 +83,13 @@ describe("assertions/promised", () => {
         const test = new ExpectoPromised(42).eventually;
         assert(typeof test.toString() === "string");
       });
+      it("does not defer non-expect properties", () => {
+        const test = new ExpectoPromised(42).eventually;
+        assert(test.actual === 42);
+      });
     });
     describe("edges", () => {
-      it("always resolves to the same value", async () => {
+      it(".then() always resolves to the same value", async () => {
         const test = new ExpectoPromised(() => Promise.resolve(42)).eventually;
         const first = await test;
         assert(first.actual === 42);

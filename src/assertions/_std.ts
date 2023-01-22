@@ -5,7 +5,7 @@
  */
 import { ExpectoConstructor } from "../base.ts";
 import core from "./core.ts";
-import typing from "./typing.ts"
+import typing from "./typing.ts";
 import promised from "./promised.ts";
 
 export default function _std<

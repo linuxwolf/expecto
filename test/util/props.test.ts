@@ -33,28 +33,48 @@ describe("util/props", () => {
       const propKey = "bar";
       const result = findPropertyDescriptor(target, propKey);
       assert(typeof result !== "undefined");
-      assert(equal(result, Object.getOwnPropertyDescriptor(SubKind.prototype, propKey)));
+      assert(
+        equal(
+          result,
+          Object.getOwnPropertyDescriptor(SubKind.prototype, propKey),
+        ),
+      );
     });
     it("finds the descriptor of an override method", () => {
       const target = new SubKind();
       const propKey = "baz";
       const result = findPropertyDescriptor(target, propKey);
       assert(typeof result !== "undefined");
-      assert(equal(result, Object.getOwnPropertyDescriptor(SubKind.prototype, propKey)));
+      assert(
+        equal(
+          result,
+          Object.getOwnPropertyDescriptor(SubKind.prototype, propKey),
+        ),
+      );
     });
     it("finds the descriptor from a superclass", () => {
       const target = new SubKind();
       const propKey = "foo";
       const result = findPropertyDescriptor(target, propKey);
       assert(typeof result !== "undefined");
-      assert(equal(result, Object.getOwnPropertyDescriptor(BaseKind.prototype, propKey)));
+      assert(
+        equal(
+          result,
+          Object.getOwnPropertyDescriptor(BaseKind.prototype, propKey),
+        ),
+      );
     });
     it("finds the descriptor from Object", () => {
       const target = new SubKind();
       const propKey = "toString";
       const result = findPropertyDescriptor(target, propKey);
       assert(typeof result !== "undefined");
-      assert(equal(result, Object.getOwnPropertyDescriptor(Object.prototype, propKey)));
+      assert(
+        equal(
+          result,
+          Object.getOwnPropertyDescriptor(Object.prototype, propKey),
+        ),
+      );
     });
     it("returns undefined if no such property", () => {
       const target = new SubKind();

@@ -1,6 +1,6 @@
 /**
  * @file Primary exported interface
- * 
+ *
  * @copyright 2023 Matthew A. Miller
  */
 
@@ -13,7 +13,7 @@ reset();
 
 /**
  * Registers the given support onto the Expecto
- * 
+ *
  * @param register The factory to register
  */
 export function use<T>(register: RegisterFunction<T>) {
@@ -23,7 +23,7 @@ export function use<T>(register: RegisterFunction<T>) {
 /**
  * Creates an Expecto wrapping `actual` for testing. The created Expecto has
  * all the plugins registered via `use` applied.
- * 
+ *
  * @param actual The value to test
  * @returns An Expecto wrapping `actual`
  */
@@ -34,7 +34,7 @@ export function expect<T>(actual: T): any {
 
 /**
  * Resets the plugins back to only the standard-issue set.
- * 
+ *
  * @private
  */
 export function reset() {

@@ -17,13 +17,13 @@ describe("base", () => {
       return super.hasFlag(name);
     }
     override setFlag(name: string) {
-        return super.setFlag(name);
+      return super.setFlag(name);
     }
     override unsetFlag(name: string) {
       return super.unsetFlag(name);
     }
     override toggleFlag(name: string) {
-        return super.toggleFlag(name);
+      return super.toggleFlag(name);
     }
     override assert(expr: boolean, msg?: string) {
       return super.assert(expr, msg);

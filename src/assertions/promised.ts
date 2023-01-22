@@ -16,9 +16,12 @@ type OpFunction = (current: any) => any;
 function createGetOp(prop: string): OpFunction {
   return (current) => {
     return current[prop];
-  }
+  };
 }
-function createApplyOp(target: (...args: unknown[]) => unknown, args: unknown[]): OpFunction {
+function createApplyOp(
+  target: (...args: unknown[]) => unknown,
+  args: unknown[],
+): OpFunction {
   return (current) => {
     return target.apply(current, args);
   };
@@ -29,7 +32,10 @@ type ResolveFunction<T = any> = (value?: any) => T;
 // deno-lint-ignore no-explicit-any
 type RejectFunction<T = never> = (reason?: any) => T;
 // deno-lint-ignore no-explicit-any
-type ThenFunction<ResolveType = any, RejectType = never> = (resolve: ResolveFunction<ResolveType>, reject: RejectFunction<RejectType>) => void;
+type ThenFunction<ResolveType = any, RejectType = never> = (
+  resolve: ResolveFunction<ResolveType>,
+  reject: RejectFunction<RejectType>,
+) => void;
 
 class ExpectoProxyHandler {
   // deno-lint-ignore no-explicit-any
@@ -71,14 +77,19 @@ class ExpectoProxyHandler {
     }
 
     // skip Object properties
-    if (Object.getOwnPropertyNames(Object.prototype).includes(propKey) ||
-        Object.getOwnPropertyNames(Object).includes(propKey)) {
+    if (
+      Object.getOwnPropertyNames(Object.prototype).includes(propKey) ||
+      Object.getOwnPropertyNames(Object).includes(propKey)
+    ) {
       return Reflect.get(target, propKey, receiver);
     }
 
     // skip actual & flag-related properties
     // TODO: Somehow do this within plugins
-    if (["actual", "flags", "hasFlag", "setFlag", "unsetFlag", "appllyFlags"].includes(propKey)) {
+    if (
+      ["actual", "flags", "hasFlag", "setFlag", "unsetFlag", "appllyFlags"]
+        .includes(propKey)
+    ) {
       return Reflect.get(target, propKey, receiver);
     }
 
@@ -119,7 +130,10 @@ class ExpectoProxyHandler {
 }
 
 // deno-lint-ignore no-explicit-any
-function thenify<ResolveType = any, RejectType = never>(then: ThenFunction<ResolveType, RejectType>, target: any): any {
+function thenify<ResolveType = any, RejectType = never>(
+  then: ThenFunction<ResolveType, RejectType>,
+  target: any,
+): any {
   target.then = then;
   return target;
 }
@@ -129,7 +143,8 @@ export default function promised<
   BaseType extends ExpectoConstructor<TargetType>,
 >(Base: BaseType) {
   // deno-lint-ignore no-explicit-any
-  const MixIn = class ExpectoPromised<T extends TargetType> extends (Base as any) {
+  const MixIn = class ExpectoPromised<T extends TargetType>
+    extends (Base as any) {
     #handler?: ExpectoProxyHandler;
 
     // deno-lint-ignore no-explicit-any
@@ -141,7 +156,7 @@ export default function promised<
       const ctor = Object.getPrototypeOf(this).constructor;
       const result = new ctor(target);
       result.applyFlags(this);
-    
+
       return result;
     }
 

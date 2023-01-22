@@ -60,22 +60,22 @@ describe("util/promising", () => {
       it("returns a PromiseLike for a primitive", async () => {
         let value;
         let result;
-        
+
         value = true;
         result = promisify(value);
         assert(result instanceof Promise);
         assert((await result) === value);
-        
+
         value = 42;
         result = promisify(value);
         assert(result instanceof Promise);
         assert((await result) === value);
-        
+
         value = 1234567890n;
         result = promisify(value);
         assert(result instanceof Promise);
         assert((await result) === value);
-        
+
         value = "some string";
         result = promisify(value);
         assert(result instanceof Promise);
@@ -98,7 +98,7 @@ describe("util/promising", () => {
         try {
           await result;
           fail("expected error not thrown");
-        } catch(err) {
+        } catch (err) {
           assert(err.message === "oops");
         }
       });
@@ -107,7 +107,7 @@ describe("util/promising", () => {
         const result = promisify(value);
         assert(typeof result.then === "function");
         assert(value.callCount === 1);
-  
+
         try {
           await result;
           fail("expected error not thrown");

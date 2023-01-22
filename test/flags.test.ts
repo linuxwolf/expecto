@@ -72,7 +72,7 @@ describe("flags", () => {
         const flags = new Flags();
         flags.apply(source);
         assert(equal(flags.all(), ["bar", "foo"]));
-      })
+      });
     });
   });
 

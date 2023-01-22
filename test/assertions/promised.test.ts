@@ -24,7 +24,6 @@ describe("assertions/promised", () => {
   const ExpectoCore = core(ExpectoBase);
   const ExpectoPromised = promised(ExpectoCore);
 
-
   describe(".eventually", () => {
     describe("basics", () => {
       it("works with a Promise", async () => {
@@ -36,7 +35,8 @@ describe("assertions/promised", () => {
         assert(result.actual === 42);
       });
       it("works with a function returning a promise", async () => {
-        const test = new ExpectoPromised(async () => await Promise.resolve(42)).eventually;
+        const test =
+          new ExpectoPromised(async () => await Promise.resolve(42)).eventually;
         assert(typeof test.then === "function");
 
         const result = await test;
@@ -65,7 +65,8 @@ describe("assertions/promised", () => {
         const test = new ExpectoPromised(42);
         const spyEqual = sinon.spy(ExpectoCore.prototype, "equal");
 
-        let result: typeof test | PromiseLike<typeof test> = test.eventually.to.equal(42);
+        let result: typeof test | PromiseLike<typeof test> = test.eventually.to
+          .equal(42);
         assert(result instanceof ExpectoPromised);
         assert(spyEqual.callCount === 0);
 

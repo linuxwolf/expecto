@@ -108,7 +108,7 @@ export class ExpectoBase<T> {
 
   /**
    * Checks if the given flag is set.
-   * 
+   *
    * @param name The name of the flag
    * @returns `true` if the flag is set
    */
@@ -118,7 +118,7 @@ export class ExpectoBase<T> {
 
   /**
    * Applies the flags from another Expecto onto this one.
-   * 
+   *
    * @param other The other Expecto to apply flags from
    */
   protected applyFlags(other: ExpectoBase<T>) {
@@ -127,7 +127,7 @@ export class ExpectoBase<T> {
 
   /**
    * Sets the given flag on this Expecto.
-   * 
+   *
    * @param name The name of the flag
    */
   protected setFlag(name: string) {
@@ -135,7 +135,7 @@ export class ExpectoBase<T> {
   }
   /**
    * Unsets the given flag on this Expecto.
-   * 
+   *
    * @param name The name of the flag
    */
   protected unsetFlag(name: string) {
@@ -143,7 +143,7 @@ export class ExpectoBase<T> {
   }
   /**
    * Toggles the given flag on this Expecto.
-   * 
+   *
    * @param name The name of the flag
    * @returns `true` if the flag is now set; `false` otherwise
    */

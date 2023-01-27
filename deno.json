@@ -1,12 +1,12 @@
 {
   "fmt": {
     "files": {
-      "include": ["src/", "test/"]
+      "include": ["deps/", "mod/", "src/", "test/"]
     }
   },
   "lint":{
     "files": {
-      "include": ["src/", "test/"]
+      "include": ["deps/", "mod/", "src/", "test/"]
     }
   },
   "test": {

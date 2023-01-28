@@ -4,7 +4,7 @@
 
 import { assert } from "../deps/test/asserts.ts";
 import { beforeEach, describe, it } from "../deps/test/bdd.ts";
-import sinon from "../deps/test/sinon.ts";
+import * as mock from "../deps/test/mock.ts";
 
 import { ExpectoConstructor } from "../src/base.ts";
 import { MixinConstructor } from "../src/mixin.ts";
@@ -43,7 +43,7 @@ describe("main", () => {
   it("registers and uses a plugin", () => {
     use(dummy);
     const test = expect(42);
-    const spy = sinon.spy(test, "dummy");
+    const spy = mock.spy(test, "dummy");
     assert(test.actual === 42);
     assert("deep" in test);
     assert("equal" in test);
@@ -52,6 +52,6 @@ describe("main", () => {
     assert("dummy" in test);
 
     assert(test.dummy() === test);
-    assert(spy.callCount === 1);
+    assert(spy.calls.length === 1);
   });
 });

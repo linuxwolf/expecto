@@ -100,7 +100,7 @@ export class ExpectoBase<T> {
   }
 
   /**
-   * Gest this ExpectoBase; helps readibility of expect assertions.
+   * Gets this ExpectoBase; helps readability of expect assertions.
    */
   get of(): this {
     return this;

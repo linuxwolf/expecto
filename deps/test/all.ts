@@ -4,4 +4,4 @@
 
 import "./asserts.ts";
 import "./bdd.ts";
-import "./sinon.ts";
+import "./mock.ts";

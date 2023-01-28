@@ -4,7 +4,7 @@
 
 import { assert, fail } from "../../deps/test/asserts.ts";
 import { describe, it } from "../../deps/test/bdd.ts";
-import sinon from "../../deps/test/sinon.ts";
+import * as mock from "../../deps/test/mock.ts";
 
 import { maybePromise, promisify } from "../../src/util/promising.ts";
 
@@ -82,10 +82,10 @@ describe("util/promising", () => {
         assert((await result) === value);
       });
       it("calls the function to return a promise", async () => {
-        const value = sinon.stub().resolves(42);
+        const value = mock.spy(() => Promise.resolve(42));
         const result = promisify(value);
         assert(typeof result.then === "function");
-        assert(value.callCount === 1);
+        assert(value.calls.length === 1);
         assert((await result) === 42);
       });
     });
@@ -103,10 +103,12 @@ describe("util/promising", () => {
         }
       });
       it("rejects if the function throws", async () => {
-        const value = sinon.stub().throws(new Error("oops"));
+        const value = mock.spy(() => {
+          throw new Error("oops");
+        });
         const result = promisify(value);
         assert(typeof result.then === "function");
-        assert(value.callCount === 1);
+        assert(value.calls.length === 1);
 
         try {
           await result;

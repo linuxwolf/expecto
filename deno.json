@@ -13,5 +13,8 @@
     "files": {
       "include": ["test/"]
     }
+  },
+  "tasks": {
+    "cov": "git clean -dfx coverage && deno test --coverage=coverage/profile && deno coverage --include=src --exclude=deps --lcov --output=coverage/lcov coverage/profile"
   }
 }

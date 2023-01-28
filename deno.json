@@ -15,6 +15,6 @@
     }
   },
   "tasks": {
-    "cov": "git clean -dfx coverage && deno test --coverage=coverage/profile && deno coverage --include=src --exclude=deps --lcov --output=coverage/lcov coverage/profile"
+    "cov": "git clean -dfx coverage && deno test --coverage=coverage/profile && deno coverage --include=/mod --include=/src --exclude=/deps --exclude=/test --lcov --output=coverage/lcov coverage/profile"
   }
 }

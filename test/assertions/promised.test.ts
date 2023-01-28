@@ -2,9 +2,14 @@
  * @copyright 2023 Matthew A. Miller
  */
 
-import { assert, AssertionError, fail } from "../../deps/test/asserts.ts";
+import {
+  assert,
+  AssertionError,
+  equal,
+  fail,
+} from "../../deps/test/asserts.ts";
 import { describe, it } from "../../deps/test/bdd.ts";
-import sinon from "../../deps/test/sinon.ts";
+import * as mock from "../../deps/test/mock.ts";
 
 import promised from "../../src/assertions/promised.ts";
 import core from "../../src/assertions/core.ts";
@@ -63,18 +68,20 @@ describe("assertions/promised", () => {
     describe("within the chain", () => {
       it("delays subsequent checks until fulfilled", async () => {
         const test = new ExpectoPromised(42);
-        const spyEqual = sinon.spy(ExpectoCore.prototype, "equal");
+        const spyEqual = mock.spy(ExpectoCore.prototype, "equal");
 
         let result: typeof test | PromiseLike<typeof test> = test.eventually.to
           .equal(42);
         assert(result instanceof ExpectoPromised);
-        assert(spyEqual.callCount === 0);
+        let calls = spyEqual.calls;
+        assert(calls.length === 0);
 
         result = await result;
         assert(result instanceof ExpectoPromised);
         assert(result.actual === 42);
-        assert(spyEqual.callCount === 1);
-        assert(spyEqual.calledWith(42));
+        calls = spyEqual.calls;
+        assert(calls.length === 1);
+        assert(equal(calls[0].args, [42]));
 
         spyEqual.restore();
       });

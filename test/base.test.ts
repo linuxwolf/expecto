@@ -43,15 +43,27 @@ describe("base", () => {
     describe("identity properties", () => {
       it("returns self on identity", () => {
         const expecto = new ExpectoBase(target);
-        assert(expecto.a === expecto);
-        assert(expecto.an === expecto);
-        assert(expecto.and === expecto);
-        assert(expecto.be === expecto);
-        assert(expecto.has === expecto);
-        assert(expecto.have === expecto);
-        assert(expecto.is === expecto);
-        assert(expecto.that === expecto);
-        assert(expecto.to === expecto);
+        const chain: (keyof typeof expecto)[] = [
+          "a",
+          "also",
+          "an",
+          "and",
+          "be",
+          "been",
+          "does",
+          "has",
+          "have",
+          "is",
+          "of",
+          "that",
+          "to",
+          "which",
+          "with",
+        ];
+
+        for (const c of chain) {
+          assert(expecto[c] === expecto);
+        }
       });
     });
 

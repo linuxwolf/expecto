@@ -39,6 +39,13 @@ export class ExpectoBase<T> {
   /**
    * Gets this ExpectoBase; helps readability of expect assertions.
    */
+  get also(): this {
+    return this;
+  }
+
+  /**
+   * Gets this ExpectoBase; helps readability of expect assertions.
+   */
   get an(): this {
     return this;
   }
@@ -54,6 +61,20 @@ export class ExpectoBase<T> {
    * Gets this ExpectoBase; helps readability of expect assertions.
    */
   get be(): this {
+    return this;
+  }
+
+  /**
+   * Gets this ExpectoBase; helps readability of expect assertions.
+   */
+  get been(): this {
+    return this;
+  }
+
+  /**
+   * Gets this ExpectoBase; helps readability of expect assertions.
+   */
+  get does(): this {
     return this;
   }
 
@@ -79,6 +100,13 @@ export class ExpectoBase<T> {
   }
 
   /**
+   * Gest this ExpectoBase; helps readibility of expect assertions.
+   */
+  get of(): this {
+    return this;
+  }
+
+  /**
    * Gets this ExpectoBase; helps readability of expect assertions.
    */
   get that(): this {
@@ -89,6 +117,20 @@ export class ExpectoBase<T> {
    * Gets this ExpectoBase; helps readability of expect assertions.
    */
   get to(): this {
+    return this;
+  }
+
+  /**
+   * Gets this ExpectoBase; helps readability of expect assertions.
+   */
+  get which(): this {
+    return this;
+  }
+
+  /**
+   * Gets this ExpectoBase; helps readability of expect assertions.
+   */
+  get with(): this {
     return this;
   }
 

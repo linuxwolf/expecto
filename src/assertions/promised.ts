@@ -209,8 +209,8 @@ export default function promised<
         }
 
         if (not) caught = !caught;
-        const oper = not ? "was rejected" : "was not rejected";
         if (!msg) {
+          const oper = not ? "was rejected" : "was not rejected";
           msg = `${Deno.inspect(this.actual)} ${oper}`;
           if (errType) {
             msg += " with " + errType.name;

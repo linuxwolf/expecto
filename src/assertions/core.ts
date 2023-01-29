@@ -68,14 +68,13 @@ export default function core<
       if (not) {
         caught = !caught;
       }
-      const oper = not ? "did throw" : "did not throw";
       if (!msg) {
+        const oper = not ? "did throw" : "did not throw";
         msg = `${Deno.inspect(this.actual)} ${oper}`;
         if (errType) {
           msg += ` ${errType.name}`;
         }
       }
-
       this.assert(caught, msg);
 
       if (!failure) {

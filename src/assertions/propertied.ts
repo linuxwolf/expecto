@@ -7,6 +7,7 @@
 import { ExpectoConstructor } from "../base.ts";
 import { NOT } from "../flags.ts";
 import { MixinConstructor } from "../mixin.ts";
+import { findPropertyDescriptor } from "../util/props.ts";
 
 export const OWN = "own";
 
@@ -21,11 +22,25 @@ export default function propertied<
       super(...args);
     }
 
+    get own(): this {
+      this.setFlag(OWN);
+      return this;
+    }
+
     property(name: string, msg?: string): this {
       const not = this.hasFlag(NOT);
+      const own = this.hasFlag(OWN);
       const isObj = typeof this.actual === "object" && (this.actual !== null);
 
-      let result = isObj && (name in this.actual);
+      let result = false;
+      if (isObj) {
+        if (own) {
+          result =
+            Object.getOwnPropertyDescriptor(this.actual, name) !== undefined;
+        } else {
+          result = findPropertyDescriptor(this.actual, name) !== undefined;
+        }
+      }
       if (not) result = !result;
 
       if (!msg) {

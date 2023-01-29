@@ -11,19 +11,24 @@ import { ExpectoBase } from "../../src/base.ts";
 describe("assertions/propertied", () => {
   const ExpectoPropertied = propertied(ExpectoBase);
 
-  class BaseThing {
-    get foo() {
-      return "foo string";
-    }
-  }
-  class SubThing extends BaseThing {
-    get bar() {
-      return "bar string";
-    }
-  }
-  const thing = new SubThing();
-  // deno-lint-ignore no-explicit-any
-  (thing as any)["baz"] = "baz string";
+  const baseThing = Object.create(null, {
+    foo: {
+      value: "foo string",
+      enumerable: true,
+    },
+  });
+  const subThing = Object.create(baseThing, {
+    bar: {
+      value: "bar string",
+      enumerable: true,
+    },
+  });
+  const thing = Object.create(subThing, {
+    baz: {
+      value: "baz string",
+      enumerable: true,
+    },
+  });
 
   describe(".property()", () => {
     describe("basics", () => {
@@ -53,47 +58,55 @@ describe("assertions/propertied", () => {
         }
       });
       it("fails if actual is not an object", () => {
+        let passed = false;
+
         try {
           new ExpectoPropertied(true).property("foo");
-          fail("expected error not thrown");
+          passed = true;
         } catch (err) {
           assert(err instanceof AssertionError);
         }
+        assert(!passed, "expected error not thrown");
 
         try {
           new ExpectoPropertied(42).property("foo");
-          fail("expected error not thrown");
+          passed = true;
         } catch (err) {
           assert(err instanceof AssertionError);
         }
+        assert(!passed, "expected error not thrown");
 
         try {
           new ExpectoPropertied(1234567890n).property("foo");
-          fail("expected error not thrown");
+          passed = true;
         } catch (err) {
           assert(err instanceof AssertionError);
         }
+        assert(!passed, "expected error not thrown");
 
         try {
           new ExpectoPropertied("some string").property("foo");
-          fail("expected error not thrown");
+          passed = true;
         } catch (err) {
           assert(err instanceof AssertionError);
         }
+        assert(!passed, "expected error not thrown");
 
         try {
           new ExpectoPropertied(null).property("foo");
-          fail("expected error not thrown");
+          passed = true;
         } catch (err) {
           assert(err instanceof AssertionError);
         }
+        assert(!passed, "expected error not thrown");
 
         try {
           new ExpectoPropertied(undefined).property("foo");
-          fail("expected error not thrown");
+          passed = true;
         } catch (err) {
           assert(err instanceof AssertionError);
         }
+        assert(!passed, "expected error not thrown");
       });
       it("fails with the given message", () => {
         try {
@@ -158,6 +171,84 @@ describe("assertions/propertied", () => {
         test = new ExpectoPropertied(null);
         result = test.not.property("foo");
         assert(result === test);
+      });
+    });
+  });
+
+  describe(".own", () => {
+    describe("basics", () => {
+      it("succeeds if actual has own property", () => {
+        const test = new ExpectoPropertied(thing).own;
+        const result = test.property("baz");
+        assert(result.actual === "baz string");
+      });
+      it("fails if actual has property in prototype chain", () => {
+        const test = new ExpectoPropertied(thing);
+
+        try {
+          test.own.property("bar");
+          fail("expected error not thrown");
+        } catch (err) {
+          assert(err instanceof AssertionError);
+        }
+
+        try {
+          test.own.property("foo");
+          fail("expected error not thrown");
+        } catch (err) {
+          assert(err instanceof AssertionError);
+        }
+      });
+      it("fails if actual is not an object", () => {
+        let passed = false;
+
+        try {
+          new ExpectoPropertied(true).own.property("foo");
+          passed = true;
+        } catch (err) {
+          assert(err instanceof AssertionError);
+        }
+        assert(!passed, "expected error not thrown");
+
+        try {
+          new ExpectoPropertied(42).own.property("foo");
+          passed = true;
+        } catch (err) {
+          assert(err instanceof AssertionError);
+        }
+        assert(!passed, "expected error not thrown");
+
+        try {
+          new ExpectoPropertied(1234567890n).own.property("foo");
+          passed = true;
+        } catch (err) {
+          assert(err instanceof AssertionError);
+        }
+        assert(!passed, "expected error not thrown");
+
+        try {
+          new ExpectoPropertied("foo thing").own.property("foo");
+          passed = true;
+        } catch (err) {
+          assert(err instanceof AssertionError);
+        }
+        assert(!passed, "expected error not thrown");
+
+        try {
+          new ExpectoPropertied(null).own.property("foo");
+          passed = true;
+        } catch (err) {
+          assert(err instanceof AssertionError);
+        }
+        assert(!passed, "expected error not thrown");
+
+        try {
+          new ExpectoPropertied(undefined).own.property("foo");
+          passed = true;
+        } catch (err) {
+          assert(err instanceof AssertionError);
+        }
+        assert(!passed, "expected error not thrown");
       });
     });
   });

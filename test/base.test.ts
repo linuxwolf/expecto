@@ -10,6 +10,9 @@ import { DEEP, NOT } from "../src/flags.ts";
 
 describe("base", () => {
   class ExpectoUnderTest<T> extends ExpectoBase<T> {
+    override derived<ResultType>(target: ResultType) {
+      return super.derived(target);
+    }
     override flags() {
       return super.flags();
     }
@@ -134,6 +137,26 @@ describe("base", () => {
           assert(!expecto.flags().includes(NOT));
           assert(!expecto.hasFlag(NOT));
         });
+      });
+    });
+
+    describe(".derived()", () => {
+      it("creates a derived Expecto with the same type", () => {
+        const base = new ExpectoUnderTest(new Date());
+        const result = base.derived(42);
+        assert(result instanceof ExpectoUnderTest);
+        assert(equal(result.flags(), base.flags()));
+      });
+
+      it("applies flags from base onto derived", () => {
+        const base = new ExpectoUnderTest(new Date());
+        base.setFlag("NOT");
+        base.setFlag("foo");
+
+        const result = base.derived(42);
+        assert(result instanceof ExpectoUnderTest);
+        assert(base.flags().length > 0);
+        assert(equal(result.flags(), base.flags()));
       });
     });
 

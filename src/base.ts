@@ -140,7 +140,7 @@ export class ExpectoBase<T> {
    * Creates a new Expecto of the same type as this current Expecto, with its
    * actual as `actual`.  All of the flags set on this Expecto are also set
    * on the returned Expecto.
-   * 
+   *
    * @param actual The new actual value
    * @returns a new Expecto of the same type as this Expecto
    */

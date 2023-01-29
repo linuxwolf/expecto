@@ -2,12 +2,7 @@
  * @copyright 2023 Matthew A. Miller
  */
 
-import {
-  assert,
-  AssertionError,
-  equal,
-  fail,
-} from "../../deps/test/asserts.ts";
+import { assert, AssertionError, fail } from "../../deps/test/asserts.ts";
 import { describe, it } from "../../deps/test/bdd.ts";
 
 import propertied from "../../src/assertions/propertied.ts";
@@ -17,10 +12,14 @@ describe("assertions/propertied", () => {
   const ExpectoPropertied = propertied(ExpectoBase);
 
   class BaseThing {
-    get foo() { return "foo string"; }
+    get foo() {
+      return "foo string";
+    }
   }
   class SubThing extends BaseThing {
-    get bar() { return "bar string"; }
+    get bar() {
+      return "bar string";
+    }
   }
   const thing = new SubThing();
   // deno-lint-ignore no-explicit-any
@@ -45,11 +44,11 @@ describe("assertions/propertied", () => {
       });
       it("fails if actual does not have the property", () => {
         const test = new ExpectoPropertied(thing);
-        
+
         try {
           test.property("bat");
           fail("expected error not thrown");
-        } catch(err) {
+        } catch (err) {
           assert(err instanceof AssertionError);
         }
       });

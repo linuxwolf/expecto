@@ -7,7 +7,6 @@
 import { ExpectoConstructor } from "../base.ts";
 import { NOT } from "../flags.ts";
 import { MixinConstructor } from "../mixin.ts";
-import { findPropertyDescriptor } from "../util/props.ts";
 
 export const OWN = "own";
 

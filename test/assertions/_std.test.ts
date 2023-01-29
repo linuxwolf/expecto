@@ -22,6 +22,8 @@ describe("assertions/_std", () => {
       assert("instanceOf" in test);
       assert("typeOf" in test);
 
+      assert("property" in test);
+
       assert("eventually" in test);
       assert("rejected" in test);
     });

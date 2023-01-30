@@ -1,5 +1,5 @@
 /**
- * @file The properties assertions mixin.
+ * @file The membership assertions mixin.
  *
  * @copyright 2023 Matthew A. Miller
  */
@@ -11,7 +11,7 @@ import { findPropertyDescriptor } from "../util/props.ts";
 
 export const OWN = "own";
 
-export default function propertied<
+export default function membership<
   TargetType,
   BaseType extends ExpectoConstructor<TargetType>,
 >(Base: BaseType) {

@@ -5,11 +5,11 @@
 import { assert, AssertionError, fail } from "../../deps/test/asserts.ts";
 import { describe, it } from "../../deps/test/bdd.ts";
 
-import propertied from "../../src/assertions/propertied.ts";
+import membership from "../../src/assertions/membership.ts";
 import { ExpectoBase } from "../../src/base.ts";
 
 describe("assertions/propertied", () => {
-  const ExpectoPropertied = propertied(ExpectoBase);
+  const ExpectoPropertied = membership(ExpectoBase);
 
   const baseThing = Object.create(null, {
     foo: {

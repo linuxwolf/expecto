@@ -2,7 +2,7 @@
  * @copyright 2023 Matthew A. Miller
  */
 
-import { assert, AssertionError, equal, fail } from "../deps/test/asserts.ts";
+import { assert, AssertionError, equal } from "../deps/test/asserts.ts";
 import { beforeEach, describe, it } from "../deps/test/bdd.ts";
 
 import { ExpectoBase } from "../src/base.ts";
@@ -172,21 +172,26 @@ describe("base", () => {
         assert(expecto.assert(true, "oopsie") === expecto);
       });
       it("throws on failure", () => {
+        let passed = false;
         try {
           expecto.assert(false);
-          fail("expected error not thrown");
+          passed = true;
         } catch (err) {
           assert(err instanceof AssertionError);
         }
+        assert(!passed, "expected error not thrown");
       });
       it("throws with message on failure", () => {
+        let passed = false;
+
         try {
           expecto.assert(false, "oopsie");
-          fail("expected error not thrown");
+          passed = true;
         } catch (err) {
           assert(err instanceof AssertionError);
           assert(err.message.includes("oopsie"));
         }
+        assert(!passed, "expected error not thrown");
       });
     });
   });

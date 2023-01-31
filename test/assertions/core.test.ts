@@ -2,7 +2,7 @@
  * @copyright 2023 Matthew A. Miller
  */
 
-import { assert, AssertionError, fail } from "../../deps/test/asserts.ts";
+import { assert, AssertionError } from "../../deps/test/asserts.ts";
 import { describe, it } from "../../deps/test/bdd.ts";
 
 import core from "../../src/assertions/core.ts";
@@ -23,22 +23,28 @@ describe("assertions/core", () => {
         });
         it("throws on failure", () => {
           const test = new ExpectoCore(target);
+          let passed = false;
+
           try {
             test.equal(new Date("2022-11-22T01:23:45.678Z"));
-            fail("expected error not thrown");
+            passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
           }
+          assert(!passed, "expected error not thrown");
         });
         it("throws with message on failure", () => {
           const test = new ExpectoCore(target);
+          let passed = false;
+
           try {
             test.equal(new Date(), "oopsies!");
-            fail("expected error not thrown");
+            passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
             assert(err.message.includes("oopsies!"));
           }
+          assert(!passed, "expected error not thrown");
         });
       });
 
@@ -67,13 +73,15 @@ describe("assertions/core", () => {
         });
         it("throws on 'success'", () => {
           const test = new ExpectoCore(target);
+          let passed = false;
 
           try {
             test.not.equal(target);
-            fail("expected error not thrown");
+            passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
           }
+          assert(!passed, "expected error not thrown");
         });
       });
 
@@ -87,13 +95,15 @@ describe("assertions/core", () => {
         });
         it("throws on 'success'", () => {
           const test = new ExpectoCore(target);
+          let passed = false;
 
           try {
             test.not.deep.equal(target);
-            fail("expected error not thrown");
+            passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
           }
+          assert(!passed, "expected error not thrown");
         });
       });
     });
@@ -134,33 +144,39 @@ describe("assertions/core", () => {
         });
         it("throws TypeError if actual is not a function", () => {
           const test = new ExpectoCore(42);
+          let passed = false;
 
           try {
             test.throw();
-            fail("expected error not thrown");
+            passed = true;
           } catch (err) {
             assert(err instanceof TypeError);
           }
+          assert(!passed, "expected error not thrown");
         });
         it("throws on failed non-throw", () => {
           const test = new ExpectoCore(failNoneTarget);
+          let passed = false;
 
           try {
             test.throw();
-            fail("expected error not thrown");
+            passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
           }
+          assert(!passed, "expected error not thrown");
         });
         it("throws on failed different-type", () => {
           const test = new ExpectoCore(failDiffTarget);
+          let passed = false;
 
           try {
             test.throw(TestError);
-            fail("expected error not thrown");
+            passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
           }
+          assert(!passed, "expected error not thrown");
         });
       });
 
@@ -177,23 +193,27 @@ describe("assertions/core", () => {
         });
         it("throws on 'success (any throw)'", () => {
           const test = new ExpectoCore(passTarget);
+          let passed = false;
 
           try {
             test.not.throw();
-            fail("expected error not thrown");
+            passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
           }
+          assert(!passed, "expected error not thrown");
         });
         it("throws on 'success (throw expected)'", () => {
           const test = new ExpectoCore(passTarget);
+          let passed = false;
 
           try {
             test.not.throw(TestError);
-            fail("expected error not thrown");
+            passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
           }
+          assert(!passed, "expected error not thrown");
         });
       });
     });

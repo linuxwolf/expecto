@@ -2,7 +2,7 @@
  * @copyright 2023 Matthew A. Miller
  */
 
-import { assert, AssertionError, equal, fail } from "../../deps/test/asserts.ts";
+import { assert, AssertionError, equal } from "../../deps/test/asserts.ts";
 import { describe, it } from "../../deps/test/bdd.ts";
 
 import membership, { ANY, ALL } from "../../src/assertions/membership.ts";
@@ -10,25 +10,6 @@ import { ExpectoBase } from "../../src/base.ts";
 
 describe("assertions/propertied", () => {
   const ExpectoMembership = membership(ExpectoBase);
-
-  const baseThing = Object.create(null, {
-    foo: {
-      value: "foo string",
-      enumerable: true,
-    },
-  });
-  const subThing = Object.create(baseThing, {
-    bar: {
-      value: "bar string",
-      enumerable: true,
-    },
-  });
-  const thing = Object.create(subThing, {
-    baz: {
-      value: "baz string",
-      enumerable: true,
-    },
-  });
 
   describe(".all/.any", () => {
     const ExpectoUnderTest = class ExpectoUnderTest<T> extends ExpectoMembership {
@@ -827,6 +808,25 @@ describe("assertions/propertied", () => {
   });
 
   describe(".property()", () => {
+    const baseThing = Object.create(null, {
+      foo: {
+        value: "foo string",
+        enumerable: true,
+      },
+    });
+    const subThing = Object.create(baseThing, {
+      bar: {
+        value: "bar string",
+        enumerable: true,
+      },
+    });
+    const thing = Object.create(subThing, {
+      baz: {
+        value: "baz string",
+        enumerable: true,
+      },
+    });
+  
     describe("basics", () => {
       it("succeeds if actual has own property", () => {
         const test = new ExpectoMembership(thing);
@@ -845,13 +845,15 @@ describe("assertions/propertied", () => {
       });
       it("fails if actual does not have the property", () => {
         const test = new ExpectoMembership(thing);
+        let passed = false;
 
         try {
           test.property("bat");
-          fail("expected error not thrown");
+          passed = true;
         } catch (err) {
           assert(err instanceof AssertionError);
         }
+        assert(!passed, "expected error not thrown");
       });
       it("fails if actual is not an object", () => {
         let passed = false;
@@ -905,13 +907,16 @@ describe("assertions/propertied", () => {
         assert(!passed, "expected error not thrown");
       });
       it("fails with the given message", () => {
+        let passed = false;
+
         try {
           new ExpectoMembership(thing).property("bat", "not property 'bat'");
-          fail("expected error not thrown");
+          passed = true;
         } catch (err) {
           assert(err instanceof AssertionError);
           assert(err.message.includes("not property 'bat'"));
         }
+        assert(!passed, "expected error not thrown");
       });
     });
 
@@ -922,28 +927,32 @@ describe("assertions/propertied", () => {
         assert(result === test);
       });
       it("fails if actual does have property", () => {
-        const test = new ExpectoMembership(this);
+        const test = new ExpectoMembership(thing);
+        let passed = false;
 
         try {
           test.not.property("baz");
-          fail("expected error not thrown");
+          passed = true;
         } catch (err) {
           assert(err instanceof AssertionError);
         }
+        assert(!passed, "expected error not thrown");
 
         try {
           test.not.property("bar");
-          fail("expected error not thrown");
+          passed = true;
         } catch (err) {
           assert(err instanceof AssertionError);
         }
+        assert(!passed, "expected error not thrown");
 
         try {
           test.not.property("foo");
-          fail("expected error not thrown");
+          passed = true;
         } catch (err) {
           assert(err instanceof AssertionError);
         }
+        assert(!passed, "expected error not thrown");
       });
       it("succeeds if actual is not an object", () => {
         let test, result;
@@ -972,6 +981,25 @@ describe("assertions/propertied", () => {
   });
 
   describe(".own", () => {
+    const baseThing = Object.create(null, {
+      foo: {
+        value: "foo string",
+        enumerable: true,
+      },
+    });
+    const subThing = Object.create(baseThing, {
+      bar: {
+        value: "bar string",
+        enumerable: true,
+      },
+    });
+    const thing = Object.create(subThing, {
+      baz: {
+        value: "baz string",
+        enumerable: true,
+      },
+    });
+  
     describe("basics", () => {
       it("succeeds if actual has own property", () => {
         const test = new ExpectoMembership(thing).own;
@@ -980,20 +1008,23 @@ describe("assertions/propertied", () => {
       });
       it("fails if actual has property in prototype chain", () => {
         const test = new ExpectoMembership(thing);
+        let passed = false;
 
         try {
           test.own.property("bar");
-          fail("expected error not thrown");
+          passed = true;
         } catch (err) {
           assert(err instanceof AssertionError);
         }
+        assert(!passed, "expected error not thrown");
 
         try {
           test.own.property("foo");
-          fail("expected error not thrown");
+          passed = true;
         } catch (err) {
           assert(err instanceof AssertionError);
         }
+        assert(!passed, "expected error not thrown");
       });
       it("fails if actual is not an object", () => {
         let passed = false;

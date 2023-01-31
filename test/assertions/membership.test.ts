@@ -5,18 +5,19 @@
 import { assert, AssertionError, equal } from "../../deps/test/asserts.ts";
 import { describe, it } from "../../deps/test/bdd.ts";
 
-import membership, { ANY, ALL } from "../../src/assertions/membership.ts";
+import membership, { ALL, ANY } from "../../src/assertions/membership.ts";
 import { ExpectoBase } from "../../src/base.ts";
 
 describe("assertions/propertied", () => {
   const ExpectoMembership = membership(ExpectoBase);
 
   describe(".all/.any", () => {
-    const ExpectoUnderTest = class ExpectoUnderTest<T> extends ExpectoMembership {
+    const ExpectoUnderTest = class ExpectoUnderTest<T>
+      extends ExpectoMembership {
       override flags() {
         return super.flags();
       }
-    }
+    };
 
     it("sets the 'all' flag on .all", () => {
       const test = new ExpectoUnderTest(new Date());
@@ -46,7 +47,10 @@ describe("assertions/propertied", () => {
 
   describe(".members()", () => {
     describe("maps", () => {
-      const actual = new Map([["foo", "foo value"], ["bar", "bar value"], ["baz", "baz value"], ["flub", "flub value"]]);
+      const actual = new Map([["foo", "foo value"], ["bar", "bar value"], [
+        "baz",
+        "baz value",
+      ], ["flub", "flub value"]]);
 
       describe("defaults", () => {
         it("succeeds if all members are present", () => {
@@ -398,7 +402,7 @@ describe("assertions/propertied", () => {
     });
 
     describe("arrays", () => {
-      const actual = [ "foo", "bar", 42, true ];
+      const actual = ["foo", "bar", 42, true];
 
       describe("defaults", () => {
         it("succeeds if all members are present", () => {
@@ -826,7 +830,7 @@ describe("assertions/propertied", () => {
         enumerable: true,
       },
     });
-  
+
     describe("basics", () => {
       it("succeeds if actual has own property", () => {
         const test = new ExpectoMembership(thing);
@@ -999,7 +1003,7 @@ describe("assertions/propertied", () => {
         enumerable: true,
       },
     });
-  
+
     describe("basics", () => {
       it("succeeds if actual has own property", () => {
         const test = new ExpectoMembership(thing).own;

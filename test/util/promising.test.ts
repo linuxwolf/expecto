@@ -2,7 +2,7 @@
  * @copyright 2023 Matthew A. Miller
  */
 
-import { assert, fail } from "../../deps/test/asserts.ts";
+import { assert } from "../../deps/test/asserts.ts";
 import { describe, it } from "../../deps/test/bdd.ts";
 import * as mock from "../../deps/test/mock.ts";
 
@@ -95,12 +95,14 @@ describe("util/promising", () => {
         const result = promisify(value);
         assert(typeof result.then === "function");
 
+        let passed = false;
         try {
           await result;
-          fail("expected error not thrown");
+          passed = true;
         } catch (err) {
           assert(err.message === "oops");
         }
+        assert(!passed, "expected error not thrown");
       });
       it("rejects if the function throws", async () => {
         const value = mock.spy(() => {
@@ -110,12 +112,14 @@ describe("util/promising", () => {
         assert(typeof result.then === "function");
         assert(value.calls.length === 1);
 
+        let passed = false;
         try {
           await result;
-          fail("expected error not thrown");
+          passed = true;
         } catch (err) {
           assert(err.message === "oops");
         }
+        assert(!passed, "expected error not thrown");
       });
     });
   });

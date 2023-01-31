@@ -9,7 +9,13 @@ import { NOT } from "../flags.ts";
 import { MixinConstructor } from "../mixin.ts";
 import { findPropertyDescriptor } from "../util/props.ts";
 
+function isObject(check: unknown): boolean {
+  return (typeof check === "object") && (check !== null);
+}
+
 export const OWN = "own";
+export const ANY = "any";
+export const ALL = "all";
 
 export default function membership<
   TargetType,
@@ -22,15 +28,73 @@ export default function membership<
       super(...args);
     }
 
+    get all(): this {
+      this.unsetFlag(ANY);
+      this.setFlag(ALL);
+      return this;
+    }
+
+    get any(): this {
+      this.unsetFlag(ALL);
+      this.setFlag(ANY);
+      return this;
+    }
+
     get own(): this {
       this.setFlag(OWN);
+      return this;
+    }
+
+    members(check: unknown[], msg?: string): this {
+      const not = this.hasFlag(NOT);
+      const any = this.hasFlag(ANY);
+
+      let result = !any;
+      if (this.actual instanceof Map) {
+        const map = this.actual as Map<unknown, unknown>;
+        for (const k of check) {
+          const present = map.has(k);
+          result = (any) ? result || present : result && present;
+        }
+      } else if (this.actual instanceof Set) {
+        const set = this.actual as Set<unknown>;
+        for (const e of check) {
+          const present = set.has(e);
+          result = (any) ? result || present : result && present;
+        }
+      } else if (Array.isArray(this.actual)) {
+        const arr = this.actual as Array<unknown>;
+        for (const e of check) {
+          const present = arr.includes(e);
+          result = (any) ? result || present : result && present;
+        }
+      } else if (isObject(this.actual)) {
+        // deno-lint-ignore ban-types
+        const obj = this.actual as Object;
+        for (const k of check) {
+          const present = (k as string) in obj;
+          result = (any) ? result || present : result && present;
+        }
+      } else {
+        result = false;
+      }
+
+      if (not) result = !result;
+      if (!msg) {
+        const oper = (any) ? "have any members" : "have all members";
+        msg = `${Deno.inspect(this.actual)} ${
+          not ? "does" : "does not"
+        } ${oper} of ${Deno.inspect(check)}`;
+      }
+      this.assert(result, msg);
+
       return this;
     }
 
     property(name: string, msg?: string): this {
       const not = this.hasFlag(NOT);
       const own = this.hasFlag(OWN);
-      const isObj = typeof this.actual === "object" && (this.actual !== null);
+      const isObj = isObject(this.actual);
 
       let result = false;
       if (isObj) {

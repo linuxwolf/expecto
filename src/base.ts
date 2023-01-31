@@ -134,6 +134,24 @@ export class ExpectoBase<T> {
     return this;
   }
 
+  // ### RE-TARGETING ###
+
+  /**
+   * Creates a new Expecto of the same type as this current Expecto, with its
+   * actual as `actual`.  All of the flags set on this Expecto are also set
+   * on the returned Expecto.
+   *
+   * @param actual The new actual value
+   * @returns a new Expecto of the same type as this Expecto
+   */
+  protected derived<ResultType>(actual: ResultType): this {
+    const ctor = Object.getPrototypeOf(this).constructor;
+    const result = new ctor(actual);
+    result.applyFlags(this);
+
+    return result;
+  }
+
   // ### FLAGS ###
 
   /**

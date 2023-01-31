@@ -6,6 +6,7 @@
 import { ExpectoConstructor } from "../base.ts";
 import core from "./core.ts";
 import typing from "./typing.ts";
+import membership from "./membership.ts";
 import promised from "./promised.ts";
 
 export default function _std<
@@ -17,6 +18,7 @@ export default function _std<
   mixin = Base;
   mixin = core(mixin);
   mixin = typing(mixin);
+  mixin = membership(mixin);
   mixin = promised(mixin);
 
   return mixin;

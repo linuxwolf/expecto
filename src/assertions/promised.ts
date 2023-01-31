@@ -37,6 +37,16 @@ type ThenFunction<ResolveType = any, RejectType = never> = (
   reject: RejectFunction<RejectType>,
 ) => void;
 
+const NONCHAIN_MEMBERS = [
+  "actual",
+  "derived",
+  "flags",
+  "hasFlag",
+  "setFlag",
+  "unsetFlag",
+  "appllyFlags",
+];
+
 class ExpectoProxyHandler {
   // deno-lint-ignore no-explicit-any
   start: any;
@@ -87,8 +97,7 @@ class ExpectoProxyHandler {
     // skip actual & flag-related properties
     // TODO: Somehow do this within plugins
     if (
-      ["actual", "flags", "hasFlag", "setFlag", "unsetFlag", "appllyFlags"]
-        .includes(propKey)
+      NONCHAIN_MEMBERS.includes(propKey)
     ) {
       return Reflect.get(target, propKey, receiver);
     }
@@ -151,16 +160,8 @@ export default function promised<
       super(...args);
     }
 
-    #derived<ResultType>(target: ResultType): this & ExpectoBase<T> {
-      const ctor = Object.getPrototypeOf(this).constructor;
-      const result = new ctor(target);
-      result.applyFlags(this);
-
-      return result;
-    }
-
     #proxify(startWith?: OpFunction): this & PromiseLike<this> {
-      const resolved = this.#derived(this.actual);
+      const resolved = this.derived(this.actual);
       const handler = resolved.#handler = new ExpectoProxyHandler(resolved);
       if (startWith) {
         handler.push(startWith);
@@ -173,7 +174,7 @@ export default function promised<
     get eventually(): typeof this & PromiseLike<typeof this> {
       const op: OpFunction = async (current) => {
         const result = await promisify(current.actual);
-        return this.#derived(result);
+        return current.derived(result);
       };
       const proxy = this.#proxify(op);
 
@@ -208,8 +209,8 @@ export default function promised<
         }
 
         if (not) caught = !caught;
-        const oper = not ? "was rejected" : "was not rejected";
         if (!msg) {
+          const oper = not ? "was rejected" : "was not rejected";
           msg = `${Deno.inspect(this.actual)} ${oper}`;
           if (errType) {
             msg += " with " + errType.name;
@@ -218,11 +219,11 @@ export default function promised<
         current.assert(caught, msg);
 
         if (failure) {
-          return this.#derived(failure);
+          return current.derived(failure);
         }
 
         if (result !== undefined) {
-          return this.#derived(result);
+          return current.derived(result);
         }
 
         return current;

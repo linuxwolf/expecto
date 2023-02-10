@@ -1,5 +1,5 @@
 /**
- * @file The promoise assertions mixin.
+ * @file The promise assertions mixin.
  *
  * @copyright 2023 Matthew A. Miller
  */

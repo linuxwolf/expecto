@@ -17,7 +17,7 @@
       "type": "node",
       "program": "${file}",
       "cwd": "${workspaceFolder}",
-      "runtimeExecutable": "/usr/local/bin/deno",
+      "runtimeExecutable": "deno",
       "runtimeArgs": [
         "test",
         "--inspect-wait",

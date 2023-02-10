@@ -13,6 +13,6 @@ import { type Spy, type Stub } from "../../mod/mock.ts";
 describe("mod/mock", () => {
   it("exports the desired symbols", () => {
     const keys = Object.keys(mock).sort();
-    assert(equal(keys, ["default", "spy", "stub"]))
+    assert(equal(keys, ["default", "spy", "stub"]));
   });
 });

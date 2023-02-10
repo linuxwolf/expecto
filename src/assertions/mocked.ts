@@ -14,7 +14,10 @@ import { MixinConstructor } from "../mixin.ts";
 // deno-lint-ignore no-explicit-any
 function asSpy(actual: any): Spy {
   const spy = actual as Spy;
-  if (spy.calls !== undefined && spy.original !== undefined && spy.restore !== undefined) {
+  if (
+    spy.calls !== undefined && spy.original !== undefined &&
+    spy.restore !== undefined
+  ) {
     return spy;
   }
   throw new TypeError("is not a Spy");
@@ -36,11 +39,11 @@ export default function mocked<
       const not = this.hasFlag(NOT);
       const callCounts = spy.calls.length;
 
-      let result = (count !== undefined) ?
-          callCounts === count :
-          callCounts > 0;
+      let result = (count !== undefined)
+        ? callCounts === count
+        : callCounts > 0;
 
-      if (not) { result = !result; }
+      if (not) result = !result;
       if (!msg) {
         let oper = (not) ? "has been called" : "has not been called";
         if (count !== undefined) {
@@ -63,10 +66,10 @@ export default function mocked<
         result = result || equal(c.args, args);
       }
 
-      if (not) { result = !result; }
+      if (not) result = !result;
       if (!msg) {
         const oper = not ? "called with" : "not called with";
-        msg = `${Deno.inspect(spy)} ${oper} ${Deno.inspect(args)}`;      
+        msg = `${Deno.inspect(spy)} ${oper} ${Deno.inspect(args)}`;
       }
       this.assert(result, msg);
 

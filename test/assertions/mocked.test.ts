@@ -5,7 +5,7 @@
 import { assert, AssertionError } from "../../deps/test/asserts.ts";
 import { beforeEach, describe, it } from "../../deps/test/bdd.ts";
 
-import { spy, type Spy } from "../../deps/src/mock.ts";
+import { type Spy, spy } from "../../deps/src/mock.ts";
 import mocked from "../../src/assertions/mocked.ts";
 import { ExpectoBase } from "../../src/base.ts";
 
@@ -25,13 +25,13 @@ describe("assertions/mocked", () => {
         const test = new ExpectoMocked(fn);
         let caught = true;
 
-         try {
+        try {
           test.called();
           caught = false;
-         } catch (err) {
+        } catch (err) {
           assert(err instanceof TypeError);
-         }
-         assert(caught, "expected error not thrown");
+        }
+        assert(caught, "expected error not thrown");
       });
 
       describe("basics", () => {
@@ -152,7 +152,7 @@ describe("assertions/mocked", () => {
 
           result = test.not.called(3);
           assert(result === test);
-          
+
           result = test.not.called(10);
           assert(result === test);
         });

@@ -5,12 +5,7 @@
  */
 
 import mocked from "../src/assertions/mocked.ts";
-import { spy, stub, type Spy, type Stub} from "../deps/src/mock.ts";
+import { type Spy, spy, type Stub, stub } from "../deps/src/mock.ts";
 
 export default mocked;
-export {
-  type Spy,
-  type Stub,
-  spy,
-  stub,
-}
+export { type Spy, spy, type Stub, stub };

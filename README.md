@@ -1,11 +1,8 @@
 # EXPECTO!
 
-An assertion library that provides an "expect" style interface, inspired by [chai's](https://www.chaijs.com/api/bdd/), and built for [Deno](https://deno.land).
+An assertion library with an "expect" style interface, inspired by [Chai's](https://www.chaijs.com/api/bdd/) and built for [Deno](https://deno.land).  This is not a one-for-one clone of Chai; rather it is the subset that the authors find most useful with semantics the authors find most intuitive.
 
-This is not a one-for-one clone of Chai; rather it is the subset that the authors find most useful with semantics the authors find most intuitive.
-
-
-## QUICK START
+It wraps the value under test to provide a collection of properties and methods for chaining assertions.
 
 ```typescript
 import { expect } from "https://deno.land/x/expecto/mod/index.ts";
@@ -33,11 +30,26 @@ In addition, the following are useful to extend Expecto:
 
 ## USAGE
 
-Assertions are made by calling `expect()` with the value under test (`actual`) then chaining properties to an assertion check.
+Assertions are made by calling `expect()` with the value under test (`actual`) then chaining properties for assertion checks.
 
-### Predicates
+Additional checks and properties can be applied using `use()`.
 
-The following predicates do nothing more than return the current instance of `Expecto`; they assist with the readility of assertions.
+```typescript
+use(mocked);
+use(customMixin);
+
+Deno.test(() => {
+    const spied = mocked.spy(nestedFunc);
+
+    const result = topFunc();
+    expect(result).to.customCheck();
+    expect(spied).to.be.called(1).and.calledWith(["foo", "bar"]);
+});
+```
+
+### Predicates and Prepositions
+
+The following predicates only return the current instance of `Expecto`; they assist with the readility of assertions.
 
 * `a` / `an`
 * `also`
@@ -55,12 +67,14 @@ The following predicates do nothing more than return the current instance of `Ex
 
 ### Flags
 
-The following "flag" properties are used to modify the assertion that follows them.  Some important notes:
+The following "flag" properties are used to modify the assertion that follows them.  There are two built-in flags, and mixins can provide others.
+
+Some important notes:
 
 * Not all modifiers are supported by all assertions
 * Once an assertion is processed in a chain, all previously-set flags are cleared
 
-#### `deep`
+#### `deep` flag
 
 Modifies the succeeding assertion to perform a deep check instead of a strict or shallow check.
 
@@ -68,7 +82,9 @@ Modifies the succeeding assertion to perform a deep check instead of a strict or
 expect({foo: "foo value"}).to.deep.equal({foo: "foo value"});
 ```
 
-#### `not`
+Multiple instances of `deep` before a check behave as if it were only one specified.
+
+#### `not` flag
 
 Modifies the succeeding assertion to be negated.
 
@@ -84,7 +100,7 @@ expect(() => { throw new Error() }).to.not.not.throw(); // NOT RECOMMENDED!
 
 ### `Core` (**std**)
 
-#### `equal(e[, msg])`
+#### `equal(e[, msg])` check
 
 Compares that `actual` strictly equals (`===`) the given value.
 
@@ -113,7 +129,7 @@ expect(someObj).to.equal(anotherObj, "objects aren't the same");
 expect(someObj).to.not.equal(diffObj, "shouldn't match, but do");
 ```
 
-#### `throw([errorType[, msg]])`
+#### `throw([errorType[, msg]])` check
 
 Checks that `actual` throws an error when invoked:
 
@@ -130,7 +146,7 @@ expect(() => throw new TypeError("bad type")).to.throw(TypeError);
 If the check succeeds, the returned `Expecto` switches `actual` to the error instance thrown, so further checks can be made.
 
 ```typescript
-expect(() => throw new Error("oops")).to.throw().with.property("message").to.equal("oops");
+expect(() => throw new Error("oops")).to.throw().with.property("message").which.equal("oops");
 ```
 
 The check can have a custom message as the last argument, which is used if the check fails.

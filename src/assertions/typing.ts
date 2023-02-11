@@ -98,27 +98,31 @@ export default function typing<
       return this;
     }
 
-    typeOf(typing: string): this {
+    typeOf(typing: string, msg?: string): this {
       const not = this.hasFlag(NOT);
 
       let result = (typeof this.actual) === typing;
       if (not) result = !result;
 
-      const oper = not ? "is type of" : "is not type of";
-      const msg = `${Deno.inspect(this.actual)} ${oper} ${typing}`;
+      if (!msg) {
+        const oper = not ? "is type of" : "is not type of";
+        msg = `${Deno.inspect(this.actual)} ${oper} ${typing}`;
+      }
       this.assert(result, msg);
 
       return this;
     }
 
-    instanceOf(instType: new (...args: any[]) => any): this {
+    instanceOf(instType: new (...args: any[]) => any, msg?: string): this {
       const not = this.hasFlag(NOT);
 
       let result = this.actual instanceof instType;
       if (not) result = !result;
 
-      const oper = not ? "is instance of" : "is not instance of";
-      const msg = `${Deno.inspect(this.actual)} ${oper} ${instType.name}`;
+      if (!msg) {
+        const oper = not ? "is instance of" : "is not instance of";
+        msg = `${Deno.inspect(this.actual)} ${oper} ${instType.name}`;
+      }
       this.assert(result, msg);
 
       return this;

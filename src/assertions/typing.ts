@@ -4,8 +4,6 @@
  * @copyright 2023 Matthew A. Miller
  */
 
-// deno-lint-ignore-file no-explicit-any
-
 import { ExpectoConstructor } from "../base.ts";
 import { NOT } from "../flags.ts";
 import { MixinConstructor } from "../mixin.ts";
@@ -14,7 +12,9 @@ export default function typing<
   T,
   BaseType extends ExpectoConstructor<T>,
 >(Base: BaseType) {
+  // deno-lint-ignore no-explicit-any
   const MixIn = class ExpectoTyping<T> extends (Base as any) {
+    // deno-lint-ignore no-explicit-any
     constructor(...args: any[]) {
       super(...args);
     }
@@ -111,7 +111,7 @@ export default function typing<
       return this;
     }
 
-    instanceOf(instType: new (...args: any[]) => any): this {
+    instanceOf(instType: new (...args: unknown[]) => unknown): this {
       const not = this.hasFlag(NOT);
 
       let result = this.actual instanceof instType;

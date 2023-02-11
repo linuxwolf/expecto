@@ -85,6 +85,19 @@ export default function typing<
       return this;
     }
 
+    get NaN(): this {
+      const not = this.hasFlag(NOT);
+
+      let result = (typeof this.actual === "number") && isNaN(this.actual);
+      if (not) result = !result;
+
+      const oper = not ? "is NaN" : "is not NaN";
+      const msg = `${Deno.inspect(this.actual)} ${oper}`;
+      this.assert(result, msg);
+
+      return this;
+    }
+
     typeOf(typing: string): this {
       const not = this.hasFlag(NOT);
 

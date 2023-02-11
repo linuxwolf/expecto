@@ -659,6 +659,64 @@ describe("assertions/typing", () => {
       });
     });
 
+    describe(".NaN", () => {
+      describe("basics", () => {
+        it("passes if NaN", () => {
+          const test = new ExpectoTyping(NaN);
+          const result = test.NaN;
+          assert(result === test);
+        });
+        it("fails if number is not NaN", () => {
+          const test = new ExpectoTyping(42);
+          let caught = true;
+
+          try {
+            test.NaN;
+            caught = false;
+          } catch (err) {
+            assert(err instanceof AssertionError);
+          }
+          assert(caught, "expected error not thrown");
+        });
+        it("fails if not a number", () => {
+          const test = new ExpectoTyping("some string");
+          let caught = true;
+
+          try {
+            test.NaN;
+            caught = false;
+          } catch (err) {
+            assert(err instanceof AssertionError);
+          }
+          assert(caught, "expected error not thrown");
+        });
+      });
+      describe("negate", () => {
+        it("fails if NaN", () => {
+          const test = new ExpectoTyping(NaN);
+          let caught = true;
+
+          try {
+            test.not.NaN;
+            caught = false;
+          } catch (err) {
+            assert(err instanceof AssertionError);
+          }
+          assert(caught, "expected error not thrown");
+        });
+        it("passes if number is not NaN", () => {
+          const test = new ExpectoTyping(42);
+          const result = test.not.NaN;
+          assert(result === test);
+        });
+        it("passes if not a number", () => {
+          const test = new ExpectoTyping("some string");
+          const result = test.not.NaN;
+          assert(result === test);
+        });
+      });
+    });
+
     describe(".typeOf", () => {
       describe("basics", () => {
         it("passes on correct typeOf", () => {

@@ -717,7 +717,7 @@ describe("assertions/typing", () => {
       });
     });
 
-    describe(".typeOf", () => {
+    describe(".typeOf()", () => {
       describe("basics", () => {
         it("passes on correct typeOf", () => {
           let test;
@@ -751,7 +751,7 @@ describe("assertions/typing", () => {
           result = test.typeOf("object");
           assert(result === test);
         });
-        it("throws on incorrect typeOf", () => {
+        it("fails on incorrect typeOf", () => {
           const test = new ExpectoTyping(new Date());
           let passed = false;
 
@@ -771,6 +771,19 @@ describe("assertions/typing", () => {
           }
           assert(!passed, "expected error not thrown");
         });
+        it("fails on incorrect typeOf, with a custom message", () => {
+          const test = new ExpectoTyping(new Date());
+          let passed = false;
+
+          try {
+            test.typeOf("number", "not a number");
+            passed = true;
+          } catch (err) {
+            assert(err instanceof AssertionError);
+            assert(err.message.includes("not a number"));
+          }
+          assert(!passed, "expected error not thrown");
+        });
       });
       describe("negated", () => {
         it("passes on incorrect typeOf", () => {
@@ -783,7 +796,7 @@ describe("assertions/typing", () => {
           result = test.not.typeOf("foo");
           assert(result === test);
         });
-        it("throws on correct typeOf", () => {
+        it("fails on correct typeOf", () => {
           const test = new ExpectoTyping(new Date());
           let passed = false;
 
@@ -795,10 +808,23 @@ describe("assertions/typing", () => {
           }
           assert(!passed, "expected error not thrown");
         });
+        it("fails on correct typeOf, with custom message", () => {
+          const test = new ExpectoTyping(new Date());
+          let passed = false;
+
+          try {
+            test.not.typeOf("object", "not an object");
+            passed = true;
+          } catch (err) {
+            assert(err instanceof AssertionError);
+            assert(err.message.includes("not an object"));
+          }
+          assert(!passed, "expected error not thrown");
+        });
       });
     });
 
-    describe(".instanceOf", () => {
+    describe(".instanceOf()", () => {
       class BaseType {}
       class SubType extends BaseType {}
 
@@ -820,7 +846,7 @@ describe("assertions/typing", () => {
           result = test.instanceOf(Object);
           assert(result === test);
         });
-        it("throws on no match", () => {
+        it("fails on no match", () => {
           const test = new ExpectoTyping(target);
           let passed = false;
 
@@ -832,9 +858,22 @@ describe("assertions/typing", () => {
           }
           assert(!passed, "expected error not thrown");
         });
+        it("fails on no match, with custom message", () => {
+          const test = new ExpectoTyping(target);
+          let passed = false;
+
+          try {
+            test.instanceOf(Date, "not a Date");
+            passed = true;
+          } catch (err) {
+            assert(err instanceof AssertionError);
+            assert(err.message.includes("not a Date"));
+          }
+          assert(!passed, "expected error not thrown");
+        });
       });
       describe("negated", () => {
-        it("throws on exact match", () => {
+        it("fails on exact match", () => {
           const test = new ExpectoTyping(target);
           let passed = false;
 
@@ -846,7 +885,20 @@ describe("assertions/typing", () => {
           }
           assert(!passed, "expected error not thrown");
         });
-        it("throws on super match", () => {
+        it("fails on exact match, with custom message", () => {
+          const test = new ExpectoTyping(target);
+          let passed = false;
+
+          try {
+            test.not.instanceOf(SubType, "is a SubType");
+            passed = true;
+          } catch (err) {
+            assert(err instanceof AssertionError);
+            assert(err.message.includes("is a SubType"));
+          }
+          assert(!passed, "expected error not thrown");
+        });
+        it("fails on super match", () => {
           const test = new ExpectoTyping(target);
           let passed = false;
 
@@ -855,6 +907,27 @@ describe("assertions/typing", () => {
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
+          }
+          assert(!passed, "expected error not thrown");
+
+          try {
+            test.not.instanceOf(Object);
+            passed = true;
+          } catch (err) {
+            assert(err instanceof AssertionError);
+          }
+          assert(!passed, "expected error not thrown");
+        });
+        it("fails on super match, with a custom message", () => {
+          const test = new ExpectoTyping(target);
+          let passed = false;
+
+          try {
+            test.not.instanceOf(BaseType, "is a BaseType");
+            passed = true;
+          } catch (err) {
+            assert(err instanceof AssertionError);
+            assert(err.message.includes("is a BaseType"));
           }
           assert(!passed, "expected error not thrown");
 

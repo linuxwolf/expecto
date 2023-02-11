@@ -76,7 +76,7 @@ Some important notes:
 
 #### `deep` flag
 
-Modifies the succeeding assertion to perform a deep check instead of a strict or shallow check.
+Modifies the succeeding check to perform a deep check instead of a strict or shallow check.
 
 ```typescript
 expect({foo: "foo value"}).to.deep.equal({foo: "foo value"});
@@ -86,7 +86,7 @@ Multiple instances of `deep` before a check behave as if it were only one specif
 
 #### `not` flag
 
-Modifies the succeeding assertion to be negated.
+Modifies the succeeding check to be negated.
 
 ```typescript
 expect(() => { doStuff() }).to.not.throw();
@@ -122,7 +122,7 @@ expect(someObj).to.not.equal(anotherObj);
 expect(someObj).to.not.deep.equal({bar: "far value"});
 ```
 
-A custom message can be provided, which will be used if the assertion fails.
+A custom message can be provided, which will be used if the check fails.
 
 ```typescript
 expect(someObj).to.equal(anotherObj, "objects aren't the same");
@@ -143,7 +143,7 @@ A class derived from `Error` can be provided as the first argument, to check if 
 expect(() => throw new TypeError("bad type")).to.throw(TypeError);
 ```
 
-If the check succeeds, the returned `Expecto` switches `actual` to the error instance thrown, so further checks can be made.
+If the check succeeds, the returned `Expecto` has the thrown error instance as its `actual`, so that further checks can be made on the error.
 
 ```typescript
 expect(() => throw new Error("oops")).to.throw().with.property("message").which.equal("oops");
@@ -155,7 +155,7 @@ The check can have a custom message as the last argument, which is used if the c
 expect(() => throw new TypeError("oops")).to.throw(RangeError, "oops");
 ```
 
-If `not` is applied beforehand, the check is negated.
+If `not` is applied beforehand, the check is negated (and `actual` is unchanged).
 
 ```typescript
 expect(() => {}).to.not.throw();
@@ -170,7 +170,8 @@ expect(() => throw new TypeError("oops")).to.not.throw(RangeError); // NOT RECOM
 If `actual` is not a function, a `TypeError` is thrown instead of an `AssertionError`.  This occurs regardless if `not` is applied.
 
 ```typescript
-expect(42).to.throw();
+expect(42).to.throw();      // throws TypeError
+expect(42).to.not.throw();  // still throws TypeError
 ```
 
 ### `Typing` (**std**)
@@ -321,6 +322,129 @@ expect(new Date()).to.not.be.an.instanceOf(RegExp);
 ```
 
 ### `Membership` (**std**)
+
+#### `any` flag
+
+Modifies the succeeding check to only require one of the members to be present, on a membership check.
+
+```typescript
+expect(["foo", "bar"]).to.have.any.members(["foo", "baz", "flag"]);
+```
+
+This flag cancels the `all` flag.
+
+#### `all` flag
+
+Modifies the succeeding check to require all of the members to be present, on a membership check.
+
+```typescript
+expect(["foo", "bar"]).to.have.all.memebers(["foo", "bar"]);
+```
+
+Note that, for `members()`, this is its default behavior; it has no effect other than readability.
+
+This flag cancels the `any` flag.
+
+#### `members([ expected[] [, message ] ])` check
+
+Checks that `actual` is in possession of all of the given members.  The exact behavior depends on the type of `actual`:
+
+* **`Map<K, V>`**: checks that all of the given members are keys on `actual`
+
+    ```typescript
+    const someValue = new Map();
+    someValue.set("foo", "foo value");
+    someValue.set("bar", "bar value");
+
+    ....
+
+    expect(someValue).to.have.members(["foo", "bar"])
+    ```
+
+* **`Set<V>`**: checks that all of the given members are contained in Set `actual`
+
+    ```typescript
+    const someValue = new Set();
+    someValue.add("foo");
+    someValue.add("bar");
+
+    ....
+
+    expect(someValue).to.have.members(["foo", "bar"]);
+    ```
+
+* **`Array<V>`**: checks that all of the given members are elements in the array `actual`
+
+    ```typescript
+    const someValue = ["foo", "bar"];
+
+    ....
+
+    expect(someValue).to.have.members(["foo", "bar"]);
+    ```
+
+* **`Object`**: checks that all of the given members are properties on `actual`
+
+    ```typescript
+    const someValue = {
+        foo: "foo value",
+        bar: "bar balue",
+    }
+
+    ....
+
+    expect(someValue).to.have.members(["foo", "bar"]);
+    ```
+
+If `any` is applied beforehand, it checks that **any _one_** of the values is present.
+
+```typescript
+const someValue = ["foo", "bar"];
+
+....
+
+expect(someValue).to.have.any.members(["foo", "baz"]);  // SUCCEEDS
+expect(someValue).to.have.any.members(["baz", "flag"]); // FAILS
+```
+
+#### `own` flag
+
+Modifies the succeeding check to expect `actual` to own the property.
+
+```typescript
+expect({foo: "foo value"}).to.have.own.property("foo");
+```
+
+#### `property(name [, message ])` check
+
+Checks that `actual` is an object which has the given property.
+
+```typescript
+expect(someValue).to.have.property("foo");
+```
+
+If `own` is applied beforehand, the check only succeeds if `actual` has the property directly and not from its prototype chain.
+
+```typescript
+expect(someValue).to.have.own.property("foo");
+```
+
+If the check succeeds, the returned `Expecto` has the property's value as its `actual`, so that further checks can be made on the property.
+
+```typescript
+expect(someValue).to.have.property("foo").to.be.a.typeOf("string").which.equal("foo value")
+```
+A custom message can be provided, which will be used if the check fails.
+
+```typescript
+expect({foo: "foo value"}).to.have.property("bar", "no bar!!");
+```
+
+If `not` is applied beforehand, it negates the check (and `actual` is unchanged).
+
+```typescript
+expect({foo: "foo value"}).to.not.have.property("bar");
+```
 
 ### `Promised` (**std**)
 

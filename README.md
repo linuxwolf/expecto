@@ -100,7 +100,7 @@ expect(() => { throw new Error() }).to.not.not.throw(); // NOT RECOMMENDED!
 
 ### `Core` (**std**)
 
-#### `equal(e[, msg])` check
+#### `equal(expected [, message ])` check
 
 Compares that `actual` strictly equals (`===`) the given value.
 
@@ -129,7 +129,7 @@ expect(someObj).to.equal(anotherObj, "objects aren't the same");
 expect(someObj).to.not.equal(diffObj, "shouldn't match, but do");
 ```
 
-#### `throw([errorType[, msg]])` check
+#### `throw( [errorType [, message ] ])` check
 
 Checks that `actual` throws an error when invoked:
 
@@ -174,6 +174,151 @@ expect(42).to.throw();
 ```
 
 ### `Typing` (**std**)
+
+#### `exists` check
+
+Checks that `actual` exists: is not `null` nor `undefined`.
+
+```typescript
+expect(someValue).to.exist;
+```
+
+If `not` is applied beforehand, it negates the check.
+
+```typescript
+expect(null).to.not.exist;
+expect(undefined).to.not.exist;
+```
+
+#### `undefined` check
+
+Checks that `actual` is `undefined`.
+
+```typescript
+expect(someValue).to.be.undefined;
+```
+
+If `not` is applied beforehand, it negates the check.
+
+```typescript
+expect(42).to.not.be.undefined;
+expect(null).to.no.be.undefined;
+```
+
+#### `null` check
+
+Checks that `actual` is `null`.
+
+```typescript
+expect(someValue).to.be.null;
+```
+
+If `not` is applied beforehand, it negates the check.
+
+```typescript
+expect(42).to.not.be.null;
+expect(undefined).to.not.be.null;
+```
+
+#### `true` check
+
+Checks that `actual` is the boolean `true`.
+
+```typescript
+expect(someValue).to.be.true;
+```
+
+It is not enough to be truthy, only `true` will pass.
+
+```typescript
+expect(true).to.be.true;            // SUCCEEDS
+expect("some value").to.be.true;    // FAILS
+```
+
+If `not` is applied beforehand, it negates the check.
+
+```typescript
+expect(false).to.not.be.true;
+expect("some value").to.not.be.true;
+```
+#### `false` check
+
+Checks that `actual` is the boolean `false`.
+
+```typescript
+expect(someValue).to.be.false;
+```
+
+If it not enough to be falsy, only `false` will pass.
+
+```typescript
+expect(false).to.be.false;  // SUCCEEDS
+expect("").to.be.false;     // FAILS
+expect(null).to.be.false;   // FAILS
+```
+
+If `not` is applied beforeuand, it negates the check.
+
+```typescript
+expect(true).to.not.be.false;
+expect("").to.not.be.false;
+```
+
+#### `NaN` check
+
+Checks that `actual` is a number and is `NaN`.  This check is necessary since `NaN !== NaN` in Javascript/Typescript!
+
+```typescript
+expect(someNumber).is.NaN;  // SUCCEEDS if someNumber is NaN
+
+expect(NaN).to.equal(NaN);  // ALWAYS FAILS!
+```
+
+The check fails (throws `AssertionError`) if `actual` is not a number.
+
+```typescript
+expect("some string").is.NaN;   // FAILS with AssertionError
+```
+
+If `not` is applied beforehand, it negates the check.
+
+```typescript
+expect(42).is.not.NaN;
+```
+
+#### `typeOf(type)` check
+
+Checks that `actual` is of the given type, where `typing` is one of:
+
+* `bigint`
+* `boolean`
+* `number`
+* `object`
+* `string`
+
+```typescript
+expect(someValue).is.typeOf("string");
+```
+
+If `not` is applied beforehand, it negates the check.
+
+```typescript
+expect(42).to.not.be.a.typeOf("string");
+```
+
+#### `instanceOf(instancClass)` check
+
+Checks that `actual` is an instance of the given class.
+
+```typescript
+expect(someValue).is.an.instanceOf(SomeClass);
+```
+
+If `not` is applied beforehand, it negates the check.
+
+```typescript
+expect(new Date()).to.not.be.an.instanceOf(RegExp);
+```
 
 ### `Membership` (**std**)
 

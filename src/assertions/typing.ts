@@ -113,7 +113,10 @@ export default function typing<
       return this;
     }
 
-    instanceOf(instType: new (...args: unknown[]) => unknown, msg?: string): this {
+    instanceOf(
+      instType: new (...args: unknown[]) => unknown,
+      msg?: string,
+    ): this {
       const not = this.hasFlag(NOT);
 
       let result = this.actual instanceof instType;

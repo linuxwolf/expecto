@@ -419,6 +419,31 @@ expect(someValue).to.have.any.members(["foo", "baz"]);  // SUCCEEDS
 expect(someValue).to.have.any.members(["baz", "flag"]); // FAILS
 ```
 
+By default a strict comparison is used. If `deep` is applied beforehand, a deep equality comparison is used.
+
+```typescript
+const someValue = new Set([
+    { foo: "foo value" },
+    { bar: "bar value" },
+]);
+
+....
+
+expect(someValue).to.have.deep.members([
+    { foo: "foo value" },
+    { bar: "bar value" },
+]);
+```
+
+If `not` is applied beforehand, the check is negated.
+
+```typescript
+expect({
+    foo: "foo value",
+    bar: "bar value",
+}).to.not.have.members([ "car", "par" ]);
+```
+
 #### `own` flag
 
 Modifies the succeeding check to expect `actual` to own the property.

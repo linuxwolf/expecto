@@ -129,11 +129,11 @@ expect(someObj).to.equal(anotherObj, "objects aren't the same");
 expect(someObj).to.not.equal(diffObj, "shouldn't match, but do");
 ```
 
-#### `throw( [errorType [, message ] ])` check
+#### `throw([ errorType [, message ] ])` check
 
 Checks that `actual` throws an error when invoked:
 
-```
+```typescript
 expect(() => throw new Error("oops")).to.throw();
 ```
 

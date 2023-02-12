@@ -400,6 +400,197 @@ describe("assertions/membership", () => {
             assert(!passed, "expected error not thrown");
           });
         });
+        describe("deep", () => {
+          const actual = new Set([
+            {foo: "foo value"},
+            {bar: "bar value"},
+            {baz: "baz value"},
+          ]);
+
+          it("succeeds if all the members are present", () => {
+            const test = new ExpectoMembership(actual);
+            const result = test.deep.members([
+              {foo: "foo value"},
+              {bar: "bar value"},
+              {baz: "baz value"},
+            ]);
+            assert(result === test);
+          });
+          it("succeeds if a strict subset of members are present", () => {
+            const test = new ExpectoMembership(actual);
+            const result = test.deep.members([
+              {bar: "bar value"},
+              {baz: "baz value"},
+            ]);
+            assert(result === test);
+          });
+          it("succeeds if a loose subset of members are present", () => {
+            const test = new ExpectoMembership(actual);
+            const result = test.deep.members([
+              {foo: "foo value"},
+              {baz: "baz value"},
+            ]);
+            assert(result === test);
+          });
+          it("fails if some members are not present", () => {
+            const test = new ExpectoMembership(actual);
+            let passed = false;
+
+            try {
+              test.deep.members([
+                {bar: "bar value"},
+                {car: "car value"},
+              ]);
+              passed = true;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+            }
+            assert(!passed, "expected error not thrown");
+          });
+          it("fails if none are present", () => {
+            const test = new ExpectoMembership(actual);
+            let passed = false;
+
+            try {
+              test.deep.members([
+                {car: "car value"},
+                {par: "par value"},
+              ]);
+              passed = true;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+            }
+            assert(!passed, "expected error not thrown");
+          });
+          it("succeeds if negated none are present", () => {
+            const test = new ExpectoMembership(actual);
+            const result = test.not.deep.members([
+              {car: "car value"},
+              {par: "par value"},
+            ]);
+            assert(result === test);
+          });
+          it("succeeds if negated some are present", () => {
+            const test = new ExpectoMembership(actual);
+            const result = test.not.deep.members([
+              {bar: "bar value"},
+              {car: "car value"},
+            ]);
+            assert(result === test);
+          });
+          it("fails if negated subset are present", () => {
+            const test = new ExpectoMembership(actual);
+            let passed = false;
+
+            try {
+              test.not.deep.members([
+                {bar: "bar value"},
+                {baz: "baz value"},
+              ]);
+              passed = true;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+            }
+            assert(!passed, "expected error not thrown");
+          });
+          it("fails if negated all are present", () => {
+            const test = new ExpectoMembership(actual);
+            let passed = false;
+
+            try {
+              test.not.deep.members([
+                {foo: "foo value"},
+                {bar: "bar value"},
+                {baz: "baz value"},
+              ]);
+              passed = true;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+            }
+            assert(!passed, "expected error not thrown");
+          });
+        });
+        describe("deep & any", () => {
+          const actual = new Set([
+            {foo: "foo value"},
+            {bar: "bar value"},
+            {baz: "baz value"},
+          ]);
+
+          it("succeeds if all members are present", () => {
+            const test = new ExpectoMembership(actual);
+            const result = test.any.deep.members([
+              {foo: "foo value"},
+              {bar: "bar value"},
+              {baz: "baz value"},
+            ]);
+            assert(result === test);
+          });
+          it("succeeds if any members are present", () => {
+            const test = new ExpectoMembership(actual);
+            const result = test.any.deep.members([
+              {car: "car value"},
+              {bar: "bar value"},
+              {par: "par value"},
+            ]);
+            assert(result === test);
+          });
+          it("fails if none are present", () => {
+            const test = new ExpectoMembership(actual);
+            let passed = false;
+
+            try {
+              test.deep.any.members([
+                {car: "car value"},
+                {par: "par value"},
+              ]);
+              passed = true;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+            }
+            assert(!passed, "expected error not thrown");
+          });
+          it("succeeds if negated none are present", () => {
+            const test = new ExpectoMembership(actual);
+            const result = test.not.deep.any.members([
+              {car: "car value"},
+              {par: "par value"},
+            ]);
+            assert(result === test);
+          });
+          it("fails if negated any members are present", () => {
+            const test = new ExpectoMembership(actual);
+            let passed = false;
+
+            try {
+              test.not.any.deep.members([
+                {car: "car value"},
+                {bar: "bar value"},
+                {par: "par value"},
+              ]);
+              passed = true;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+            }
+            assert(!passed, "expected error not thrown");
+          });
+          it("fails if negated all members are present", () => {
+            const test = new ExpectoMembership(actual);
+            let passed = false;
+
+            try {
+              test.not.any.deep.members([
+                {foo: "foo value"},
+                {bar: "bar value"},
+                {baz: "baz value"},
+              ]);
+              passed = true;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+            }
+            assert(!passed, "expected error not thrown");
+          });
+        });
       });
 
       describe("arrays", () => {
@@ -536,6 +727,182 @@ describe("assertions/membership", () => {
 
             try {
               test.not.any.members(["not", 42]);
+              passed = true;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+            }
+            assert(!passed, "expected error not thrown");
+          });
+        });
+        describe("deep", () => {
+          const actual = [
+            {foo: "foo value"},
+            {bar: "bar value"},
+            {baz: "baz value"},
+          ];
+
+          it("succeeds if all are present", () => {
+            const test = new ExpectoMembership(actual);
+            const result = test.deep.members([
+            {foo: "foo value"},
+            {bar: "bar value"},
+            {baz: "baz value"},
+            ]);
+            assert(result === test);
+          });
+          it("succeeds if a strict subset are present", () => {
+            const test = new ExpectoMembership(actual);
+            const result = test.deep.members([
+            {bar: "bar value"},
+            {baz: "baz value"},
+            ]);
+            assert(result === test);
+          });
+          it("succeeds if a loose subset are present", () => {
+            const test = new ExpectoMembership(actual);
+            const result = test.deep.members([
+            {foo: "foo value"},
+            {baz: "baz value"},
+            ]);
+            assert(result === test);
+          });
+          it("fails if some are not present", () => {
+            const test = new ExpectoMembership(actual);
+            let passed = false;
+
+            try {
+              test.deep.members([
+                {foo: "foo value"},
+                {flag: "flag value"},
+              ]);
+              passed = true;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+            }
+            assert(!passed, "expected error not thrown");
+          });
+          it("fails if none are present", () => {
+            const test = new ExpectoMembership(actual);
+            let passed = false;
+
+            try {
+              test.deep.members([
+                {flag: "flag value"},
+                {blarg: "blarg value"},
+              ]);
+              passed = true;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+            }
+            assert(!passed, "expected error not thrown");
+          });
+          it("succeeds if negated some are present", () => {
+            const test = new ExpectoMembership(actual);
+            const result = test.not.deep.members([
+              {foo: "foo value"},
+              {flag: "flag value"},
+            ]);
+            assert(result === test);
+          });
+          it("succeeds if negated none are present", () => {
+            const test = new ExpectoMembership(actual);
+            const result = test.not.deep.members([
+              {flag: "flag value"},
+              {blarg: "blarg value"},
+            ]);
+            assert(result === test);
+          });
+          it("fails if negated all are present", () => {
+            const test = new ExpectoMembership(actual);
+            let passed = false;
+
+            try {
+              test.not.deep.members([
+                {foo: "foo value"},
+                {bar: "bar value"},
+                {baz: "baz value"},
+              ]);
+              passed = true;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+            }
+            assert(!passed, "expected error not thrown");
+          });
+        });
+        describe("deep & any", () => {
+          const actual = [
+            {foo: "foo value"},
+            {bar: "bar value"},
+            {baz: "baz value"},
+          ];
+
+          it("succeeds if all members are present", () => {
+            const test = new ExpectoMembership(actual);
+            const result = test.any.deep.members([
+              {foo: "foo value"},
+              {bar: "bar value"},
+              {baz: "baz value"},
+            ]);
+            assert(result === test);
+          });
+          it("succeeds if any members are present", () => {
+            const test = new ExpectoMembership(actual);
+            const result = test.any.deep.members([
+              {foo: "foo value"},
+              {blarg: "blarg value"},
+              {flag: "flag value"},
+            ]);
+            assert(result === test);
+          });
+          it("fails if none are present", () => {
+            const test = new ExpectoMembership(actual);
+            let passed = false;
+
+            try {
+              test.deep.members([
+                {flag: "flag value"},
+                {blarg: "blarg value"},
+              ]);
+              passed = true;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+            }
+            assert(!passed, "expected error not thrown");
+          });
+          it("succeeds if negated none are present", () => {
+            const test = new ExpectoMembership(actual);
+            const result = test.not.deep.members([
+              {flag: "flag value"},
+              {blarg: "blarg value"},
+            ]);
+            assert(result === test);
+          });
+          it("fails if negated any members are present", () => {
+            const test = new ExpectoMembership(actual);
+            let passed = false;
+
+            try {
+              test.not.any.deep.members([
+                {foo: "foo value"},
+                {blarg: "blarg value"},
+                {flag: "flag value"},
+              ]);
+              passed = true;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+            }
+            assert(!passed, "expected error not thrown");
+          });
+          it("fails if negated all members are present", () => {
+            const test = new ExpectoMembership(actual);
+            let passed = false;
+
+            try {
+              test.not.any.deep.members([
+                {foo: "foo value"},
+                {bar: "bar value"},
+                {baz: "baz value"},
+              ]);
               passed = true;
             } catch (err) {
               assert(err instanceof AssertionError);

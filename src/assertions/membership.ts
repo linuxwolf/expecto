@@ -20,9 +20,7 @@ export const ANY = "any";
 export const ALL = "all";
 
 function filterFor(expected: unknown, deep: boolean): (v: unknown) => boolean {
-  return (deep) ?
-        (v) => equal(v, expected) :
-        (v) => (v === expected);
+  return (deep) ? (v) => equal(v, expected) : (v) => (v === expected);
 }
 
 export default function membership<

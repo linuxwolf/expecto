@@ -4,8 +4,10 @@
  * @copyright 2023 Matthew A. Miller
  */
 
+import { equal } from "../../deps/src/asserts.ts";
+
 import { ExpectoConstructor } from "../base.ts";
-import { NOT } from "../flags.ts";
+import { DEEP, NOT } from "../flags.ts";
 import { MixinConstructor } from "../mixin.ts";
 import { findPropertyDescriptor } from "../util/props.ts";
 
@@ -16,6 +18,10 @@ function isObject(check: unknown): boolean {
 export const OWN = "own";
 export const ANY = "any";
 export const ALL = "all";
+
+function filterFor(expected: unknown, deep: boolean): (v: unknown) => boolean {
+  return (deep) ? (v) => equal(v, expected) : (v) => (v === expected);
+}
 
 export default function membership<
   TargetType,
@@ -46,6 +52,7 @@ export default function membership<
     }
 
     members(check: unknown[], msg?: string): this {
+      const deep = this.hasFlag(DEEP);
       const not = this.hasFlag(NOT);
       const any = this.hasFlag(ANY);
 
@@ -59,13 +66,15 @@ export default function membership<
       } else if (this.actual instanceof Set) {
         const set = this.actual as Set<unknown>;
         for (const e of check) {
-          const present = set.has(e);
+          const f = filterFor(e, deep);
+          const present = [...set].filter(f).length > 0;
           result = (any) ? result || present : result && present;
         }
       } else if (Array.isArray(this.actual)) {
         const arr = this.actual as Array<unknown>;
         for (const e of check) {
-          const present = arr.includes(e);
+          const f = filterFor(e, deep);
+          const present = arr.filter(f).length > 0;
           result = (any) ? result || present : result && present;
         }
       } else if (isObject(this.actual)) {

@@ -149,7 +149,7 @@ If the check succeeds, the returned `Expecto` has the thrown error instance as i
 expect(() => throw new Error("oops")).to.throw().with.property("message").which.equal("oops");
 ```
 
-The check can have a custom message as the last argument, which is used if the check fails.
+A custom message as the last argument, which is used if the check fails.
 
 ```typescript
 expect(() => throw new TypeError("oops")).to.throw(RangeError, "oops");
@@ -287,7 +287,7 @@ If `not` is applied beforehand, it negates the check.
 expect(42).is.not.NaN;
 ```
 
-#### `typeOf(type)` check
+#### `typeOf(type [, msg ])` check
 
 Checks that `actual` is of the given type, where `typing` is one of:
 
@@ -298,7 +298,13 @@ Checks that `actual` is of the given type, where `typing` is one of:
 * `string`
 
 ```typescript
-expect(someValue).is.typeOf("string");
+expect(someValue).is.a.typeOf("string");
+```
+
+A custom message can be provided, which is used if the check fails.
+
+```typescript
+expect(42).is.a.typeOf("string", "not a string!");
 ```
 
 If `not` is applied beforehand, it negates the check.
@@ -307,12 +313,18 @@ If `not` is applied beforehand, it negates the check.
 expect(42).to.not.be.a.typeOf("string");
 ```
 
-#### `instanceOf(instancClass)` check
+#### `instanceOf(instancClass [, msg ])` check
 
 Checks that `actual` is an instance of the given class.
 
 ```typescript
 expect(someValue).is.an.instanceOf(SomeClass);
+```
+
+A custom message can be provided, which will be used if the check fails.
+
+```typescript
+expect(new Date()).is.an.instanceOf(RegExp, "not a Regexp!");
 ```
 
 If `not` is applied beforehand, it negates the check.

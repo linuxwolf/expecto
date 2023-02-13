@@ -149,7 +149,7 @@ If the check succeeds, the returned `Expecto` has the thrown error instance as i
 expect(() => throw new Error("oops")).to.throw().with.property("message").which.equal("oops");
 ```
 
-A custom message as the last argument, which is used if the check fails.
+A custom message can be provided as the last argument, which is used if the check fails.
 
 ```typescript
 expect(() => throw new TypeError("oops")).to.throw(RangeError, "oops");
@@ -484,6 +484,80 @@ expect({foo: "foo value"}).to.not.have.property("bar");
 ```
 
 ### `Promised` (**std**)
+
+#### `eventually` modifier
+
+Treats `actual` as a promise (or a function that returns a promise) and defers all modifiers and checks until that promise is fulfilled.
+
+The returned `Expecto` is essentially a thenable Proxy; all the predicates, flags, and checks applied after `eventually` are resolved when the `Execpto` is resolved (e.g., by `await`ing).
+
+```typescript
+await expect(somePromise).to.eventually.be.a.typeOf("string").which.equal("fulfilled!");
+```
+
+The ordering of the chain is maintained, just deferred.
+
+#### `rejected` check
+
+Checks that `actual` is a promise that is rejected, asynchronously.  Like `.eventually`, the `Expecto` returned by this check is a thenable Proxy.  The check will actually be performed once the promise is fulfilled (e.g., by `await`ing).
+
+```typescript
+await expect(somePromsie).to.be.rejected;
+```
+
+If the check succeeds, the returned `Expecto` has the rejection reason as its `actual`, so that further checks can be made on the error.
+
+```typescript
+const somePromise = Promise.reject(new Error("oops!"));
+
+....
+
+await expect(somePromise).to.be.rejected.with.property("message").to.equal("oops!");
+```
+
+If `not` is applied beforehand, it negates the check; `actual` is changed the resolved value.
+
+```typescript
+const somePromise = Promise.resolve("some string");
+
+....
+
+await expect(somePromise).to.not.be.rejected.and.is.typeOf("string");
+```
+
+#### `rejectedWith([ errorType [, msg ] ])` check
+
+Checks that `actual` is a promise that is rejected, asynchronously.  Like `.eventually`, the `Expecto` returned by this check is a thenable Proxy.  The check will actually be performed ocne the promise is fulfilled (e.g., by `await`ing).
+
+```typescript
+await expect(somePromise).to.be.rejectedWith();
+```
+
+If the check succeeds, the returned `Expecto` has the rejection reason as its `actual`, so that further checks can be made on the error.
+
+```typescript
+await expect(somePromise).to.be.rejectedWith().with.property("message").to.equal("oops");
+```
+
+A class can be provided as the first argument, to check if the thrown errorr is an instance of that class.
+
+```typescript
+await expect(() => Promise.reject(new TypeError("wrong type"))).to.be.rejectedWith(TypeError);
+```
+
+A custom message can be provided as the last argument, which is used if the check fails.
+
+```typescript
+await expect(() => Promise.reject(new RangeError("out of bounds"))).to.be.rejectedWith(TypeError, "not a type error!");
+```
+
+If `not` is applied beforehand, it negates the check.
+
+```typescript
+await expect(Promise.resolve("some string")).to.not.be.rejectedWith();
+```
+
+**Note** this means the check succeeds if the promise successfully resolved _**or**_ was rejected with a different error!
 
 ### `Mocked` (**mock**)
 

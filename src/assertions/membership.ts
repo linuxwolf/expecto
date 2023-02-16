@@ -124,7 +124,7 @@ export default function membership<
 
       if (!not) {
         const prop = this.actual[name];
-        return this.derived(prop);
+        return this.create(prop);
       }
 
       return this;

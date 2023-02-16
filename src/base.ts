@@ -144,10 +144,10 @@ export class ExpectoBase<T> {
    * @param actual The new actual value
    * @returns a new Expecto of the same type as this Expecto
    */
-  protected derived<ResultType>(actual: ResultType): this {
+  protected create<ResultType>(actual: ResultType): this {
     const ctor = Object.getPrototypeOf(this).constructor;
     const result = new ctor(actual);
-    result.applyFlags(this);
+    result.#flags.apply(this.#flags);
 
     return result;
   }
@@ -174,15 +174,6 @@ export class ExpectoBase<T> {
    */
   protected hasFlag(name: string): boolean {
     return hasFlag(this.#flags, name);
-  }
-
-  /**
-   * Applies the flags from another Expecto onto this one.
-   *
-   * @param other The other Expecto to apply flags from
-   */
-  protected applyFlags(other: ExpectoBase<T>) {
-    this.#flags.apply(other.#flags);
   }
 
   /**

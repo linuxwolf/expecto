@@ -39,7 +39,7 @@ type ThenFunction<ResolveType = any, RejectType = never> = (
 
 const NONCHAIN_MEMBERS = [
   "actual",
-  "derived",
+  "create",
   "flags",
   "hasFlag",
   "setFlag",
@@ -161,7 +161,7 @@ export default function promised<
     }
 
     #proxify(startWith?: OpFunction): this & PromiseLike<this> {
-      const resolved = this.derived(this.actual);
+      const resolved = this.create(this.actual);
       const handler = resolved.#handler = new ExpectoProxyHandler(resolved);
       if (startWith) {
         handler.push(startWith);
@@ -174,7 +174,7 @@ export default function promised<
     get eventually(): typeof this & PromiseLike<typeof this> {
       const op: OpFunction = async (current) => {
         const result = await promisify(current.actual);
-        return current.derived(result);
+        return current.create(result);
       };
       const proxy = this.#proxify(op);
 
@@ -219,11 +219,11 @@ export default function promised<
         current.assert(caught, msg);
 
         if (failure) {
-          return current.derived(failure);
+          return current.create(failure);
         }
 
         if (result !== undefined) {
-          return current.derived(result);
+          return current.create(result);
         }
 
         return current;

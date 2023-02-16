@@ -4,8 +4,9 @@
  * @copyright 2023 Matthew A. Miller
  */
 
-import { ExpectoBase } from "../src/base.ts";
+import { ExpectoBase, ExpectoConstructor } from "../src/base.ts";
 import { MixinConstructor } from "../src/mixin.ts";
+import { DEEP, NOT } from "../src/flags.ts";
 
-export { ExpectoBase };
-export type { MixinConstructor };
+export { DEEP, ExpectoBase, NOT };
+export type { ExpectoConstructor, MixinConstructor };

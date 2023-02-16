@@ -645,7 +645,7 @@ Get started by importing `mod/mixin.ts` module to access the symbols and utiliti
 To add a custom mixin to Expecto, implement a factory function that takes the current Expecto-derived class and returns a new Expecto-derived class.
 
 ```typescript
-import type { NOT, ExpectoConstructor, MixinConstructor } from "https://deno.land/x/expecto/mod/mixin.ts";
+import type { CheckDetails, ExpectoConstructor, MixinConstructor } from "https://deno.land/x/expecto/mod/mixin.ts";
 
 import { meetsExpectations } from "./custom.ts";
 
@@ -660,7 +660,7 @@ export function customMixin<TargetType, BaseType extends ExpectoConstructor<Targ
             this.check(result, {
                 positiveOp: "does not meet expectations",
                 negativeOp: "meets expectations",
-            })
+            } as CheckDetails)
             return this;
         }
     }

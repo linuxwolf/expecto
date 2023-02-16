@@ -10,7 +10,7 @@ import { DEEP, Flags, hasFlag, NOT } from "./flags.ts";
 /**
  * The details for reporting a failed test in `.check()`.
  */
-interface CheckDetails {
+export interface CheckDetails {
   /** The complete message to use in the error. */
   message?: string;
   /** The expected value, if any. */

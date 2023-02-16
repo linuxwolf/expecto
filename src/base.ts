@@ -7,10 +7,17 @@
 import { assert } from "../deps/src/asserts.ts";
 import { DEEP, Flags, hasFlag, NOT } from "./flags.ts";
 
+/**
+ * The details for reporting a failed test in `.check()`.
+ */
 interface CheckDetails {
+  /** The complete message to use in the error. */
   message?: string;
+  /** The expected value, if any. */
   expected?: unknown;
+  /** The operation if a default (non-negated) test fails. */
   positiveOp: string;
+  /** The operation if a negated test fails. */
   negativeOp: string;
 }
 

@@ -15,6 +15,41 @@ Deno.test(() => {
 
 ```
 
+- [INSTALLING](#installing)
+- [USAGE](#usage)
+  - [Predicates and Prepositions](#predicates-and-prepositions)
+  - [Flags](#flags)
+    - [`deep` flag](#deep-flag)
+    - [`not` flag](#not-flag)
+  - [`Core` (**std**)](#core-std)
+    - [`equal(expected [, message ])` check](#equalexpected--message--check)
+    - [`throw([ errorType [, message ] ])` check](#throw-errortype--message---check)
+  - [`Typing` (**std**)](#typing-std)
+    - [`exists` check](#exists-check)
+    - [`undefined` check](#undefined-check)
+    - [`null` check](#null-check)
+    - [`true` check](#true-check)
+    - [`false` check](#false-check)
+    - [`NaN` check](#nan-check)
+    - [`typeOf(type [, msg ])` check](#typeoftype--msg--check)
+    - [`instanceOf(instancClass [, msg ])` check](#instanceofinstancclass--msg--check)
+  - [`Membership` (**std**)](#membership-std)
+    - [`any` flag](#any-flag)
+    - [`all` flag](#all-flag)
+    - [`members([ expected[] [, message ] ])` check](#members-expected--message---check)
+    - [`own` flag](#own-flag)
+    - [`property(name [, message ])` check](#propertyname--message--check)
+  - [`Promised` (**std**)](#promised-std)
+    - [`eventually` modifier](#eventually-modifier)
+    - [`rejected` check](#rejected-check)
+    - [`rejectedWith([ errorType [, msg ] ])` check](#rejectedwith-errortype--msg---check)
+  - [`Mocked` (**mock**)](#mocked-mock)
+    - [`called([ count [, msg ] ])` check](#called-count--msg---check)
+    - [`calledWith(args [, msg ])` check](#calledwithargs--msg--check)
+- [EXTENDING](#extending)
+  - [Performing Checks](#performing-checks)
+  - [Helpers](#helpers)
+
 ## INSTALLING
 
 Install like most Deno dependencies, by importing the module(s).

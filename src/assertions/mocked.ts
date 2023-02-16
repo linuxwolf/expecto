@@ -8,8 +8,23 @@ import { equal } from "../../deps/src/asserts.ts";
 import { type Spy } from "../../deps/src/mock.ts";
 
 import { ExpectoConstructor } from "../base.ts";
-import { NOT } from "../flags.ts";
+import { DEEP, NOT } from "../flags.ts";
 import { MixinConstructor } from "../mixin.ts";
+
+function createArgReducer(
+  actual: unknown[],
+  deep: boolean,
+): (acc: boolean, value: unknown, idx: number) => boolean {
+  if (deep) {
+    return (acc, value, idx) => {
+      return acc && equal(value, actual[idx]);
+    };
+  }
+
+  return (acc, value, idx) => {
+    return acc && (value === actual[idx]);
+  };
+}
 
 // deno-lint-ignore no-explicit-any
 function asSpy(actual: any): Spy {
@@ -58,12 +73,16 @@ export default function mocked<
 
     calledWith<Args extends unknown[]>(args: Args, msg?: string): this {
       const spy = asSpy(this.actual);
+      const deep = this.hasFlag(DEEP);
       const not = this.hasFlag(NOT);
       const calls = spy.calls;
 
       let result = false;
       for (const c of calls) {
-        result = result || equal(c.args, args);
+        const reducer = createArgReducer(c.args, deep);
+        let check = c.args.length === args.length;
+        check = args.reduce(reducer, check);
+        result = result || check;
       }
 
       if (not) result = !result;

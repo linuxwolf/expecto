@@ -185,15 +185,18 @@ describe("assertions/mocked", () => {
     });
 
     describe(".calledWith()", () => {
+      const argsArray = ["foo", "bar"];
+      const argsObject = {
+        foo: "foo value",
+        bar: "bar value",
+      };
+
       beforeEach(() => {
         spied();
         spied(42);
         spied("foo", "bar");
-        spied(["foo", "bar"]);
-        spied({
-          foo: "foo value",
-          bar: "bar value",
-        });
+        spied(argsArray);
+        spied(argsObject);
       });
 
       it("throws if actual is not a Spy", () => {
@@ -227,15 +230,12 @@ describe("assertions/mocked", () => {
         });
         it("passes if called with an array", () => {
           const test = new ExpectoMocked(spied);
-          const result = test.calledWith([["foo", "bar"]]);
+          const result = test.calledWith([argsArray]);
           assert(result === test);
         });
         it("passes if called with an object", () => {
           const test = new ExpectoMocked(spied);
-          const result = test.calledWith([{
-            foo: "foo value",
-            bar: "bar value",
-          }]);
+          const result = test.calledWith([argsObject]);
           assert(result === test);
         });
         it("fails if not called with the expected arguments", () => {
@@ -262,6 +262,52 @@ describe("assertions/mocked", () => {
             assert(err.message.includes("not called correctly"));
           }
           assert(caught, "expected error not thrown");
+        });
+      });
+
+      describe("deep", () => {
+        it("it fails on a shallow-checked array", () => {
+          const test = new ExpectoMocked(spied);
+          let caught = true;
+
+          try {
+            test.calledWith([
+              [...argsArray],
+            ]);
+            caught = false;
+          } catch (err) {
+            assert(err instanceof AssertionError);
+          }
+          assert(caught, "expected error not thrown");
+        });
+        it("succeeds on a deep-checked array", () => {
+          const test = new ExpectoMocked(spied);
+          const result = test.deep.calledWith([
+            [...argsArray],
+          ]);
+          assert(result === test);
+        });
+
+        it("it fails on a shallow-checked object", () => {
+          const test = new ExpectoMocked(spied);
+          let caught = true;
+
+          try {
+            test.calledWith([
+              { ...argsObject },
+            ]);
+            caught = false;
+          } catch (err) {
+            assert(err instanceof AssertionError);
+          }
+          assert(caught, "expected error not thrown");
+        });
+        it("passes on a deep-checked object", () => {
+          const test = new ExpectoMocked(spied);
+          const result = test.deep.calledWith([
+            { ...argsObject },
+          ]);
+          assert(result === test);
         });
       });
 

@@ -637,3 +637,39 @@ expect("some string").to.have.not.been.calledWith([]);  // still throws TypeErro
 ```
 
 ## EXTENDING
+
+Expecto can be extended with additional checks and/or flags using the mixin pattern.
+
+Get started by importing `mod/mixin.ts` module to access the symbols and utilities for developing your own mixins.
+
+To add a custom mixin to Expecto, implement a factory function that takes the current Expecto-derived class and returns a new Expecto-derived class.
+
+```typescript
+import type { NOT, ExpectoConstructor, MixinConstructor } from "https://deno.land/x/expecto/mod/mixin.ts";
+
+import { meetsExpectations } from "./custom.ts";
+
+export function customMixin<TargetType, BaseType extends ExpectoConstructor<TargetType>>(Base: BaseType) {
+    const Mixin = class CustomMixin<T extends TargetType> extends (Base as any) {
+        constructor(...args: any[]) {
+            super(...args);
+        }
+
+        cusomCheck(): this {
+            let result = meetsExpectations(this.actual);
+            if (this.hasFlag(NOT)) result = !result;
+            this.assert(result, not ? "does not meet expectations" : "meets expectations");
+            return this;
+        }
+    }
+}
+
+The following protected members are available to mixins to aid in checks:
+
+* `.assert(result: boolean, msg: string)` — The basic assertion; if `result` is `true` the check passes, otherwise an `AssertionError` is thrown with `msg` as the message.
+* `.flags(): string[]` — Retrieves a snapshot of currently-set flags on this Expecto.  A flag is set if its name is in the returned array.
+* `.hasFlag(flag: string): boolean` — Returns `true` if the given flag is set.
+* `.setFlag(flag: string)` — Sets the given flag, including it in the values returned by `flags()`.
+* `.unsetFlag(flag: string)`— Removes the given flag, excluding it in the values returned by `flags()`.
+* `.toggleFlag(flag: string): boolean` — Toggles the given flag; sets it if it was not before, or unsets it if it was; retursn the current state (`true` for set, `false` otherwise).
+* `.create<T>(actual: T): this` — Creates a new Expecto of the same type as this Expecto, using `actual` as the target value and with all the flags currently set on this Expecto.

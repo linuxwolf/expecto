@@ -5,7 +5,6 @@
  */
 
 import { ExpectoConstructor } from "../base.ts";
-import { NOT } from "../flags.ts";
 import { MixinConstructor } from "../mixin.ts";
 
 export default function typing<
@@ -20,113 +19,90 @@ export default function typing<
     }
 
     get exists(): this {
-      const not = this.hasFlag(NOT);
-
-      let result = (this.actual !== null) && (this.actual !== undefined);
-      if (not) result = !result;
-
-      const oper = not ? "does exist" : "does not exist";
-      const msg = `${Deno.inspect(this.actual)} ${oper}`;
-      this.assert(result, msg);
+      const result = (this.actual !== null) && (this.actual !== undefined);
+      this.check(result, {
+        positiveOp: "does not exist",
+        negativeOp: "does exist",
+      });
 
       return this;
     }
 
     get undefined(): this {
-      const not = this.hasFlag(NOT);
-
-      let result = this.actual === undefined;
-      if (not) result = !result;
-
-      const oper = not ? "is undefined" : "is defined";
-      const msg = `${Deno.inspect(this.actual)} ${oper}`;
-      this.assert(result, msg);
+      const result = this.actual === undefined;
+      this.check(result, {
+        positiveOp: "is undefined",
+        negativeOp: "is defined",
+      });
 
       return this;
     }
 
     get null(): this {
-      const not = this.hasFlag(NOT);
-
-      let result = this.actual === null;
-      if (not) result = !result;
-
-      const oper = not ? "is null" : "is not null";
-      const msg = `${Deno.inspect(this.actual)} ${oper}`;
-      this.assert(result, msg);
+      const result = this.actual === null;
+      this.check(result, {
+        positiveOp: "is not null",
+        negativeOp: "is null",
+      });
 
       return this;
     }
 
     get true(): this {
-      const not = this.hasFlag(NOT);
-
-      let result = (typeof this.actual === "boolean") && (this.actual === true);
-      if (not) result = !result;
-
-      const oper = not ? " is true" : "is not true";
-      const msg = `${Deno.inspect(this.actual)} ${oper}`;
-      this.assert(result, msg);
+      const result = (typeof this.actual === "boolean") &&
+        (this.actual === true);
+      this.check(result, {
+        positiveOp: "is not true",
+        negativeOp: "is true",
+      });
 
       return this;
     }
 
     get false(): this {
-      const not = this.hasFlag(NOT);
-
-      let result = (typeof this.actual === "boolean") &&
+      const result = (typeof this.actual === "boolean") &&
         (this.actual === false);
-      if (not) result = !result;
-
-      const oper = not ? "is false" : "is not false";
-      const msg = `${Deno.inspect(this.actual)} ${oper}`;
-      this.assert(result, msg);
+      this.check(result, {
+        positiveOp: "is not false",
+        negativeOp: "is false",
+      });
 
       return this;
     }
 
     get NaN(): this {
-      const not = this.hasFlag(NOT);
-
-      let result = (typeof this.actual === "number") && isNaN(this.actual);
-      if (not) result = !result;
-
-      const oper = not ? "is NaN" : "is not NaN";
-      const msg = `${Deno.inspect(this.actual)} ${oper}`;
-      this.assert(result, msg);
+      const result = (typeof this.actual === "number") && isNaN(this.actual);
+      this.check(result, {
+        positiveOp: "is not NaN",
+        negativeOp: "is NaN",
+      });
 
       return this;
     }
 
-    typeOf(typing: string, msg?: string): this {
-      const not = this.hasFlag(NOT);
-
-      let result = (typeof this.actual) === typing;
-      if (not) result = !result;
-
-      if (!msg) {
-        const oper = not ? "is type of" : "is not type of";
-        msg = `${Deno.inspect(this.actual)} ${oper} ${typing}`;
-      }
-      this.assert(result, msg);
+    typeOf(expected: string, msg?: string): this {
+      const result = (typeof this.actual) === expected;
+      this.check(result, {
+        expected,
+        positiveOp: "is not a type of",
+        negativeOp: "is a type of",
+        message: msg,
+      });
 
       return this;
     }
 
     instanceOf(
-      instType: new (...args: unknown[]) => unknown,
+      expected: new (...args: unknown[]) => unknown,
       msg?: string,
     ): this {
-      const not = this.hasFlag(NOT);
-
-      let result = this.actual instanceof instType;
-      if (not) result = !result;
-
-      if (!msg) {
-        const oper = not ? "is instance of" : "is not instance of";
-        msg = `${Deno.inspect(this.actual)} ${oper} ${instType.name}`;
-      }
-      this.assert(result, msg);
+      const result = this.actual instanceof expected;
+      this.check(result, {
+        expected,
+        positiveOp: "is not an instance of",
+        negativeOp: "is an instance of",
+        message: msg,
+      });
 
       return this;
     }

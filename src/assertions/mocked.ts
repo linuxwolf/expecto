@@ -8,7 +8,7 @@ import { equal } from "../../deps/src/asserts.ts";
 import { type Spy } from "../../deps/src/mock.ts";
 
 import { ExpectoConstructor } from "../base.ts";
-import { DEEP, NOT } from "../flags.ts";
+import { DEEP } from "../flags.ts";
 import { MixinConstructor } from "../mixin.ts";
 
 function createArgReducer(
@@ -51,46 +51,44 @@ export default function mocked<
 
     called(count?: number, msg?: string): this {
       const spy = asSpy(this.actual);
-      const not = this.hasFlag(NOT);
       const callCounts = spy.calls.length;
 
-      let result = (count !== undefined)
+      const result = (count !== undefined)
         ? callCounts === count
         : callCounts > 0;
 
-      if (not) result = !result;
-      if (!msg) {
-        let oper = (not) ? "has been called" : "has not been called";
-        if (count !== undefined) {
-          oper += `${count} times`;
-        }
-        msg = `${Deno.inspect(spy)} ${oper}`;
-      }
-      this.assert(result, msg);
+      this.check(result, {
+        positiveOp: (count !== undefined)
+          ? `has not been called ${count} times`
+          : "has not been called",
+        negativeOp: (count !== undefined)
+          ? `has been called ${count} times`
+          : "has been called",
+        message: msg,
+      });
 
       return this;
     }
 
-    calledWith<Args extends unknown[]>(args: Args, msg?: string): this {
+    calledWith<Args extends unknown[]>(expected: Args, msg?: string): this {
       const spy = asSpy(this.actual);
       const deep = this.hasFlag(DEEP);
-      const not = this.hasFlag(NOT);
       const calls = spy.calls;
 
       let result = false;
       for (const c of calls) {
         const reducer = createArgReducer(c.args, deep);
-        let check = c.args.length === args.length;
-        check = args.reduce(reducer, check);
+        let check = c.args.length === expected.length;
+        check = expected.reduce(reducer, check);
         result = result || check;
       }
 
-      if (not) result = !result;
-      if (!msg) {
-        const oper = not ? "called with" : "not called with";
-        msg = `${Deno.inspect(spy)} ${oper} ${Deno.inspect(args)}`;
-      }
-      this.assert(result, msg);
+      this.check(result, {
+        expected,
+        positiveOp: "was not called with",
+        negativeOp: "was called with",
+        message: msg,
+      });
 
       return this;
     }

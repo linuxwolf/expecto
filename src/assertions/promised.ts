@@ -5,7 +5,6 @@
  */
 
 import { ExpectoBase, ExpectoConstructor } from "../base.ts";
-import { NOT } from "../flags.ts";
 import { MixinConstructor } from "../mixin.ts";
 import { findPropertyDescriptor } from "../util/props.ts";
 import { promisify } from "../util/promising.ts";
@@ -44,7 +43,6 @@ const NONCHAIN_MEMBERS = [
   "hasFlag",
   "setFlag",
   "unsetFlag",
-  "appllyFlags",
 ];
 
 class ExpectoProxyHandler {
@@ -190,7 +188,6 @@ export default function promised<
       msg?: string,
     ): this & PromiseLike<this> {
       const op: OpFunction = async (current) => {
-        const not = current.hasFlag(NOT);
         let caught = false;
         let failure: E | undefined = undefined;
         let result;
@@ -208,15 +205,15 @@ export default function promised<
           }
         }
 
-        if (not) caught = !caught;
-        if (!msg) {
-          const oper = not ? "was rejected" : "was not rejected";
-          msg = `${Deno.inspect(this.actual)} ${oper}`;
-          if (errType) {
-            msg += " with " + errType.name;
-          }
-        }
-        current.assert(caught, msg);
+        this.check(caught, {
+          positiveOp: (errType !== undefined)
+            ? `was not rejected with ${Deno.inspect(errType)}`
+            : "was not rejected",
+          negativeOp: (errType !== undefined)
+            ? `was rejected with ${Deno.inspect(errType)}`
+            : "was rejected",
+          message: msg,
+        });
 
         if (failure) {
           return current.create(failure);

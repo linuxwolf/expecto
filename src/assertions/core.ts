@@ -8,7 +8,7 @@
 
 import { equal } from "../../deps/src/asserts.ts";
 import { ExpectoConstructor } from "../base.ts";
-import { DEEP, NOT } from "../flags.ts";
+import { DEEP } from "../flags.ts";
 import { MixinConstructor } from "../mixin.ts";
 
 export default function core<
@@ -22,22 +22,17 @@ export default function core<
 
     equal(expected: T, msg?: string): this {
       const deep = this.hasFlag(DEEP);
-      const not = this.hasFlag(NOT);
 
-      let result = deep
+      const result = deep
         ? equal(this.actual, expected)
         : this.actual === expected;
-      result = not ? !result : result;
 
-      if (!msg) {
-        const verb = not ? "is" : "is not";
-        const oper = deep ? "deeply equal" : "strictly equal";
-
-        msg = `${Deno.inspect(this.actual)} ${verb} ${oper} to ${
-          Deno.inspect(expected)
-        }`;
-      }
-      this.assert(result, msg);
+      this.check(result, {
+        expected,
+        positiveOp: deep ? "is not deeply equal" : "is not strictly equal",
+        negativeOp: deep ? "is deeply equal" : "is not deeply equal",
+        message: msg,
+      });
 
       return this;
     }
@@ -46,7 +41,6 @@ export default function core<
       errType?: new (...args: unknown[]) => E,
       msg?: string,
     ): this {
-      const not = this.hasFlag(NOT);
       if (typeof this.actual !== "function") {
         throw new TypeError(`${Deno.inspect(this.actual)} not a function`);
       }
@@ -65,17 +59,12 @@ export default function core<
         }
       }
 
-      if (not) {
-        caught = !caught;
-      }
-      if (!msg) {
-        const oper = not ? "did throw" : "did not throw";
-        msg = `${Deno.inspect(this.actual)} ${oper}`;
-        if (errType) {
-          msg += ` ${errType.name}`;
-        }
-      }
-      this.assert(caught, msg);
+      this.check(caught, {
+        ...(errType && { expected: errType }),
+        positiveOp: "did not throw",
+        negativeOp: "did thrown",
+        message: msg,
+      });
 
       if (!failure) {
         return this;

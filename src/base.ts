@@ -8,6 +8,20 @@ import { assert } from "../deps/src/asserts.ts";
 import { DEEP, Flags, hasFlag, NOT } from "./flags.ts";
 
 /**
+ * The details for reporting a failed test in `.check()`.
+ */
+export interface CheckDetails {
+  /** The complete message to use in the error. */
+  message?: string;
+  /** The expected value, if any. */
+  expected?: unknown;
+  /** The operation if a default (non-negated) test fails. */
+  positiveOp: string;
+  /** The operation if a negated test fails. */
+  negativeOp: string;
+}
+
+/**
  * Base Expecto wrapper class.
  */
 export class ExpectoBase<T> {
@@ -233,6 +247,25 @@ export class ExpectoBase<T> {
     this.#flags.clear();
 
     assert(expr, msg);
+
+    return this;
+  }
+
+  protected check(result: boolean, details: CheckDetails): this {
+    const not = this.hasFlag(NOT);
+    this.#flags.clear();
+
+    const msg = details.message || (() => {
+      const oper = not ? details.negativeOp : details.positiveOp;
+      const msg = ("expected" in details)
+        ? `${Deno.inspect(this.actual)} ${oper} ${
+          Deno.inspect(details.expected)
+        }`
+        : `${Deno.inspect(this.actual)} ${oper}`;
+      return msg;
+    })();
+    if (not) result = !result;
+    assert(result, msg);
 
     return this;
   }

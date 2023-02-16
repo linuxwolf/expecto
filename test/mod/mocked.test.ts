@@ -12,7 +12,5 @@ describe("mod/mock", () => {
   it("exports the desired symbols", () => {
     const keys = Object.keys(mock).sort();
     assert(equal(keys, ["default", "mock"]));
-
-    console.log(Object.keys(mock.mock));
   });
 });

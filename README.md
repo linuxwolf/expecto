@@ -645,7 +645,7 @@ Get started by importing `mod/mixin.ts` module to access the symbols and utiliti
 To add a custom mixin to Expecto, implement a factory function that takes the current Expecto-derived class and returns a new Expecto-derived class.
 
 ```typescript
-import type { NOT, ExpectoConstructor, MixinConstructor } from "https://deno.land/x/expecto/mod/mixin.ts";
+import type { CheckDetails, ExpectoConstructor, MixinConstructor } from "https://deno.land/x/expecto/mod/mixin.ts";
 
 import { meetsExpectations } from "./custom.ts";
 
@@ -657,16 +657,31 @@ export function customMixin<TargetType, BaseType extends ExpectoConstructor<Targ
 
         cusomCheck(): this {
             let result = meetsExpectations(this.actual);
-            if (this.hasFlag(NOT)) result = !result;
-            this.assert(result, not ? "does not meet expectations" : "meets expectations");
+            this.check(result, {
+                positiveOp: "does not meet expectations",
+                negativeOp: "meets expectations",
+            } as CheckDetails)
             return this;
         }
     }
 }
 
+
+### Performing Checks
+
+The assertion check is performed using `.check(result: boolean, details: CheckDetails)`; `result` is the result to verify, and `details` provides the following:
+
+* `expected`: `unknown` (*OPTIONAL*) — What `actual` is expected to be
+* `positiveOp`: `string` — The operation description if a positive (not `.not`) test fails
+* `negativeOp`: `string` — The operation description if a negatved (`.not`) test fails
+* `message`: `string` (*OPTIONAL*) — The messge—in its entirety—to use if the test fails
+
+The `.check()` method—by default—tests if `result` is truthy, and throws an `AssertionError` if it is not.  If the `not` flag is applied, it instead tests if `result` is falsy, and throws an `AssertionError` if it is not.  If `message` is not provided, the rest of `details` is used to construct the error message.
+
+### Helpers
+
 The following protected members are available to mixins to aid in checks:
 
-* `.assert(result: boolean, msg: string)` — The basic assertion; if `result` is `true` the check passes, otherwise an `AssertionError` is thrown with `msg` as the message.
 * `.flags(): string[]` — Retrieves a snapshot of currently-set flags on this Expecto.  A flag is set if its name is in the returned array.
 * `.hasFlag(flag: string): boolean` — Returns `true` if the given flag is set.
 * `.setFlag(flag: string)` — Sets the given flag, including it in the values returned by `flags()`.

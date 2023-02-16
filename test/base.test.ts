@@ -10,8 +10,8 @@ import { DEEP, NOT } from "../src/flags.ts";
 
 describe("base", () => {
   class ExpectoUnderTest<T> extends ExpectoBase<T> {
-    override derived<ResultType>(target: ResultType) {
-      return super.derived(target);
+    override create<ResultType>(target: ResultType) {
+      return super.create(target);
     }
     override flags() {
       return super.flags();
@@ -140,10 +140,10 @@ describe("base", () => {
       });
     });
 
-    describe(".derived()", () => {
+    describe(".create()", () => {
       it("creates a derived Expecto with the same type", () => {
         const base = new ExpectoUnderTest(new Date());
-        const result = base.derived(42);
+        const result = base.create(42);
         assert(result instanceof ExpectoUnderTest);
         assert(equal(result.flags(), base.flags()));
       });
@@ -153,7 +153,7 @@ describe("base", () => {
         base.setFlag("NOT");
         base.setFlag("foo");
 
-        const result = base.derived(42);
+        const result = base.create(42);
         assert(result instanceof ExpectoUnderTest);
         assert(base.flags().length > 0);
         assert(equal(result.flags(), base.flags()));

@@ -51,28 +51,27 @@ export default function membership<
       return this;
     }
 
-    members(check: unknown[], msg?: string): this {
+    members(expected: unknown[], msg?: string): this {
       const deep = this.hasFlag(DEEP);
-      const not = this.hasFlag(NOT);
       const any = this.hasFlag(ANY);
 
       let result = !any;
       if (this.actual instanceof Map) {
         const map = this.actual as Map<unknown, unknown>;
-        for (const k of check) {
+        for (const k of expected) {
           const present = map.has(k);
           result = (any) ? result || present : result && present;
         }
       } else if (this.actual instanceof Set) {
         const set = this.actual as Set<unknown>;
-        for (const e of check) {
+        for (const e of expected) {
           const f = filterFor(e, deep);
           const present = [...set].filter(f).length > 0;
           result = (any) ? result || present : result && present;
         }
       } else if (Array.isArray(this.actual)) {
         const arr = this.actual as Array<unknown>;
-        for (const e of check) {
+        for (const e of expected) {
           const f = filterFor(e, deep);
           const present = arr.filter(f).length > 0;
           result = (any) ? result || present : result && present;
@@ -80,7 +79,7 @@ export default function membership<
       } else if (isObject(this.actual)) {
         // deno-lint-ignore ban-types
         const obj = this.actual as Object;
-        for (const k of check) {
+        for (const k of expected) {
           const present = (k as string) in obj;
           result = (any) ? result || present : result && present;
         }
@@ -88,14 +87,12 @@ export default function membership<
         result = false;
       }
 
-      if (not) result = !result;
-      if (!msg) {
-        const oper = (any) ? "have any members" : "have all members";
-        msg = `${Deno.inspect(this.actual)} ${
-          not ? "does" : "does not"
-        } ${oper} of ${Deno.inspect(check)}`;
-      }
-      this.assert(result, msg);
+      this.check(result, {
+        expected,
+        positiveOp: any ? "does not have any members of" : "does not have all members of",
+        negativeOp: any ? "does have any members of" : "does have all members of",
+        message: msg,
+      });
 
       return this;
     }
@@ -114,13 +111,12 @@ export default function membership<
           result = findPropertyDescriptor(this.actual, name) !== undefined;
         }
       }
-      if (not) result = !result;
-
-      if (!msg) {
-        const oper = not ? "does have property" : "does not have property";
-        msg = `${Deno.inspect(this.actual)} ${oper} "${name}"`;
-      }
-      this.assert(result, msg);
+      this.check(result, {
+        expected: name,
+        positiveOp: own ? "does not have own property" : "does not have property",
+        negativeOp: own ? "does have own property" : "does have property",
+        message: msg,
+      });
 
       if (!not) {
         const prop = this.actual[name];

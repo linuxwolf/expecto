@@ -109,7 +109,7 @@ expect(42).to.equal(42);
 expect(someObj).to.equal(anotherObj);
 ```
 
-If `deep` is applied beforehand, then a deep equality check is performed instead.
+If `deep` is applied beforehand, then a comprehensive equality check is performed instead.
 
 ```typescript
 expect(someObj).to.deep.equal({foo: "foo value"});
@@ -419,7 +419,7 @@ expect(someValue).to.have.any.members(["foo", "baz"]);  // SUCCEEDS
 expect(someValue).to.have.any.members(["baz", "flag"]); // FAILS
 ```
 
-By default a strict comparison is used. If `deep` is applied beforehand, a deep equality comparison is used.
+By default a strict comparison is used. If `deep` is applied beforehand, a comprehensive equality comparison is used.
 
 ```typescript
 const someValue = new Set([
@@ -560,5 +560,80 @@ await expect(Promise.resolve("some string")).to.not.be.rejectedWith();
 **Note** this means the check succeeds if the promise successfully resolved _**or**_ was rejected with a different error!
 
 ### `Mocked` (**mock**)
+
+#### `called([ count [, msg ] ])` check
+
+Checks that `actual` is a Spy or Stub and was called.
+
+```typescript
+expect(someSpy).to.have.been.called();
+```
+
+A count can be provided in the first argument, that checks the spy was called that number of times.
+
+```typescript
+someSpy();
+someSpy();
+
+....
+
+expect(someSpy).to.have.been.called(2);
+```
+
+A custom message can be provided as the last argument, which is used if the check fails.
+
+```typescript
+expect(someSpy).to.have.been.called(undefined, "spy never called");
+```
+
+If `not` is applied beforehand, it negates the check.
+
+```typescript
+expect(someSpy).to.have.not.been.called();
+```
+
+**NOTE** the negated check can succeed if a count is provided to `called()` and the spy is called a different number of times (e.g., called 5 times but checking for `.called(3)`)!
+
+If `actual` is not a Spy or Stub, a `TypeError` is thrown istead of an `AssertionError`.  This occurs regardless if `not` is applied.
+
+```typescript
+expect(42).to.have.been.called();                   // throws TypeError
+expect("some string").to.have.not.been.called();    // still throws TypeError
+```
+
+#### `calledWith(args [, msg ])` check
+
+Checks that `actual` is a Spy or Stub that was called with the given arguments.
+
+```typescript
+expect(someSpy).to.have.been.calledWith(["foo", "bar"]);
+```
+
+If `actual` was called multiple times, this check succeeds if at least one of those calls included the given arguments.  By default this check performs a strict (===) equality check over the arguments.
+
+If `deep` is applied beforehand, a comprehensive equality check of the arguments is performed.
+
+```typescript
+someSpy({
+    "foo": "foo value",
+    "bar": "bar value",
+});
+
+expect(someSpy).to.have.been.calledWith([ {"foo": "foo value", "bar": "bar value" }]);      // fails
+expect(someSpy).to.have.been.deep.calledWith([ {"foo": "foo value", "bar": "bar value" }]); // succeeds
+```
+
+If `not` is applied beforehand, it negates the check.
+
+```typescript
+expect(someSpy).to.not.have.been.calledWith(["foo", "bar"]);
+```
+
+If `actual` is not a Spy or Stub, a `TypeError` is thrown istead of an `AssertionError`.  This occurs regardless if `not` is applied.
+
+```typescript
+expect(42).to.have.been.calledWith([]);                 // throws TypeError
+expect("some string").to.have.not.been.calledWith([]);  // still throws TypeError
+```
 
 ## EXTENDING

@@ -32,7 +32,7 @@ export default function core<
         positiveOp: deep ? "is not deeply equal" : "is not strictly equal",
         negativeOp: deep ? "is deeply equal" : "is not deeply equal",
         message: msg,
-      })
+      });
 
       return this;
     }

@@ -206,8 +206,12 @@ export default function promised<
         }
 
         this.check(caught, {
-          positiveOp: (errType !== undefined) ? `was not rejected with ${Deno.inspect(errType)}` : "was not rejected",
-          negativeOp: (errType !== undefined) ? `was rejected with ${Deno.inspect(errType)}` : "was rejected",
+          positiveOp: (errType !== undefined)
+            ? `was not rejected with ${Deno.inspect(errType)}`
+            : "was not rejected",
+          negativeOp: (errType !== undefined)
+            ? `was rejected with ${Deno.inspect(errType)}`
+            : "was rejected",
           message: msg,
         });
 

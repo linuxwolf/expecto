@@ -89,8 +89,12 @@ export default function membership<
 
       this.check(result, {
         expected,
-        positiveOp: any ? "does not have any members of" : "does not have all members of",
-        negativeOp: any ? "does have any members of" : "does have all members of",
+        positiveOp: any
+          ? "does not have any members of"
+          : "does not have all members of",
+        negativeOp: any
+          ? "does have any members of"
+          : "does have all members of",
         message: msg,
       });
 
@@ -113,7 +117,9 @@ export default function membership<
       }
       this.check(result, {
         expected: name,
-        positiveOp: own ? "does not have own property" : "does not have property",
+        positiveOp: own
+          ? "does not have own property"
+          : "does not have property",
         negativeOp: own ? "does have own property" : "does have property",
         message: msg,
       });

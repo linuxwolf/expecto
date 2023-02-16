@@ -58,8 +58,12 @@ export default function mocked<
         : callCounts > 0;
 
       this.check(result, {
-        positiveOp: (count !== undefined) ? `has not been called ${count} times` : "has not been called",
-        negativeOp: (count !== undefined) ? `has been called ${count} times` : "has been called",
+        positiveOp: (count !== undefined)
+          ? `has not been called ${count} times`
+          : "has not been called",
+        negativeOp: (count !== undefined)
+          ? `has been called ${count} times`
+          : "has been called",
         message: msg,
       });
 

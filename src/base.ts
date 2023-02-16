@@ -8,11 +8,11 @@ import { assert } from "../deps/src/asserts.ts";
 import { DEEP, Flags, hasFlag, NOT } from "./flags.ts";
 
 interface CheckDetails {
-  message?: string,
-  expected?: unknown,
-  positiveOp: string,
-  negativeOp: string,
-};
+  message?: string;
+  expected?: unknown;
+  positiveOp: string;
+  negativeOp: string;
+}
 
 /**
  * Base Expecto wrapper class.
@@ -250,9 +250,11 @@ export class ExpectoBase<T> {
 
     const msg = details.message || (() => {
       const oper = not ? details.negativeOp : details.positiveOp;
-      const msg = ("expected" in details) ?
-                  `${Deno.inspect(this.actual)} ${oper} ${Deno.inspect(details.expected)}` :
-                  `${Deno.inspect(this.actual)} ${oper}`;
+      const msg = ("expected" in details)
+        ? `${Deno.inspect(this.actual)} ${oper} ${
+          Deno.inspect(details.expected)
+        }`
+        : `${Deno.inspect(this.actual)} ${oper}`;
       return msg;
     })();
     if (not) result = !result;

@@ -14,7 +14,7 @@ describe("assertions/membership", () => {
   describe("mixin ExpectoMembership", () => {
     describe(".all/.any", () => {
       const ExpectoUnderTest = class ExpectoUnderTest<T>
-        extends ExpectoMembership {
+        extends ExpectoMembership<T> {
         override flags() {
           return super.flags();
         }

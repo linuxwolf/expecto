@@ -16,7 +16,7 @@ Deno.test(() => {
 ```
 
 - [INSTALLING](#installing)
-- [USAGE](#usage)
+- [USING](#using)
   - [Predicates and Prepositions](#predicates-and-prepositions)
   - [Flags](#flags)
     - [`deep` flag](#deep-flag)
@@ -63,7 +63,7 @@ In addition, the following are useful to extend Expecto:
 
 * `mod/mixin.ts` — exports helper types and utilities for creating custom mixins.
 
-## USAGE
+## USING
 
 Assertions are made by calling `expect()` with the value under test (`actual`) then chaining properties for assertion checks.
 
@@ -680,12 +680,12 @@ Get started by importing `mod/mixin.ts` module to access the symbols and utiliti
 To add a custom mixin to Expecto, implement a factory function that takes the current Expecto-derived class and returns a new Expecto-derived class.
 
 ```typescript
-import type { CheckDetails, ExpectoConstructor, MixinConstructor } from "https://deno.land/x/expecto/mod/mixin.ts";
+import type { CheckDetails, ExpectoConstructor } from "https://deno.land/x/expecto/mod/mixin.ts";
 
 import { meetsExpectations } from "./custom.ts";
 
 export function customMixin<TargetType, BaseType extends ExpectoConstructor<TargetType>>(Base: BaseType) {
-    const Mixin = class CustomMixin<T extends TargetType> extends (Base as any) {
+    return class CustomMixin extends Base {
         constructor(...args: any[]) {
             super(...args);
         }
@@ -698,7 +698,7 @@ export function customMixin<TargetType, BaseType extends ExpectoConstructor<Targ
             } as CheckDetails)
             return this;
         }
-    }
+    };
 }
 
 

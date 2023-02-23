@@ -5,19 +5,12 @@
  */
 
 import { ExpectoConstructor } from "../base.ts";
-import { MixinConstructor } from "../mixin.ts";
 
 export default function typing<
   T,
   BaseType extends ExpectoConstructor<T>,
 >(Base: BaseType) {
-  // deno-lint-ignore no-explicit-any
-  const MixIn = class ExpectoTyping<T> extends (Base as any) {
-    // deno-lint-ignore no-explicit-any
-    constructor(...args: any[]) {
-      super(...args);
-    }
-
+  return class ExpectoTyping extends Base {
     get exists(): this {
       const result = (this.actual !== null) && (this.actual !== undefined);
       this.check(result, {
@@ -107,6 +100,4 @@ export default function typing<
       return this;
     }
   };
-
-  return MixIn as MixinConstructor<typeof MixIn, BaseType>;
 }

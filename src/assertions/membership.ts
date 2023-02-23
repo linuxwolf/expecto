@@ -8,7 +8,6 @@ import { equal } from "../../deps/src/asserts.ts";
 
 import { ExpectoConstructor } from "../base.ts";
 import { DEEP, NOT } from "../flags.ts";
-import { MixinConstructor } from "../mixin.ts";
 import { findPropertyDescriptor } from "../util/props.ts";
 
 function isObject(check: unknown): boolean {
@@ -27,13 +26,7 @@ export default function membership<
   TargetType,
   BaseType extends ExpectoConstructor<TargetType>,
 >(Base: BaseType) {
-  const MixIn = class ExpectoPropertied<T extends TargetType> extends // deno-lint-ignore no-explicit-any
-  (Base as any) {
-    // deno-lint-ignore no-explicit-any
-    constructor(...args: any[]) {
-      super(...args);
-    }
-
+  return class ExpectoPropertied extends Base {
     get all(): this {
       this.unsetFlag(ANY);
       this.setFlag(ALL);
@@ -125,13 +118,12 @@ export default function membership<
       });
 
       if (!not) {
-        const prop = this.actual[name];
+        // deno-lint-ignore no-explicit-any
+        const prop = (this.actual as any)[name];
         return this.create(prop);
       }
 
       return this;
     }
   };
-
-  return MixIn as MixinConstructor<typeof MixIn, BaseType>;
 }

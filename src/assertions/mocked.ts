@@ -9,7 +9,6 @@ import { type Spy } from "../../deps/src/mock.ts";
 
 import { ExpectoConstructor } from "../base.ts";
 import { DEEP } from "../flags.ts";
-import { MixinConstructor } from "../mixin.ts";
 
 function createArgReducer(
   actual: unknown[],
@@ -42,13 +41,7 @@ export default function mocked<
   T,
   BaseType extends ExpectoConstructor<T>,
 >(Base: BaseType) {
-  // deno-lint-ignore no-explicit-any
-  const MixIn = class ExpectoMocked<T> extends (Base as any) {
-    // deno-lint-ignore no-explicit-any
-    constructor(...args: any[]) {
-      super(...args);
-    }
-
+  return class ExpectoMocked extends Base {
     called(count?: number, msg?: string): this {
       const spy = asSpy(this.actual);
       const callCounts = spy.calls.length;
@@ -93,6 +86,4 @@ export default function mocked<
       return this;
     }
   };
-
-  return MixIn as MixinConstructor<typeof MixIn, BaseType>;
 }

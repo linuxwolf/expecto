@@ -522,7 +522,7 @@ expect({foo: "foo value"}).to.not.have.property("bar");
 
 #### `eventually` modifier
 
-Treats `actual` as a promise (or a function that returns a promise) and defers all modifiers and checks until that promise is fulfilled.
+Treats `actual` as a promise and defers all modifiers and checks until that promise is fulfilled.
 
 The returned `Expecto` is essentially a thenable Proxy; all the predicates, flags, and checks applied after `eventually` are resolved when the `Execpto` is resolved (e.g., by `await`ing).
 
@@ -562,7 +562,7 @@ await expect(somePromise).to.not.be.rejected.and.is.typeOf("string");
 
 #### `rejectedWith([ errorType [, msg ] ])` check
 
-Checks that `actual` is a promise that is rejected, asynchronously.  Like `.eventually`, the `Expecto` returned by this check is a thenable Proxy.  The check will actually be performed ocne the promise is fulfilled (e.g., by `await`ing).
+Checks that `actual` is a promise that is rejected, asynchronously.  Like `.eventually`, the `Expecto` returned by this check is a thenable Proxy.  The check will actually be performed once the promise is fulfilled (e.g., by `await`ing).
 
 ```typescript
 await expect(somePromise).to.be.rejectedWith();

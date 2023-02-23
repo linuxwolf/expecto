@@ -33,7 +33,7 @@ describe("assertions/promised", () => {
 
           const result = await test;
           assert(result instanceof ExpectoPromised);
-          assert(result.actual === 42);
+          assert((result.actual as unknown) === 42);
         });
         it("works with a function returning a promise", async () => {
           const test =
@@ -43,7 +43,7 @@ describe("assertions/promised", () => {
 
           const result = await test;
           assert(result instanceof ExpectoPromised);
-          assert(result.actual === 42);
+          assert((result.actual as unknown) === 42);
         });
         it("works with a value", async () => {
           const test = new ExpectoPromised(42).eventually;
@@ -59,7 +59,7 @@ describe("assertions/promised", () => {
 
           const result = await test;
           assert(result instanceof ExpectoPromised);
-          assert(result.actual === 42);
+          assert((result.actual as unknown) === 42);
         });
       });
       describe("within the chain", () => {
@@ -99,9 +99,9 @@ describe("assertions/promised", () => {
           const test =
             new ExpectoPromised(() => Promise.resolve(42)).eventually;
           const first = await test;
-          assert(first.actual === 42);
+          assert((first.actual as unknown) === 42);
           const second = await test;
-          assert(second.actual === 42);
+          assert((second.actual as unknown) === 42);
           assert(first === second);
         });
       });
@@ -348,13 +348,13 @@ describe("assertions/promised", () => {
             const test = new ExpectoPromised(target);
             const result = await test.not.rejectedWith();
             assert(result instanceof ExpectoPromised);
-            assert(result.actual === "I fulfill");
+            assert((result.actual as unknown) === "I fulfill");
           });
           it("passes if function fulfills", async () => {
             const test = new ExpectoPromised(failNonTarget);
             const result = await test.not.rejectedWith();
             assert(result instanceof ExpectoPromised);
-            assert(result.actual === "I fulfill");
+            assert((result.actual as unknown) === "I fulfill");
           });
           it("passes if target is not a Promise or function", async () => {
             let test;
@@ -406,13 +406,13 @@ describe("assertions/promised", () => {
             const test = new ExpectoPromised(target);
             const result = await test.not.rejectedWith(TestError);
             assert(result instanceof ExpectoPromised);
-            assert(result.actual === "I fulfill");
+            assert((result.actual as unknown) === "I fulfill");
           });
           it("passes if function fulfills", async () => {
             const test = new ExpectoPromised(failNonTarget);
             const result = await test.not.rejectedWith(TestError);
             assert(result instanceof ExpectoPromised);
-            assert(result.actual === "I fulfill");
+            assert((result.actual as unknown) === "I fulfill");
           });
           it("passes if Promise rejects with different error", async () => {
             const target = failDiffTarget();

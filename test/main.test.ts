@@ -7,23 +7,14 @@ import { beforeEach, describe, it } from "../deps/test/bdd.ts";
 import * as mock from "../deps/test/mock.ts";
 
 import { ExpectoConstructor } from "../src/base.ts";
-import { MixinConstructor } from "../src/mixin.ts";
 import { expect, reset, use } from "../src/main.ts";
 
 function dummy<T, BaseType extends ExpectoConstructor<T>>(Base: BaseType) {
-  // deno-lint-ignore no-explicit-any
-  const MixIn = class ExpectoDummy<T> extends (Base as any) {
-    // deno-lint-ignore no-explicit-any
-    constructor(...args: any[]) {
-      super(...args);
-    }
-
+  return class ExpectoDummy extends Base {
     dummy(): this {
       return this;
     }
   };
-
-  return MixIn as MixinConstructor<typeof MixIn, BaseType>;
 }
 
 describe("main", () => {

@@ -5,8 +5,7 @@
  */
 
 import { CheckDetails, ExpectoBase, ExpectoConstructor } from "../src/base.ts";
-import { MixinConstructor } from "../src/mixin.ts";
 import { DEEP, NOT } from "../src/flags.ts";
 
 export { DEEP, ExpectoBase, NOT };
-export type { CheckDetails, ExpectoConstructor, MixinConstructor };
+export type { CheckDetails, ExpectoConstructor };

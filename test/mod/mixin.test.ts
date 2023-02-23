@@ -12,8 +12,6 @@ import type {
   CheckDetails,
   // deno-lint-ignore no-unused-vars
   ExpectoConstructor,
-  // deno-lint-ignore no-unused-vars
-  MixinConstructor,
 } from "../../mod/mixin.ts";
 
 describe("mod/mixin", () => {

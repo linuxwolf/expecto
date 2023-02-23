@@ -118,7 +118,8 @@ export default function membership<
       });
 
       if (!not) {
-        const prop = this.actual[name];
+        // deno-lint-ignore no-explicit-any
+        const prop = (this.actual as any)[name];
         return this.create(prop);
       }
 

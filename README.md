@@ -25,12 +25,12 @@ Deno.test(() => {
     - [`equal(expected [, message ])` check](#equalexpected--message--check)
     - [`throw([ errorType [, message ] ])` check](#throw-errortype--message---check)
   - [`Typing` (**std**)](#typing-std)
-    - [`exists` check](#exists-check)
-    - [`undefined` check](#undefined-check)
-    - [`null` check](#null-check)
-    - [`true` check](#true-check)
-    - [`false` check](#false-check)
-    - [`NaN` check](#nan-check)
+    - [`exists([ msg ])` check](#exists-msg--check)
+    - [`undefined([ msg ])` check](#undefined-msg--check)
+    - [`null([ msg ])` check](#null-msg--check)
+    - [`true([ msg ])` check](#true-msg--check)
+    - [`false([ msg ])` check](#false-msg--check)
+    - [`NaN([ msg ])` check](#nan-msg--check)
     - [`typeOf(type [, msg ])` check](#typeoftype--msg--check)
     - [`instanceOf(instancClass [, msg ])` check](#instanceofinstancclass--msg--check)
   - [`Membership` (**std**)](#membership-std)
@@ -211,86 +211,118 @@ expect(42).to.not.throw();  // still throws TypeError
 
 ### `Typing` (**std**)
 
-#### `exists` check
+#### `exists([ msg ])` check
 
 Checks that `actual` exists: is not `null` nor `undefined`.
 
 ```typescript
-expect(someValue).to.exist;
+expect(someValue).to.exist();
+```
+
+A custom message can be provied, which is used if the check fails.
+
+```typescript
+expect(null).to.exist("does not exist!");
 ```
 
 If `not` is applied beforehand, it negates the check.
 
 ```typescript
-expect(null).to.not.exist;
-expect(undefined).to.not.exist;
+expect(null).to.not.exist();
+expect(undefined).to.not.exist();
 ```
 
-#### `undefined` check
+#### `undefined([ msg ])` check
 
 Checks that `actual` is `undefined`.
 
 ```typescript
-expect(someValue).to.be.undefined;
+expect(someValue).to.be.undefined();
+```
+
+A custom message can be provided, which is used if the check fails.
+
+```typescript
+expect("something").to.be.undefined("is actually defined!");
 ```
 
 If `not` is applied beforehand, it negates the check.
 
 ```typescript
-expect(42).to.not.be.undefined;
-expect(null).to.no.be.undefined;
+expect(42).to.not.be.undefined();
+expect(null).to.no.be.undefined();
 ```
 
-#### `null` check
+#### `null([ msg ])` check
 
 Checks that `actual` is `null`.
 
 ```typescript
-expect(someValue).to.be.null;
+expect(someValue).to.be.null();
+```
+
+A custom message can be provided, which is used if the check fails.
+
+```typescript
+expect("some value").to.be.null("is not null");
 ```
 
 If `not` is applied beforehand, it negates the check.
 
 ```typescript
-expect(42).to.not.be.null;
-expect(undefined).to.not.be.null;
+expect(42).to.not.be.null();
+expect(undefined).to.not.be.null();
 ```
 
-#### `true` check
+#### `true([ msg ])` check
 
 Checks that `actual` is the boolean `true`.
 
 ```typescript
-expect(someValue).to.be.true;
+expect(someValue).to.be.true();
 ```
 
 It is not enough to be truthy, only `true` will pass.
 
 ```typescript
-expect(true).to.be.true;            // SUCCEEDS
-expect("some value").to.be.true;    // FAILS
+expect(true).to.be.true();            // SUCCEEDS
+expect("some value").to.be.true();    // FAILS
+```
+
+A custom message can be provided, which is used if the check fails.
+
+```typescript
+expect(false).to.be.true("isn't true");
+expect("some value").to.be.true("isn't true, either");
 ```
 
 If `not` is applied beforehand, it negates the check.
 
 ```typescript
-expect(false).to.not.be.true;
-expect("some value").to.not.be.true;
+expect(false).to.not.be.true();
+expect("some value").to.not.be.true();
 ```
-#### `false` check
+#### `false([ msg ])` check
 
 Checks that `actual` is the boolean `false`.
 
 ```typescript
-expect(someValue).to.be.false;
+expect(someValue).to.be.false();
 ```
 
 If it not enough to be falsy, only `false` will pass.
 
 ```typescript
-expect(false).to.be.false;  // SUCCEEDS
-expect("").to.be.false;     // FAILS
-expect(null).to.be.false;   // FAILS
+expect(false).to.be.false();  // SUCCEEDS
+expect("").to.be.false();     // FAILS
+expect(null).to.be.false();   // FAILS
+```
+
+A custom message can be provided, which is used if the check fails.
+
+```typescript
+expect(true).to.be.false("isn't false");
+expect(undefined).to.be.false("isn't false, either");
 ```
 
 If `not` is applied beforeuand, it negates the check.
@@ -300,26 +332,32 @@ expect(true).to.not.be.false;
 expect("").to.not.be.false;
 ```
 
-#### `NaN` check
+#### `NaN([ msg ])` check
 
 Checks that `actual` is a number and is `NaN`.  This check is necessary since `NaN !== NaN` in Javascript/Typescript!
 
 ```typescript
-expect(someNumber).is.NaN;  // SUCCEEDS if someNumber is NaN
+expect(someNumber).is.NaN();  // SUCCEEDS if someNumber is NaN
 
-expect(NaN).to.equal(NaN);  // ALWAYS FAILS!
+expect(NaN).to.equal(NaN);    // ALWAYS FAILS!
 ```
 
 The check fails (throws `AssertionError`) if `actual` is not a number.
 
 ```typescript
-expect("some string").is.NaN;   // FAILS with AssertionError
+expect("some string").is.NaN();   // FAILS with AssertionError
+```
+
+A custom message can be provided, which is used if the check fails.
+
+```typescript
+expect(42).to.be.NaN("is not not-a-number");
 ```
 
 If `not` is applied beforehand, it negates the check.
 
 ```typescript
-expect(42).is.not.NaN;
+expect(42).is.not.NaN();
 ```
 
 #### `typeOf(type [, msg ])` check

@@ -20,8 +20,6 @@ export function maybePromise(check: any): boolean {
 /**
  * Turns a value into a Promise.
  *
- * = If `value` is a function; it is called and its return value is converted
- *   to a Promise, or its thrown error is wrapped in a rejected Promise.
  * - If `value` is an Error; it is wrapped in a rejected Promise.
  * - If `value` is a Promise or PromiseLike, it is returned as-is
  * - Otherwise, `value` is wrapped in a fulfilled Promise.
@@ -34,12 +32,6 @@ export function promisify(value: any): PromiseLike<any> {
   if (maybePromise(value)) {
     // deno-lint-ignore no-explicit-any
     return value as PromiseLike<any>;
-  } else if (typeof value === "function") {
-    try {
-      return promisify(value());
-    } catch (err) {
-      return Promise.reject(err);
-    }
   } else if (value instanceof Error) {
     return Promise.reject(value);
   }

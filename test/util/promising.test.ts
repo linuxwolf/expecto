@@ -4,7 +4,6 @@
 
 import { assert } from "../../deps/test/asserts.ts";
 import { describe, it } from "../../deps/test/bdd.ts";
-import * as mock from "../../deps/test/mock.ts";
 
 import { maybePromise, promisify } from "../../src/util/promising.ts";
 
@@ -81,36 +80,12 @@ describe("util/promising", () => {
         assert(result instanceof Promise);
         assert((await result) === value);
       });
-      it("calls the function to return a promise", async () => {
-        const value = mock.spy(() => Promise.resolve(42));
-        const result = promisify(value);
-        assert(typeof result.then === "function");
-        assert(value.calls.length === 1);
-        assert((await result) === 42);
-      });
     });
     describe("failures", () => {
       it("rejects if passed an Error", async () => {
         const value = new Error("oops");
         const result = promisify(value);
         assert(typeof result.then === "function");
-
-        let passed = false;
-        try {
-          await result;
-          passed = true;
-        } catch (err) {
-          assert(err.message === "oops");
-        }
-        assert(!passed, "expected error not thrown");
-      });
-      it("rejects if the function throws", async () => {
-        const value = mock.spy(() => {
-          throw new Error("oops");
-        });
-        const result = promisify(value);
-        assert(typeof result.then === "function");
-        assert(value.calls.length === 1);
 
         let passed = false;
         try {

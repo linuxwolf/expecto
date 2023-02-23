@@ -11,63 +11,69 @@ export default function typing<
   BaseType extends ExpectoConstructor<T>,
 >(Base: BaseType) {
   return class ExpectoTyping extends Base {
-    get exists(): this {
+    exists(msg?: string): this {
       const result = (this.actual !== null) && (this.actual !== undefined);
       this.check(result, {
         positiveOp: "does not exist",
         negativeOp: "does exist",
+        message: msg,
       });
 
       return this;
     }
 
-    get undefined(): this {
+    undefined(msg?: string): this {
       const result = this.actual === undefined;
       this.check(result, {
         positiveOp: "is undefined",
         negativeOp: "is defined",
+        message: msg,
       });
 
       return this;
     }
 
-    get null(): this {
+    null(msg?: string): this {
       const result = this.actual === null;
       this.check(result, {
         positiveOp: "is not null",
         negativeOp: "is null",
+        message: msg,
       });
 
       return this;
     }
 
-    get true(): this {
+    true(msg?: string): this {
       const result = (typeof this.actual === "boolean") &&
         (this.actual === true);
       this.check(result, {
         positiveOp: "is not true",
         negativeOp: "is true",
+        message: msg,
       });
 
       return this;
     }
 
-    get false(): this {
+    false(msg?: string): this {
       const result = (typeof this.actual === "boolean") &&
         (this.actual === false);
       this.check(result, {
         positiveOp: "is not false",
         negativeOp: "is false",
+        message: msg,
       });
 
       return this;
     }
 
-    get NaN(): this {
+    NaN(msg?: string): this {
       const result = (typeof this.actual === "number") && isNaN(this.actual);
       this.check(result, {
         positiveOp: "is not NaN",
         negativeOp: "is NaN",
+        message: msg,
       });
 
       return this;

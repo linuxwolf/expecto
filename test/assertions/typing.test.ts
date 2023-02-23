@@ -12,52 +12,52 @@ describe("assertions/typing", () => {
   describe("mixin ExpectoTyping", () => {
     const ExpectoTyping = typing(ExpectoBase);
 
-    describe(".exists", () => {
+    describe(".exists()", () => {
       describe("basics", () => {
         it("passes if actual is not undefined or null", () => {
           let test, result;
 
           test = new ExpectoTyping(true);
-          result = test.exists;
+          result = test.exists();
           assert(result === test);
 
           test = new ExpectoTyping(123123412341n);
-          result = test.exists;
+          result = test.exists();
           assert(result === test);
 
           test = new ExpectoTyping(42);
-          result = test.exists;
+          result = test.exists();
           assert(result === test);
 
           test = new ExpectoTyping("some string");
-          result = test.exists;
+          result = test.exists();
           assert(result === test);
 
           test = new ExpectoTyping({});
-          result = test.exists;
+          result = test.exists();
           assert(result === test);
 
           test = new ExpectoTyping([]);
-          result = test.exists;
+          result = test.exists();
           assert(result === test);
         });
         it("passes on falsy things that do exist", () => {
           let test, result;
 
           test = new ExpectoTyping(false);
-          result = test.exists;
+          result = test.exists();
           assert(result === test);
 
           test = new ExpectoTyping(0n);
-          result = test.exists;
+          result = test.exists();
           assert(result === test);
 
           test = new ExpectoTyping(0);
-          result = test.exists;
+          result = test.exists();
           assert(result === test);
 
           test = new ExpectoTyping("");
-          result = test.exists;
+          result = test.exists();
           assert(result === test);
         });
         it("fails if null", () => {
@@ -65,7 +65,7 @@ describe("assertions/typing", () => {
           let passed = false;
 
           try {
-            test.exists;
+            test.exists();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -77,7 +77,7 @@ describe("assertions/typing", () => {
           let passed = false;
 
           try {
-            test.exists;
+            test.exists();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -89,12 +89,12 @@ describe("assertions/typing", () => {
       describe("negated", () => {
         it("passes if null", () => {
           const test = new ExpectoTyping(null);
-          const result = test.not.exists;
+          const result = test.not.exists();
           assert(result === test);
         });
         it("passes if undefined", () => {
           const test = new ExpectoTyping(undefined);
-          const result = test.not.exists;
+          const result = test.not.exists();
           assert(result === test);
         });
         it("fails if defined", () => {
@@ -102,7 +102,7 @@ describe("assertions/typing", () => {
           let passed = false;
 
           try {
-            test.not.exists;
+            test.not.exists();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -112,11 +112,11 @@ describe("assertions/typing", () => {
       });
     });
 
-    describe(".undefined", () => {
+    describe(".undefined()", () => {
       describe("basics", () => {
         it("passes if undefined", () => {
           const test = new ExpectoTyping(undefined);
-          const result = test.undefined;
+          const result = test.undefined();
           assert(result === test);
         });
         it("fails if truthy defined", () => {
@@ -125,7 +125,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping(true);
           try {
-            test.undefined;
+            test.undefined();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -134,7 +134,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping(42);
           try {
-            test.undefined;
+            test.undefined();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -143,7 +143,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping("some string");
           try {
-            test.undefined;
+            test.undefined();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -152,7 +152,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping(new Date());
           try {
-            test.undefined;
+            test.undefined();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -165,7 +165,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping(false);
           try {
-            test.undefined;
+            test.undefined();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -174,7 +174,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping(0);
           try {
-            test.undefined;
+            test.undefined();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -183,7 +183,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping(null);
           try {
-            test.undefined;
+            test.undefined();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -192,7 +192,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping("");
           try {
-            test.undefined;
+            test.undefined();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -206,38 +206,38 @@ describe("assertions/typing", () => {
           let test, result;
 
           test = new ExpectoTyping(true);
-          result = test.not.undefined;
+          result = test.not.undefined();
           assert(result === test);
 
           test = new ExpectoTyping(42);
-          result = test.not.undefined;
+          result = test.not.undefined();
           assert(result === test);
 
           test = new ExpectoTyping("some string");
-          result = test.not.undefined;
+          result = test.not.undefined();
           assert(result === test);
 
           test = new ExpectoTyping(new Date());
-          result = test.not.undefined;
+          result = test.not.undefined();
           assert(result === test);
         });
         it("passes if falsy defined", () => {
           let test, result;
 
           test = new ExpectoTyping(false);
-          result = test.not.undefined;
+          result = test.not.undefined();
           assert(result === test);
 
           test = new ExpectoTyping(0);
-          result = test.not.undefined;
+          result = test.not.undefined();
           assert(result === test);
 
           test = new ExpectoTyping(null);
-          result = test.not.undefined;
+          result = test.not.undefined();
           assert(result === test);
 
           test = new ExpectoTyping("");
-          result = test.not.undefined;
+          result = test.not.undefined();
           assert(result === test);
         });
         it("fails if undefined", () => {
@@ -245,7 +245,7 @@ describe("assertions/typing", () => {
           let passed = false;
 
           try {
-            test.not.undefined;
+            test.not.undefined();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -255,11 +255,11 @@ describe("assertions/typing", () => {
       });
     });
 
-    describe(".null", () => {
+    describe(".null()", () => {
       describe("basics", () => {
         it("passes on null", () => {
           const test = new ExpectoTyping(null);
-          const result = test.null;
+          const result = test.null();
           assert(result === test);
         });
         it("throws on truthy not null", () => {
@@ -268,7 +268,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping(true);
           try {
-            test.null;
+            test.null();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -277,7 +277,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping(123);
           try {
-            test.null;
+            test.null();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -286,7 +286,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping("some string");
           try {
-            test.null;
+            test.null();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -295,7 +295,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping(new Date());
           try {
-            test.null;
+            test.null();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -308,7 +308,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping(undefined);
           try {
-            test.null;
+            test.null();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -317,7 +317,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping(false);
           try {
-            test.null;
+            test.null();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -326,7 +326,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping(0);
           try {
-            test.null;
+            test.null();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -335,7 +335,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping("");
           try {
-            test.null;
+            test.null();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -348,38 +348,38 @@ describe("assertions/typing", () => {
           let test, result;
 
           test = new ExpectoTyping(true);
-          result = test.not.null;
+          result = test.not.null();
           assert(result === test);
 
           test = new ExpectoTyping(123);
-          result = test.not.null;
+          result = test.not.null();
           assert(result === test);
 
           test = new ExpectoTyping("some string");
-          result = test.not.null;
+          result = test.not.null();
           assert(result === test);
 
           test = new ExpectoTyping(new Date());
-          result = test.not.null;
+          result = test.not.null();
           assert(result === test);
         });
         it("passes on falsy not null", () => {
           let test, result;
 
           test = new ExpectoTyping(undefined);
-          result = test.not.null;
+          result = test.not.null();
           assert(result === test);
 
           test = new ExpectoTyping(false);
-          result = test.not.null;
+          result = test.not.null();
           assert(result === test);
 
           test = new ExpectoTyping(0);
-          result = test.not.null;
+          result = test.not.null();
           assert(result === test);
 
           test = new ExpectoTyping("");
-          result = test.not.null;
+          result = test.not.null();
           assert(result === test);
         });
         it("throws on null", () => {
@@ -387,7 +387,7 @@ describe("assertions/typing", () => {
           let passed = false;
 
           try {
-            test.not.null;
+            test.not.null();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -397,11 +397,11 @@ describe("assertions/typing", () => {
       });
     });
 
-    describe(".true", () => {
+    describe(".true()", () => {
       describe("basics", () => {
         it("passes on true", () => {
           const test = new ExpectoTyping(true);
-          const result = test.true;
+          const result = test.true();
           assert(result === test);
         });
         it("throws on falsy", () => {
@@ -410,7 +410,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping(undefined);
           try {
-            test.true;
+            test.true();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -419,7 +419,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping(false);
           try {
-            test.true;
+            test.true();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -428,7 +428,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping(0);
           try {
-            test.true;
+            test.true();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -437,7 +437,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping("");
           try {
-            test.true;
+            test.true();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -450,7 +450,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping(42);
           try {
-            test.true;
+            test.true();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -459,7 +459,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping("some string");
           try {
-            test.true;
+            test.true();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -468,7 +468,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping(new Date());
           try {
-            test.true;
+            test.true();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -482,15 +482,15 @@ describe("assertions/typing", () => {
           let result;
 
           test = new ExpectoTyping(42);
-          result = test.not.true;
+          result = test.not.true();
           assert(result === test);
 
           test = new ExpectoTyping("some string");
-          result = test.not.true;
+          result = test.not.true();
           assert(result === test);
 
           test = new ExpectoTyping(new Date());
-          result = test.not.true;
+          result = test.not.true();
           assert(result === test);
         });
         it("passes on falsy", () => {
@@ -498,19 +498,19 @@ describe("assertions/typing", () => {
           let result;
 
           test = new ExpectoTyping(undefined);
-          result = test.not.true;
+          result = test.not.true();
           assert(result === test);
 
           test = new ExpectoTyping(false);
-          result = test.not.true;
+          result = test.not.true();
           assert(result === test);
 
           test = new ExpectoTyping(0);
-          result = test.not.true;
+          result = test.not.true();
           assert(result === test);
 
           test = new ExpectoTyping("");
-          result = test.not.true;
+          result = test.not.true();
           assert(result === test);
         });
         it("throws on true", () => {
@@ -518,7 +518,7 @@ describe("assertions/typing", () => {
           let passed = false;
 
           try {
-            test.not.true;
+            test.not.true();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -528,11 +528,11 @@ describe("assertions/typing", () => {
       });
     });
 
-    describe(".false", () => {
+    describe(".false()", () => {
       describe("basics", () => {
         it("passes on false", () => {
           const test = new ExpectoTyping(false);
-          const result = test.false;
+          const result = test.false();
           assert(result === test);
         });
         it("throws on truthy", () => {
@@ -541,7 +541,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping(true);
           try {
-            test.false;
+            test.false();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -550,7 +550,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping(42);
           try {
-            test.false;
+            test.false();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -559,7 +559,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping("some string");
           try {
-            test.false;
+            test.false();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -568,7 +568,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping(new Date());
           try {
-            test.false;
+            test.false();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -581,7 +581,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping(undefined);
           try {
-            test.false;
+            test.false();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -590,7 +590,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping(null);
           try {
-            test.false;
+            test.false();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -599,7 +599,7 @@ describe("assertions/typing", () => {
 
           test = new ExpectoTyping("");
           try {
-            test.false;
+            test.false();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -613,19 +613,19 @@ describe("assertions/typing", () => {
           let result;
 
           test = new ExpectoTyping(true);
-          result = test.not.false;
+          result = test.not.false();
           assert(test === result);
 
           test = new ExpectoTyping(42);
-          result = test.not.false;
+          result = test.not.false();
           assert(test === result);
 
           test = new ExpectoTyping("some string");
-          result = test.not.false;
+          result = test.not.false();
           assert(test === result);
 
           test = new ExpectoTyping(new Date());
-          result = test.not.false;
+          result = test.not.false();
           assert(test === result);
         });
         it("passes on falsy not false", () => {
@@ -633,15 +633,15 @@ describe("assertions/typing", () => {
           let result;
 
           test = new ExpectoTyping(undefined);
-          result = test.not.false;
+          result = test.not.false();
           assert(test === result);
 
           test = new ExpectoTyping(null);
-          result = test.not.false;
+          result = test.not.false();
           assert(test === result);
 
           test = new ExpectoTyping("");
-          result = test.not.false;
+          result = test.not.false();
           assert(test === result);
         });
         it("throws on false", () => {
@@ -649,7 +649,7 @@ describe("assertions/typing", () => {
           let passed = false;
 
           try {
-            test.not.false;
+            test.not.false();
             passed = true;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -659,11 +659,11 @@ describe("assertions/typing", () => {
       });
     });
 
-    describe(".NaN", () => {
+    describe(".NaN()", () => {
       describe("basics", () => {
         it("passes if NaN", () => {
           const test = new ExpectoTyping(NaN);
-          const result = test.NaN;
+          const result = test.NaN();
           assert(result === test);
         });
         it("fails if number is not NaN", () => {
@@ -671,7 +671,7 @@ describe("assertions/typing", () => {
           let caught = true;
 
           try {
-            test.NaN;
+            test.NaN();
             caught = false;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -683,7 +683,7 @@ describe("assertions/typing", () => {
           let caught = true;
 
           try {
-            test.NaN;
+            test.NaN();
             caught = false;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -697,7 +697,7 @@ describe("assertions/typing", () => {
           let caught = true;
 
           try {
-            test.not.NaN;
+            test.not.NaN();
             caught = false;
           } catch (err) {
             assert(err instanceof AssertionError);
@@ -706,12 +706,12 @@ describe("assertions/typing", () => {
         });
         it("passes if number is not NaN", () => {
           const test = new ExpectoTyping(42);
-          const result = test.not.NaN;
+          const result = test.not.NaN();
           assert(result === test);
         });
         it("passes if not a number", () => {
           const test = new ExpectoTyping("some string");
-          const result = test.not.NaN;
+          const result = test.not.NaN();
           assert(result === test);
         });
       });

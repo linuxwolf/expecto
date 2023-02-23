@@ -4,22 +4,15 @@
  * @copyright 2023 Matthew A. Miller
  */
 
-// deno-lint-ignore-file no-explicit-any
-
 import { equal } from "../../deps/src/asserts.ts";
 import { ExpectoConstructor } from "../base.ts";
 import { DEEP } from "../flags.ts";
-import { MixinConstructor } from "../mixin.ts";
 
 export default function core<
   T,
   BaseType extends ExpectoConstructor<T>,
 >(Base: BaseType) {
-  const MixIn = class ExpectoCore<T> extends (Base as any) {
-    constructor(...args: any[]) {
-      super(...args);
-    }
-
+  return class ExpectoCore extends Base {
     equal(expected: T, msg?: string): this {
       const deep = this.hasFlag(DEEP);
 
@@ -74,6 +67,4 @@ export default function core<
       return new ctor(failure);
     }
   };
-
-  return MixIn as MixinConstructor<typeof MixIn, BaseType>;
 }

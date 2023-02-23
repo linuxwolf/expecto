@@ -41,7 +41,7 @@ Deno.test(() => {
     - [`property(name [, message ])` check](#propertyname--message--check)
   - [`Promised` (**std**)](#promised-std)
     - [`eventually` modifier](#eventually-modifier)
-    - [`rejected` check](#rejected-check)
+    - [`rejected([ msg ])` check](#rejected-msg--check)
     - [`rejectedWith([ errorType [, msg ] ])` check](#rejectedwith-errortype--msg---check)
   - [`Mocked` (**mock**)](#mocked-mock)
     - [`called([ count [, msg ] ])` check](#called-count--msg---check)
@@ -570,12 +570,18 @@ await expect(somePromise).to.eventually.be.a.typeOf("string").which.equal("fulfi
 
 The ordering of the chain is maintained, just deferred.
 
-#### `rejected` check
+#### `rejected([ msg ])` check
 
 Checks that `actual` is a promise that is rejected, asynchronously.  Like `.eventually`, the `Expecto` returned by this check is a thenable Proxy.  The check will actually be performed once the promise is fulfilled (e.g., by `await`ing).
 
 ```typescript
-await expect(somePromsie).to.be.rejected;
+await expect(somePromsie).to.be.rejected();
+```
+
+A custom message can be provided, which is used if the check fails.
+
+```typescript
+await expect(Promise.reolve(42)).to.be.rejected("was not rejected");
 ```
 
 If the check succeeds, the returned `Expecto` has the rejection reason as its `actual`, so that further checks can be made on the error.
@@ -585,7 +591,7 @@ const somePromise = Promise.reject(new Error("oops!"));
 
 ....
 
-await expect(somePromise).to.be.rejected.with.property("message").to.equal("oops!");
+await expect(somePromise).to.be.rejected().with.property("message").to.equal("oops!");
 ```
 
 If `not` is applied beforehand, it negates the check; `actual` is changed the resolved value.
@@ -595,7 +601,7 @@ const somePromise = Promise.resolve("some string");
 
 ....
 
-await expect(somePromise).to.not.be.rejected.and.is.typeOf("string");
+await expect(somePromise).to.not.be.rejected().and.is.typeOf("string");
 ```
 
 #### `rejectedWith([ errorType [, msg ] ])` check

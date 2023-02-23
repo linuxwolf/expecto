@@ -88,7 +88,7 @@ describe("assertions/promised", () => {
       });
     });
 
-    describe(".rejected", () => {
+    describe(".rejected()", () => {
       const passTarget = () => (Promise.reject(new TestError("I reject")));
       const failNonTarget = () => (Promise.resolve("I fulfill"));
 
@@ -97,7 +97,7 @@ describe("assertions/promised", () => {
           it("passes if Promise rejects", async () => {
             const target = passTarget();
             const test = new ExpectoPromised(target);
-            const result = await test.rejected;
+            const result = await test.rejected();
             assert(result instanceof ExpectoPromised);
             assert(result.actual instanceof TestError);
           });
@@ -132,7 +132,7 @@ describe("assertions/promised", () => {
             let passed = false;
 
             try {
-              await test.rejected;
+              await test.rejected();
               passed = true;
             } catch (err) {
               assert(err instanceof AssertionError);

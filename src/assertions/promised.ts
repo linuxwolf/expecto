@@ -172,8 +172,8 @@ export default function promised<
       return proxy;
     }
 
-    get rejected(): this & PromiseLike<this> {
-      return this.rejectedWith();
+    rejected(msg?: string): this & PromiseLike<this> {
+      return this.rejectedWith(undefined, msg);
     }
 
     rejectedWith<E extends Error>(

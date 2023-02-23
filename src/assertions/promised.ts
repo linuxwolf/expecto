@@ -5,7 +5,6 @@
  */
 
 import { ExpectoBase, ExpectoConstructor } from "../base.ts";
-import { MixinConstructor } from "../mixin.ts";
 import { findPropertyDescriptor } from "../util/props.ts";
 import { promisify } from "../util/promising.ts";
 
@@ -149,14 +148,8 @@ export default function promised<
   TargetType,
   BaseType extends ExpectoConstructor<TargetType>,
 >(Base: BaseType) {
-  const MixIn = class ExpectoPromised<T extends TargetType> extends // deno-lint-ignore no-explicit-any
-  (Base as any) {
+  return class ExpectoPromised extends Base {
     #handler?: ExpectoProxyHandler;
-
-    // deno-lint-ignore no-explicit-any
-    constructor(...args: any[]) {
-      super(...args);
-    }
 
     #proxify(startWith?: OpFunction): this & PromiseLike<this> {
       const resolved = this.create(this.actual);
@@ -230,6 +223,4 @@ export default function promised<
       return proxy;
     }
   };
-
-  return MixIn as MixinConstructor<typeof MixIn, BaseType>;
 }

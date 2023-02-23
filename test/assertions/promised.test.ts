@@ -78,8 +78,7 @@ describe("assertions/promised", () => {
       });
       describe("edges", () => {
         it(".then() always resolves to the same value", async () => {
-          const test =
-            new ExpectoPromised(Promise.resolve(42)).eventually;
+          const test = new ExpectoPromised(Promise.resolve(42)).eventually;
           const first = await test;
           assert((first.actual as unknown) === 42);
           const second = await test;

@@ -4,7 +4,6 @@
 
 import { assert } from "../../deps/test/asserts.ts";
 import { describe, it } from "../../deps/test/bdd.ts";
-import * as mock from "../../deps/test/mock.ts";
 
 import { maybePromise, promisify } from "../../src/util/promising.ts";
 

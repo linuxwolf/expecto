@@ -13,7 +13,7 @@ export default function core<
   BaseType extends ExpectoConstructor<T>,
 >(Base: BaseType) {
   return class ExpectoCore extends Base {
-    equal(expected: T, msg?: string): this {
+    equal(expected: unknown, msg?: string): this {
       const deep = this.hasFlag(DEEP);
 
       const result = deep
@@ -28,6 +28,9 @@ export default function core<
       });
 
       return this;
+    }
+    equals(expected: unknown, msg?: string): this {
+      return this.equal(expected, msg);
     }
 
     throw<E extends Error>(

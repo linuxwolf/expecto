@@ -22,7 +22,7 @@ Deno.test(() => {
     - [`deep` flag](#deep-flag)
     - [`not` flag](#not-flag)
   - [`Core` (**std**)](#core-std)
-    - [`equal(expected [, message ])` check](#equalexpected--message--check)
+    - [`equal(expected [, message ])` / `equals(expected [, message ])` check](#equalexpected--message---equalsexpected--message--check)
     - [`throw([ errorType [, message ] ])` check](#throw-errortype--message---check)
   - [`Typing` (**std**)](#typing-std)
     - [`exists([ msg ])` check](#exists-msg--check)
@@ -135,13 +135,20 @@ expect(() => { throw new Error() }).to.not.not.throw(); // NOT RECOMMENDED!
 
 ### `Core` (**std**)
 
-#### `equal(expected [, message ])` check
+#### `equal(expected [, message ])` / `equals(expected [, message ])` check
 
 Compares that `actual` strictly equals (`===`) the given value.
 
 ```typescript
 expect(42).to.equal(42);
 expect(someObj).to.equal(anotherObj);
+```
+
+**NOTE** that `equal()` and `equals()` have identical behavior; use whichever makes the most grammatical sense.
+
+```typescript
+expect(42).to.equal(42);
+expect(someObject).which.equals(anotherObj);
 ```
 
 If `deep` is applied beforehand, then a comprehensive equality check is performed instead.

@@ -108,6 +108,102 @@ describe("assertions/core", () => {
       });
     });
 
+    describe(".equals()", () => {
+      const target = new Date("2022-12-23T12:34:56.789Z");
+
+      describe("basics", () => {
+        it("passes on success", () => {
+          const test = new ExpectoCore(target);
+          const result = test.equals(target);
+          assert(result === test);
+        });
+        it("throws on failure", () => {
+          const test = new ExpectoCore(target);
+          let passed = false;
+
+          try {
+            test.equals(new Date("2022-11-22T01:23:45.678Z"));
+            passed = true;
+          } catch (err) {
+            assert(err instanceof AssertionError);
+          }
+          assert(!passed, "expected error not thrown");
+        });
+        it("throws with message on failure", () => {
+          const test = new ExpectoCore(target);
+          let passed = false;
+
+          try {
+            test.equals(new Date(), "oopsies!");
+            passed = true;
+          } catch (err) {
+            assert(err instanceof AssertionError);
+            assert(err.message.includes("oopsies!"));
+          }
+          assert(!passed, "expected error not thrown");
+        });
+      });
+
+      describe("deeply", () => {
+        it("passes on success", () => {
+          const test = new ExpectoCore(target);
+          const result = test.deep.equals(new Date(target.getTime()));
+          assert(result === test);
+        });
+        it("throws on failure", () => {
+          const test = new ExpectoCore(target);
+
+          try {
+            test.deep.equals(new Date("2022-11-22T01:23:45.678Z"));
+          } catch (err) {
+            assert(err instanceof AssertionError);
+          }
+        });
+      });
+
+      describe("negated", () => {
+        it("passes on 'failure'", () => {
+          const test = new ExpectoCore(target);
+          const result = test.not.equals(new Date("2022-11-22T01:23:45.678Z"));
+          assert(result === test);
+        });
+        it("throws on 'success'", () => {
+          const test = new ExpectoCore(target);
+          let passed = false;
+
+          try {
+            test.not.equals(target);
+            passed = true;
+          } catch (err) {
+            assert(err instanceof AssertionError);
+          }
+          assert(!passed, "expected error not thrown");
+        });
+      });
+
+      describe("negated AND deeply", () => {
+        it("passes on 'failure'", () => {
+          const test = new ExpectoCore(target);
+          const result = test.not.deep.equals(
+            new Date("2022-11-22T01:23:45.678Z"),
+          );
+          assert(result === test);
+        });
+        it("throws on 'success'", () => {
+          const test = new ExpectoCore(target);
+          let passed = false;
+
+          try {
+            test.not.deep.equals(target);
+            passed = true;
+          } catch (err) {
+            assert(err instanceof AssertionError);
+          }
+          assert(!passed, "expected error not thrown");
+        });
+      });
+    });
+
     describe(".throw()", () => {
       class TestError extends Error {
         override name = "TestError";

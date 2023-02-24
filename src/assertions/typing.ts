@@ -21,6 +21,9 @@ export default function typing<
 
       return this;
     }
+    exist(msg?: string): this {
+      return this.exists(msg);
+    }
 
     undefined(msg?: string): this {
       const result = this.actual === undefined;

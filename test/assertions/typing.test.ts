@@ -12,6 +12,106 @@ describe("assertions/typing", () => {
   describe("mixin ExpectoTyping", () => {
     const ExpectoTyping = typing(ExpectoBase);
 
+    describe(".exist()", () => {
+      describe("basics", () => {
+        it("passes if actual is not undefined or null", () => {
+          let test, result;
+
+          test = new ExpectoTyping(true);
+          result = test.exist();
+          assert(result === test);
+
+          test = new ExpectoTyping(123123412341n);
+          result = test.exist();
+          assert(result === test);
+
+          test = new ExpectoTyping(42);
+          result = test.exist();
+          assert(result === test);
+
+          test = new ExpectoTyping("some string");
+          result = test.exist();
+          assert(result === test);
+
+          test = new ExpectoTyping({});
+          result = test.exist();
+          assert(result === test);
+
+          test = new ExpectoTyping([]);
+          result = test.exist();
+          assert(result === test);
+        });
+        it("passes on falsy things that do exist", () => {
+          let test, result;
+
+          test = new ExpectoTyping(false);
+          result = test.exist();
+          assert(result === test);
+
+          test = new ExpectoTyping(0n);
+          result = test.exist();
+          assert(result === test);
+
+          test = new ExpectoTyping(0);
+          result = test.exist();
+          assert(result === test);
+
+          test = new ExpectoTyping("");
+          result = test.exist();
+          assert(result === test);
+        });
+        it("fails if null", () => {
+          const test = new ExpectoTyping(null);
+          let passed = false;
+
+          try {
+            test.exist();
+            passed = true;
+          } catch (err) {
+            assert(err instanceof AssertionError);
+          }
+          assert(!passed, "expected error not thrown");
+        });
+        it("fails if undefined", () => {
+          const test = new ExpectoTyping(undefined);
+          let passed = false;
+
+          try {
+            test.exist();
+            passed = true;
+          } catch (err) {
+            assert(err instanceof AssertionError);
+          }
+          assert(!passed, "expected error not thrown");
+        });
+      });
+
+      describe("negated", () => {
+        it("passes if null", () => {
+          const test = new ExpectoTyping(null);
+          const result = test.not.exist();
+          assert(result === test);
+        });
+        it("passes if undefined", () => {
+          const test = new ExpectoTyping(undefined);
+          const result = test.not.exist();
+          assert(result === test);
+        });
+        it("fails if defined", () => {
+          const test = new ExpectoTyping(new Date());
+          let passed = false;
+
+          try {
+            test.not.exist();
+            passed = true;
+          } catch (err) {
+            assert(err instanceof AssertionError);
+          }
+          assert(!passed, "expected error not thrown");
+        });
+      });
+    });
+
     describe(".exists()", () => {
       describe("basics", () => {
         it("passes if actual is not undefined or null", () => {

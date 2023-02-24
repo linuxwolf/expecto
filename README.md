@@ -25,7 +25,7 @@ Deno.test(() => {
     - [`equal(expected [, message ])` / `equals(expected [, message ])` check](#equalexpected--message---equalsexpected--message--check)
     - [`throw([ errorType [, message ] ])` check](#throw-errortype--message---check)
   - [`Typing` (**std**)](#typing-std)
-    - [`exists([ msg ])` check](#exists-msg--check)
+    - [`exist([ msg ])` / `exists([ msg ])` check](#exist-msg---exists-msg--check)
     - [`undefined([ msg ])` check](#undefined-msg--check)
     - [`null([ msg ])` check](#null-msg--check)
     - [`true([ msg ])` check](#true-msg--check)
@@ -218,12 +218,19 @@ expect(42).to.not.throw();  // still throws TypeError
 
 ### `Typing` (**std**)
 
-#### `exists([ msg ])` check
+#### `exist([ msg ])` / `exists([ msg ])` check
 
 Checks that `actual` exists: is not `null` nor `undefined`.
 
 ```typescript
 expect(someValue).to.exist();
+```
+
+**NOTE** that `equal()` and `equals()` have identical behavior; use whichever makes the most grammatical sense.
+
+```typescript
+expect(someValue).to.exist();
+expect(somevalue).exists();
 ```
 
 A custom message can be provied, which is used if the check fails.

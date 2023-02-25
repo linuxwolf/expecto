@@ -12,8 +12,6 @@
 
 * **deps:** Upgrade deno.land/std to 0.177.0 ([#23](https://github.com/linuxwolf/expecto/issues/23)) ([dbca77a](https://github.com/linuxwolf/expecto/commit/dbca77aac20cf264aab348ae089e09935d349c4e))
 
-# Release Notes
-
 ## v0.0.1 (2023-02-23)
 
 Initial public release.

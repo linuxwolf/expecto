@@ -143,7 +143,9 @@ export default function membership<
       } else if (typeof actual === "string") {
         result = actual.length === 0;
       } else {
-        throw new TypeError(`${Deno.inspect(actual)} does not have size or length`);
+        throw new TypeError(
+          `${Deno.inspect(actual)} does not have size or length`,
+        );
       }
 
       return this.check(result, {

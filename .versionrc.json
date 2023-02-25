@@ -4,7 +4,6 @@
     {"type": "feat", "section": "Features"},
     {"type": "fix", "section": "Fixes"},
     {"type": "chore", "section": "Housekeeping"},
-    {"type": "core", "section": "Housekeeping"},
     {"type": "chore", "scope": "release", "hidden": true }
   ],
   "skip": {

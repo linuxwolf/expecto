@@ -125,5 +125,32 @@ export default function membership<
 
       return this;
     }
+
+    empty(msg?: string): this {
+      let result = false;
+      // deno-lint-ignore no-explicit-any
+      const actual = this.actual as any;
+      if (typeof actual === "object") {
+        if ("length" in actual) {
+          result = actual.length === 0;
+        } else if ("size" in actual) {
+          result = actual.size === 0;
+        } else if (actual instanceof ArrayBuffer) {
+          result = actual.byteLength === 0;
+        } else {
+          result = Object.keys(actual).length === 0;
+        }
+      } else if (typeof actual === "string") {
+        result = actual.length === 0;
+      } else {
+        throw new TypeError(`${Deno.inspect(actual)} does not have size or length`);
+      }
+
+      return this.check(result, {
+        positiveOp: "is not empty",
+        negativeOp: "is empty",
+        message: msg,
+      });
+    }
   };
 }

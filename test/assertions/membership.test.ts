@@ -1451,5 +1451,438 @@ describe("assertions/membership", () => {
         });
       });
     });
+
+    describe(".empty()", () => {
+      describe("basics", () => {
+        it("throws TypeError if actual is not sized or lengthed", () => {
+          const test = new ExpectoMembership(42);
+
+          let caught = true;
+          try {
+            test.empty();
+            caught = false;
+          } catch (err) {
+            assert(err instanceof TypeError);
+          }
+          assert(caught, "expected error not thrown");
+        });
+
+        describe("Arrays", () => {
+          it("passes if empty", () => {
+            const test = new ExpectoMembership([]);
+            const result = test.empty();
+            assert(result === test);
+          });
+          it("fails if not empty", () => {
+            const test = new ExpectoMembership([1, 2, 3]);
+
+            let caught = true;
+            try {
+              test.empty();
+              caught = false;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+            }
+            assert(caught, "expected error not thrown");
+          });
+          it("fails if not empty, with custom message", () => {
+            const test = new ExpectoMembership([1, 2, 3]);
+
+            let caught = true;
+            try {
+              test.empty("did not assert");
+              caught = false;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+              assert(err.message.includes("did not assert"));
+            }
+            assert(caught, "expected error not thrown");
+          });
+        });
+        describe("strings", () => {
+          it("passes if empty", () => {
+            const test = new ExpectoMembership("");
+            const result = test.empty();
+            assert(result === test);
+          });
+          it("fails if not empty", () => {
+            const test = new ExpectoMembership("some string");
+
+            let caught = true;
+            try {
+              test.empty();
+              caught = false;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+            }
+            assert(caught, "expected error not thrown");
+          });
+          it("fails if not empty, with custom message", () => {
+            const test = new ExpectoMembership("some string");
+
+            let caught = true;
+            try {
+              test.empty("did not assert");
+              caught = false;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+              assert(err.message.includes("did not assert"));
+            }
+            assert(caught, "expected error not thrown");
+          });
+        });
+        describe("Sets", () => {
+          it("passes if empty", () => {
+            const test = new ExpectoMembership(new Set());
+            const result = test.empty();
+            assert(result === test);
+          });
+          it("fails if not empty", () => {
+            const test = new ExpectoMembership(new Set([1, 2, 3]));
+
+            let caught = true;
+            try {
+              test.empty();
+              caught = false;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+            }
+            assert(caught, "expected error not thrown");
+          });
+          it("fails if not empty, with custom message", () => {
+            const test = new ExpectoMembership(new Set([1, 2, 3]));
+
+            let caught = true;
+            try {
+              test.empty("did not assert");
+              caught = false;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+              assert(err.message.includes("did not assert"));
+            }
+            assert(caught, "expected error not thrown");
+          });
+        });
+        describe("Maps", () => {
+          it("passes if empty", () => {
+            const test = new ExpectoMembership(new Map());
+            const result = test.empty();
+            assert(result === test);
+          });
+          it("fails if not empty", () => {
+            const test = new ExpectoMembership(
+              new Map([["foo", "foo value"], ["bar", "bar value"]]),
+            );
+
+            let caught = true;
+            try {
+              test.empty();
+              caught = false;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+            }
+            assert(caught, "expected error not thrown");
+          });
+          it("fails if not empty, with custom message", () => {
+            const test = new ExpectoMembership(
+              new Map([["foo", "foo value"], ["bar", "bar value"]]),
+            );
+
+            let caught = true;
+            try {
+              test.empty("did not assert");
+              caught = false;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+              assert(err.message.includes("did not assert"));
+            }
+            assert(caught, "expected error not thrown");
+          });
+        });
+        describe("ArrayBuffers", () => {
+          it("passes if byteLength is 0", () => {
+            const test = new ExpectoMembership(new ArrayBuffer(0));
+            const result = test.empty();
+            assert(result === test);
+          });
+          it("fails if byteLength is not 0", () => {
+            const test = new ExpectoMembership(new ArrayBuffer(42));
+
+            let caught = true;
+            try {
+              test.empty();
+              caught = false;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+            }
+            assert(caught, "expected error not thrown");
+          });
+          it("fails if byteLength is not 0, with custom message", () => {
+            const test = new ExpectoMembership(new ArrayBuffer(42));
+
+            let caught = true;
+            try {
+              test.empty("got bytes");
+              caught = false;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+              assert(err.message.includes("got bytes"));
+            }
+            assert(caught, "expected error not thrown");
+          });
+        });
+        describe("objects", () => {
+          it("passes if no properties", () => {
+            const test = new ExpectoMembership({});
+            const result = test.empty();
+            assert(result === test);
+          });
+          it("fails if any properties", () => {
+            const test = new ExpectoMembership({
+              foo: "foo value",
+              bar: "bar value",
+            });
+
+            let caught = true;
+            try {
+              test.empty();
+              caught = false;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+            }
+            assert(caught, "expected error not thrown");
+          });
+          it("fails if any properties, with custom message", () => {
+            const test = new ExpectoMembership({
+              foo: "foo value",
+              bar: "bar value",
+            });
+
+            let caught = true;
+            try {
+              test.empty("did not assert");
+              caught = false;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+              assert(err.message.includes("did not assert"));
+            }
+            assert(caught, "expected error not thrown");
+          });
+        });
+      });
+
+      describe("negated", () => {
+        it("throws TypeError if not sized of lengthed", () => {
+          const test = new ExpectoMembership(42);
+
+          let caught = true;
+          try {
+            test.not.empty();
+            caught = false;
+          } catch (err) {
+            assert(err instanceof TypeError);
+          }
+          assert(caught, "expected error not thrown");
+        });
+
+        describe("Arrays", () => {
+          it("passes if not empty", () => {
+            const test = new ExpectoMembership([1, 2, 3]);
+            const result = test.not.empty();
+            assert(result === test);
+          });
+          it("fails if empty", () => {
+            const test = new ExpectoMembership([]);
+
+            let caught = true;
+            try {
+              test.not.empty();
+              caught = false;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+            }
+            assert(caught, "expected error not thrown");
+          });
+          it("fails if empty, with custom message", () => {
+            const test = new ExpectoMembership([]);
+
+            let caught = true;
+            try {
+              test.not.empty("actually empty");
+              caught = false;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+              assert(err.message.includes("actually empty"));
+            }
+            assert(caught, "expected error not thrown");
+          });
+        });
+        describe("strings", () => {
+          it("passes if not empty", () => {
+            const test = new ExpectoMembership("some string");
+            const result = test.not.empty();
+            assert(result === test);
+          });
+          it("fails if empty", () => {
+            const test = new ExpectoMembership("");
+
+            let caught = true;
+            try {
+              test.not.empty("actually empty");
+              caught = false;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+            }
+            assert(caught, "expected error not thrown");
+          });
+          it("fails if empty, with custom message", () => {
+            const test = new ExpectoMembership("");
+
+            let caught = true;
+            try {
+              test.not.empty("actually empty");
+              caught = false;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+              assert(err.message.includes("actually empty"));
+            }
+            assert(caught, "expected error not thrown");
+          });
+        });
+        describe("Sets", () => {
+          it("passes if not empty", () => {
+            const test = new ExpectoMembership(new Set([1, 2, 3]));
+            const result = test.not.empty();
+            assert(result === test);
+          });
+          it("fails if empty", () => {
+            const test = new ExpectoMembership(new Set());
+
+            let caught = true;
+            try {
+              test.not.empty();
+              caught = false;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+            }
+            assert(caught, "expected error not thrown");
+          });
+          it("fails if empty, with custom message", () => {
+            const test = new ExpectoMembership(new Set());
+
+            let caught = true;
+            try {
+              test.not.empty("actually empty");
+              caught = false;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+              assert(err.message.includes("actually empty"));
+            }
+            assert(caught, "expected error not thrown");
+          });
+        });
+        describe("Maps", () => {
+          it("passes is not empty", () => {
+            const test = new ExpectoMembership(
+              new Map([["foo", "foo value"], ["bar", "bar value"]]),
+            );
+            const result = test.not.empty();
+            assert(result === test);
+          });
+          it("fails if not empty", () => {
+            const test = new ExpectoMembership(new Map());
+
+            let caught = true;
+            try {
+              test.not.empty();
+              caught = false;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+            }
+            assert(caught, "expected error not thrown");
+          });
+          it("fails if not empty, with custom message", () => {
+            const test = new ExpectoMembership(new Map());
+
+            let caught = true;
+            try {
+              test.not.empty("actually empty");
+              caught = false;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+              assert(err.message.includes("actually empty"));
+            }
+            assert(caught, "expected error not thrown");
+          });
+        });
+        describe("ArrayBuffers", () => {
+          it("passes if byteLength is not 0", () => {
+            const test = new ExpectoMembership(new ArrayBuffer(42));
+            const result = test.not.empty();
+            assert(result === test);
+          });
+          it("fails if byteLength is 0", () => {
+            const test = new ExpectoMembership(new ArrayBuffer(0));
+
+            let caught = true;
+            try {
+              test.not.empty();
+              caught = false;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+            }
+            assert(caught, "expected error not thrown");
+          });
+          it("fails if byteLength is 0, with custom message", () => {
+            const test = new ExpectoMembership(new ArrayBuffer(0));
+
+            let caught = true;
+            try {
+              test.not.empty("no bytes");
+              caught = false;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+              assert(err.message.includes("no bytes"));
+            }
+            assert(caught, "expected error not thrown");
+          });
+        });
+        describe("objects", () => {
+          it("passes if any properties", () => {
+            const test = new ExpectoMembership({
+              foo: "foo value",
+              bar: "bar value",
+            });
+            const result = test.not.empty();
+            assert(result === test);
+          });
+          it("fails if no properties", () => {
+            const test = new ExpectoMembership({});
+
+            let caught = true;
+            try {
+              test.not.empty();
+              caught = false;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+            }
+            assert(caught, "expected error not thrown");
+          });
+          it("fails if no properties, with custom message", () => {
+            const test = new ExpectoMembership({});
+
+            let caught = true;
+            try {
+              test.not.empty("actually empty");
+              caught = false;
+            } catch (err) {
+              assert(err instanceof AssertionError);
+              assert(err.message.includes("actually empty"));
+            }
+            assert(caught, "expected error not thrown");
+          });
+        });
+      });
+    });
   });
 });

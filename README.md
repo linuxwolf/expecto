@@ -193,7 +193,7 @@ expect(() => throw new TypeError("bad type")).to.throw(TypeError);
 If the check succeeds, the returned `Expecto` has the thrown error instance as its `actual`, so that further checks can be made on the error.
 
 ```typescript
-expect(() => throw new Error("oops")).to.throw().with.property("message").which.equal("oops");
+expect(() => throw new Error("oops")).to.throw().with.property("message").to.have.substring("oops");
 ```
 
 A custom message can be provided as the last argument, which is used if the check fails.
@@ -597,7 +597,7 @@ expect(someValue).to.have.own.property("foo");
 If the check succeeds, the returned `Expecto` has the property's value as its `actual`, so that further checks can be made on the property.
 
 ```typescript
-expect(someValue).to.have.property("foo").to.be.a.typeOf("string").which.equal("foo value")
+expect(someValue).to.have.property("foo").to.be.a.typeOf("string").which.equals("foo value")
 ```
 A custom message can be provided, which will be used if the check fails.
 
@@ -729,7 +729,7 @@ const somePromise = Promise.reject(new Error("oops!"));
 
 ....
 
-await expect(somePromise).to.be.rejected().with.property("message").to.equal("oops!");
+await expect(somePromise).to.be.rejected().with.property("message").that.has.substring("oops!");
 ```
 
 If `not` is applied beforehand, it negates the check; `actual` is changed the resolved value.
@@ -753,7 +753,7 @@ await expect(somePromise).to.be.rejectedWith();
 If the check succeeds, the returned `Expecto` has the rejection reason as its `actual`, so that further checks can be made on the error.
 
 ```typescript
-await expect(somePromise).to.be.rejectedWith().with.property("message").to.equal("oops");
+await expect(somePromise).to.be.rejectedWith().with.property("message").that.has.substring("oops");
 ```
 
 A class can be provided as the first argument, to check if the thrown errorr is an instance of that class.

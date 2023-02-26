@@ -72,7 +72,7 @@ import { expect } from "https://deno.land/x/expecto/mod.index.ts";
 There are a handful of entrypoints:
 
 * `mod/index.ts` (**std**) — This is the standard setup; exports `expect` and `use`, initialized with the `core`, `typing`, `membership`, and `promised` assertions.
-* `mod/mocked.ts` (**mock**) — This exports the (default) `mocked` assertion mixin that can be applied via `use`.  It also exports `mock` which is the [std/testing/mock](https://deno.land/std/testing/mock.ts) implementation it depends.  **NOTE** that it requires `mod/index.ts`.
+* `mod/mocked.ts` (**mock**) — This exports the (default) `mocked` assertion mixin that can be applied via `use`.  It also exports `mock` which is the [std/testing/mock](https://deno.land/std/testing/mock.ts) implementation it depends on.  **NOTE** that this requires `mod/index.ts`.
 
 In addition, the following are useful to extend Expecto:
 

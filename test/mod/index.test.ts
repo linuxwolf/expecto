@@ -9,6 +9,8 @@ import * as index from "../../mod/index.ts";
 
 describe("mod/index", () => {
   it("exports the desired symbols", () => {
-    assert(equal(Object.keys(index).sort(), ["expect", "use"]));
+    assert(
+      equal(Object.keys(index).sort(), ["AssertionError", "expect", "use"]),
+    );
   });
 });

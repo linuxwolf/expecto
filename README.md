@@ -34,6 +34,7 @@ Deno.test(() => {
     - [`typeOf(type [, msg ])` check](#typeoftype--msg--check)
     - [`instanceOf(instancClass [, msg ])` check](#instanceofinstancclass--msg--check)
   - [`Membership` (**std**)](#membership-std)
+    - [`empty([ message ])` check](#empty-message--check)
     - [`any` flag](#any-flag)
     - [`all` flag](#all-flag)
     - [`members([ expected[] [, message ] ])` check](#members-expected--message---check)
@@ -421,6 +422,42 @@ expect(new Date()).to.not.be.an.instanceOf(RegExp);
 ```
 
 ### `Membership` (**std**)
+
+#### `empty([ message ])` check
+
+Checks that `actual` is empty.
+
+```typescript
+expect(someArray).is.empty();
+expect(someStr).is.empty();
+```
+
+The specific behavior depends on what type `actual` is:
+
+* `Set`/`Map` — checks `.size` is 0
+* `Array`/Typed Array (e.g., `Uint8Array`) — checks `.length` is 0
+* `ArrayBuffer` — checks `.byteLength` is 0
+* `string` — checks `.length` is 0
+* `object` — checks that it has no properties
+
+A custom message can be provided, which will be used if the check fails.
+
+```typescript
+expect(["foo", "bar"]).is.empty("has stuff!");
+```
+
+If `not` is applied beforehand, it negates the check.
+
+```typescript
+expect(["foo", "bar"]).is.not.empty();
+```
+
+If `actual` does not meet one of the above criteria, a `TypeError` is thrown instead of `AssertionError`.  This occurs regardless if `not` is applied.
+
+```typescript
+expect(42).is.empty();      // throws TypeError
+expect(42).is.not.empty();  // still throws TypeError
+```
 
 #### `any` flag
 

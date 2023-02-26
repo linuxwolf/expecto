@@ -5,7 +5,7 @@ An assertion library with an "expect" style interface, inspired by [Chai's](http
 It wraps the value under test to provide a collection of properties and methods for chaining assertions.
 
 ```typescript
-import { expect } from "https://deno.land/x/expecto/mod/index.ts";
+import { expect } from "https://deno.land/x/expecto@v0.1.0/mod/index.ts";
 
 Deno.test(() => {
     expect(42).to.equal(42);
@@ -59,10 +59,20 @@ Deno.test(() => {
 
 Install like most Deno dependencies, by importing the module(s).
 
+```typescript
+import { expect } from "https://deno.land/x/expecto@v0.1.0/mod/index.ts";
+```
+
+Although **NOT RECOMMENDED**, it can be imported unversioned.
+
+```typescript
+import { expect } from "https://deno.land/x/expecto/mod.index.ts";
+```
+
 There are a handful of entrypoints:
 
 * `mod/index.ts` (**std**) — This is the standard setup; exports `expect` and `use`, initialized with the `core`, `typing`, `membership`, and `promised` assertions.
-* `mod/mocked.ts` (**mock**) — This exports the `mocked` assertion mixin that can be applied via `use`, as the [std/testing/mock](https://deno.land/std/testing/mock.ts) implementation it assumes as `mock`.  Requires `mod/index.ts`.
+* `mod/mocked.ts` (**mock**) — This exports the (default) `mocked` assertion mixin that can be applied via `use`.  It also exports `mock` which is the [std/testing/mock](https://deno.land/std/testing/mock.ts) implementation it depends.  **NOTE** that it requires `mod/index.ts`.
 
 In addition, the following are useful to extend Expecto:
 
@@ -72,7 +82,7 @@ In addition, the following are useful to extend Expecto:
 
 Assertions are made by calling `expect()` with the value under test (`actual`) then chaining properties for assertion checks.
 
-Additional checks and properties can be applied using `use()`.
+Additional checks and properties can be made available with `use()`.
 
 ```typescript
 use(mocked);

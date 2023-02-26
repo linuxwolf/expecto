@@ -9,5 +9,11 @@
   "skip": {
     "commit": true,
     "tag": true
-  }
+  },
+  "bumpFiles": [
+    {
+      "filename": "VERSION",
+      "type": "plain-text"
+    }
+  ]
 }

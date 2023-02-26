@@ -61,7 +61,7 @@ Install like most Deno dependencies, by importing the module(s).
 
 There are a handful of entrypoints:
 
-* `mod/index.ts` (**std**) — This is the standard setup; exports `expect` and `use`, initialized with the `core`, `typing`, `membership`, and `promised` assertions.
+* `mod/index.ts` (**std**) — This is the standard setup; exports `expect` and `use`, as well as the `AssertionError` class in use.  Without any calls to `use()`, the Expecto returned by `expect()` is initialized with the `core`, `typing`, `membership`, and `promised` assertions.
 * `mod/mocked.ts` (**mock**) — This exports the `mocked` assertion mixin that can be applied via `use`, as the [std/testing/mock](https://deno.land/std/testing/mock.ts) implementation it assumes as `mock`.  Requires `mod/index.ts`.
 
 In addition, the following are useful to extend Expecto:

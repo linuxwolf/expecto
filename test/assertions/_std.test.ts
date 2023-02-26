@@ -24,6 +24,8 @@ describe("assertions/_std", () => {
 
       assert("property" in test);
 
+      assert("substring" in test);
+
       assert("eventually" in test);
       assert("rejected" in test);
     });

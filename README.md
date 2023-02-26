@@ -40,6 +40,10 @@ Deno.test(() => {
     - [`members([ expected[] [, message ] ])` check](#members-expected--message---check)
     - [`own` flag](#own-flag)
     - [`property(name [, message ])` check](#propertyname--message--check)
+  - [`Stringed ` (**std**)](#stringed--std)
+    - [`substring(sub [, message ])` check](#substringsub--message--check)
+    - [`startsWith(sub [, message])` check](#startswithsub--message-check)
+    - [`endsWith(sub [, message ])` check](#endswithsub--message--check)
   - [`Promised` (**std**)](#promised-std)
     - [`eventually` modifier](#eventually-modifier)
     - [`rejected([ msg ])` check](#rejected-msg--check)
@@ -605,6 +609,89 @@ If `not` is applied beforehand, it negates the check (and `actual` is unchanged)
 
 ```typescript
 expect({foo: "foo value"}).to.not.have.property("bar");
+```
+
+### `Stringed ` (**std**)
+
+#### `substring(sub [, message ])` check
+
+Checks that `actual` is a string that contains the given substring.
+
+```typescript
+expect(someStr).to.have.substring("a string");
+```
+
+A custom message can be provided, which will be used if the check fails.
+
+```typescript
+expect("some string value").to.have.substring("this value", "substring missing");
+```
+
+If `not` is applied beforehand, it negates the check.
+
+```typescript
+expect("some string value").to.not.have.substring("this value");
+```
+
+If `actual` is not a string, a `TypeError` is thrown instead of `AssertionError`.  This occurs regardless if `not` is applied.
+
+```typescript
+expect(42).to.have.substring("42");         // throws TypeError
+expect(42).to.not.have.substring("foo");    // still throws TypeError
+```
+
+#### `startsWith(sub [, message])` check
+
+Checks that `actual` is a string that starts with the given substring.
+
+```typescript
+expect(someStr).startsWith("LOG:");
+```
+
+A custom message can be provided, which will be used if the check fails.
+
+```typescript
+expect("some string value").startsWith("LOG:", "not the prefix");
+```
+
+If `not` is applied beforehand, it negates the check.
+
+```typescript
+expect("some string value").to.not.startsWith("LOG:");
+```
+
+If `actual` is not a string, a `TypeError` is thrown instead of `AssertionError`.  This occurs regardless if `not` is applied.
+
+```typescript
+expect(42).startsWith("4");         // throws TypeError
+expect(42).to.not.startsWith("2");  // sill throws TypeError
+```
+
+#### `endsWith(sub [, message ])` check
+
+Checks that `actual` is a string that ends with the given substring.
+
+```typescript
+expect(someSt).endsWith("suffix");
+```
+
+A custom message can be provided, which will be used if the check fails.
+
+```typescript
+expect("some string value").endsWith("suffix", "missing suffix");
+```
+
+If `not` is applied beforehand, it negates the check.
+
+```typescript
+expect("some string value").to.not.endsWith("suffix");
+```
+
+If `actual` is not a string, a `TypeError` is thrown instead of `AssertionError`.  This occurs regardless if `not` is applied.
+
+```typescript
+expect(42).endsWith("2");           // throws TypeError
+expect(42).to.not.endsWith("4");    // still throws TypeError
 ```
 
 ### `Promised` (**std**)

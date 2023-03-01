@@ -28,7 +28,7 @@ jobs:
         if: steps.current-tag.outputs.exists != 'true'
         run: |
           tag="v${{ steps.current-tag.outputs.version }}"
-          msg="Release ${{ stpes.current-tag.outputs.version }}"
+          msg="Release ${{ steps.current-tag.outputs.version }}"
 
           git tag -m "${msg}" "${tag}"
           git push origin "${tag}"

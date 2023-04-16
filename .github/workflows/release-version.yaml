@@ -23,12 +23,19 @@ jobs:
           if git rev-parse "v${version}" >/dev/null 2>&1; then
             echo "exists=true" >> "${GITHUB_OUTPUT}"
           fi
+      - id: create-tag
+        name: "Create release tag"
+        if: steps.current-tag.outputs.exists != 'true'
+        run: |
+          version=$(cat VERSION)
+          tag="v${version}"
+          msg="Release ${version}"
+
+          git tag -a -m "${msg}" "${tag}"
       - id: push-tag
         name: "Push release tag"
         if: steps.current-tag.outputs.exists != 'true'
-        run: |
-          tag="v${{ steps.current-tag.outputs.version }}"
-          msg="Release ${{ steps.current-tag.outputs.version }}"
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          tags: true
 
-          git tag -m "${msg}" "${tag}"
-          git push origin "${tag}"

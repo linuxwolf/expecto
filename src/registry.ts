@@ -16,7 +16,12 @@ export type RegisterFunction<T> = (
  * mixins.
  */
 export class Registry<T> {
+  #plugins: Set<RegisterFunction<T>>;
   #Current: ExpectoConstructor<T> = ExpectoBase;
+
+  constructor() {
+    this.#plugins = new Set();
+  }
 
   /**
    * The Expecto wrapper type, with all mixins applied.
@@ -31,7 +36,11 @@ export class Registry<T> {
    * @param fn The mixin register to apply.
    */
   apply(fn: RegisterFunction<T>) {
-    this.#Current = fn(this.#Current);
+    const plugins = this.#plugins;
+    if (!plugins.has(fn)) {
+      plugins.add(fn);
+      this.#Current = fn(this.#Current);
+    }
   }
 
   /**

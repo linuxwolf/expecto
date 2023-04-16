@@ -1,5 +1,13 @@
 # Release Notes
 
+### [0.1.1](https://github.com/linuxwolf/expecto/compare/v0.1.0...v0.1.1) (2023-04-16)
+
+
+### Fixes
+
+* **registry** Don't apply mixins more than once ([#35](https://github.com/linuxwolf/expecto/issues/35)) ([9f8ecb3](https://github.com/linuxwolf/expecto/commit/9f8ecb395ee00cc7c4796a22d5d5397899aa3971))
+* **release:** Fix typos in release workflows ([#34](https://github.com/linuxwolf/expecto/issues/34)) ([20b645f](https://github.com/linuxwolf/expecto/commit/20b645f736fc9a104bdc713347dff65961e79271))
+
 ## [0.1.0](https://github.com/linuxwolf/expecto/compare/v0.0.2...v0.1.0) (2023-02-26)
 
 

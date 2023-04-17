@@ -27,6 +27,12 @@ jobs:
         run: |
           deno cache --reload \
             deps/src/all.ts deps/test/all.ts
+      - name: Github Checks
+        run: |
+          set -x
+
+          git remote -v
+          git config --list
   coding-checks:
     name: "Coding Checks"
     runs-on: ubuntu-latest

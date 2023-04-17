@@ -12,13 +12,14 @@ jobs:
         name: "Check out code"
         uses: actions/checkout@v3
       - id: current-tag
-        name: "Create tag"
+        name: "Check latest tag"
         run: |
+          set -x
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR}@users.norely.github.com"
 
           version="$(cat VERSION)"
-          echo "version=${verson}" >> "${GITHUB_OUTPUT}"
+          echo "version=${version}" >> "${GITHUB_OUTPUT}"
 
           if git rev-parse "v${version}" >/dev/null 2>&1; then
             echo "exists=true" >> "${GITHUB_OUTPUT}"
@@ -26,9 +27,7 @@ jobs:
       - id: push-tag
         name: "Push release tag"
         if: steps.current-tag.outputs.exists != 'true'
-        run: |
-          tag="v${{ steps.current-tag.outputs.version }}"
-          msg="Release ${{ steps.current-tag.outputs.version }}"
-
-          git tag -m "${msg}" "${tag}"
-          git push origin "${tag}"
+        uses: actions-ecosystem/action-push-tag@v1
+        with:
+          tag: v${{ steps.current-tag.outputs.version }}
+          message: 'Release ${{ steps.current-tag.outputs.version }}'

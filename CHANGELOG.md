@@ -1,5 +1,15 @@
 # Release Notes
 
+### [0.1.2](https://github.com/linuxwolf/expecto/compare/v0.1.1...v0.1.2) (2023-10-23)
+
+
+### Housekeeping
+
+* **deps:** update deno/std to 0.204.0 ([#39](https://github.com/linuxwolf/expecto/issues/39)) ([6d7a0fd](https://github.com/linuxwolf/expecto/commit/6d7a0fdf4dbe6d9a6234a9c141bd73212cda279b))
+* **release:** Further fixes to release workflows ([#37](https://github.com/linuxwolf/expecto/issues/37)) ([fb604d4](https://github.com/linuxwolf/expecto/commit/fb604d4049b7b8f82e2dc4f7d36e6905f23703f8))
+* **release:** further simplify release tagging ([#38](https://github.com/linuxwolf/expecto/issues/38)) ([7871922](https://github.com/linuxwolf/expecto/commit/7871922df78409bd2658357f2e997a189f19d763))
+* **release:** give write permissions to release workflow ([#40](https://github.com/linuxwolf/expecto/issues/40)) ([adacb7c](https://github.com/linuxwolf/expecto/commit/adacb7c6b90fb04d1fe9fc146a090f11664e113d))
+
 ### [0.1.1](https://github.com/linuxwolf/expecto/compare/v0.1.0...v0.1.1) (2023-04-16)
 
 

@@ -1,5 +1,12 @@
 # Release Notes
 
+## [0.1.3](https://github.com/linuxwolf/expecto/compare/v0.1.2...v0.1.3) (2023-10-23)
+
+
+### Housekeeping
+
+* bootstrap releases ([#42](https://github.com/linuxwolf/expecto/issues/42)) ([b1211d0](https://github.com/linuxwolf/expecto/commit/b1211d047c218238ea64803378d56950118e4efc))
+
 ### [0.1.2](https://github.com/linuxwolf/expecto/compare/v0.1.1...v0.1.2) (2023-10-23)
 
 

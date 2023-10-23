@@ -19,7 +19,7 @@ export const ANY = "any";
 export const ALL = "all";
 
 function filterFor(expected: unknown, deep: boolean): (v: unknown) => boolean {
-  return (deep) ? (v) => equal(v, expected) : (v) => (v === expected);
+  return deep ? (v) => equal(v, expected) : (v) => (v === expected);
 }
 
 export default function membership<
@@ -53,28 +53,28 @@ export default function membership<
         const map = this.actual as Map<unknown, unknown>;
         for (const k of expected) {
           const present = map.has(k);
-          result = (any) ? result || present : result && present;
+          result = any ? result || present : result && present;
         }
       } else if (this.actual instanceof Set) {
         const set = this.actual as Set<unknown>;
         for (const e of expected) {
           const f = filterFor(e, deep);
           const present = [...set].filter(f).length > 0;
-          result = (any) ? result || present : result && present;
+          result = any ? result || present : result && present;
         }
       } else if (Array.isArray(this.actual)) {
         const arr = this.actual as Array<unknown>;
         for (const e of expected) {
           const f = filterFor(e, deep);
           const present = arr.filter(f).length > 0;
-          result = (any) ? result || present : result && present;
+          result = any ? result || present : result && present;
         }
       } else if (isObject(this.actual)) {
         // deno-lint-ignore ban-types
         const obj = this.actual as Object;
         for (const k of expected) {
           const present = (k as string) in obj;
-          result = (any) ? result || present : result && present;
+          result = any ? result || present : result && present;
         }
       } else {
         result = false;

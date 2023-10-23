@@ -6,7 +6,7 @@ on:
     branches: [main]
 env:
   DENO_DIR: ./.cache
-  DENO_VER: "1.29.4"
+  DENO_VER: "1.37.2"
 jobs:
   caching:
     name: "Cache Updates"

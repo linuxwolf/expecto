@@ -1,18 +1,12 @@
 {
   "fmt": {
-    "files": {
-      "include": ["deps/", "mod/", "src/", "test/"]
-    }
+    "include": ["deps/", "mod/", "src/", "test/"]
   },
   "lint":{
-    "files": {
-      "include": ["deps/", "mod/", "src/", "test/"]
-    }
+    "include": ["deps/", "mod/", "src/", "test/"]
   },
   "test": {
-    "files": {
-      "include": ["test/"]
-    }
+    "include": ["test/"]
   },
   "tasks": {
     "cov": "git clean -dfx coverage && deno test --coverage=coverage/profile && deno coverage --include=/mod --include=/src --exclude=/deps --exclude=/test --lcov --output=coverage/lcov coverage/profile"

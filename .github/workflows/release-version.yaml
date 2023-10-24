@@ -16,7 +16,7 @@ jobs:
       - id: current-tag
         name: "Check latest tag"
         run: |
-          version="$(cat VERSION)"
+          version="$(cat VERSION | tr -d ' \n\r')"
           echo "version=${version}" >> "${GITHUB_OUTPUT}"
 
           if git rev-parse "v${version}" >/dev/null 2>&1; then

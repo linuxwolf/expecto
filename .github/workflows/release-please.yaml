@@ -1,0 +1,15 @@
+name: Prepare a Release PR
+on:
+  workflow_call: {}
+
+jobs:
+  release-pr:
+    name: "Release Please"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Check out code"
+        uses: actions/checkout@v3
+      - name: "Create/update release PR"
+        uses: google-github-actions/release-please-action@v3
+        with:
+          release-type: simple

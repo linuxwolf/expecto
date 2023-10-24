@@ -84,4 +84,7 @@ jobs:
       - coding-checks
       - unit-test
     if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
+      pull-requests: write
     uses: ./.github/workflows/release-please.yaml

@@ -12,4 +12,4 @@ jobs:
       - name: "Create/update release PR"
         uses: google-github-actions/release-please-action@v3
         with:
-          release-type: simple
+          command: manifest

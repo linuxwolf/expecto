@@ -78,13 +78,3 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           files: coverage/lcov
-  release-pr:
-    name: "Prep release PR"
-    needs:
-      - coding-checks
-      - unit-test
-    if: github.ref == 'refs/heads/main'
-    permissions:
-      contents: write
-      pull-requests: write
-    uses: ./.github/workflows/release-please.yaml

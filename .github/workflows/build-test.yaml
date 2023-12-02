@@ -70,10 +70,13 @@ jobs:
       - name: "Generate coverage reports"
         run: |
           deno coverage \
-            --include=src \
-            --exclude=deps \
+            --exclude=test \
             --lcov --output=coverage/lcov \
             coverage/profile
+      - name: "Report coverage"
+        uses: codecov/codecov-action@v3
+        with:
+          files: coverage/lcov
       - name: "Report coverage"
         uses: codecov/codecov-action@v3
         with:

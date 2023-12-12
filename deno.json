@@ -9,6 +9,6 @@
     "include": ["test/"]
   },
   "tasks": {
-    "cov": "git clean -dfx coverage && deno test --coverage=coverage/profile && deno coverage --include=/mod --include=/src --exclude=/deps --exclude=/test --lcov --output=coverage/lcov coverage/profile"
+    "cov": "git clean -dfx coverage && deno test --coverage=coverage/profile && deno coverage --exclude='https://**' --exclude=/deps --exclude=/test --include=/mod --include=/src --lcov --output=coverage/lcov coverage/profile"
   }
 }

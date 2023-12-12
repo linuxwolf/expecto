@@ -1,5 +1,20 @@
 # Release Notes
 
+## [0.1.3](https://github.com/linuxwolf/expecto/compare/v0.1.2...v0.1.3) (2023-12-12)
+
+
+### Housekeeping
+
+* bootstrap releases ([#42](https://github.com/linuxwolf/expecto/issues/42)) ([b1211d0](https://github.com/linuxwolf/expecto/commit/b1211d047c218238ea64803378d56950118e4efc))
+* **build:** report coverage ([#50](https://github.com/linuxwolf/expecto/issues/50)) ([853a604](https://github.com/linuxwolf/expecto/commit/853a604acfdfc241415be8e04165bc789a98516b))
+* **ci:** remove extra coverage reporter ([#52](https://github.com/linuxwolf/expecto/issues/52)) ([9b168c0](https://github.com/linuxwolf/expecto/commit/9b168c0f34957a95fc2dd07756cbfa9dce8dc44f))
+* **deps:** update to deno/std@0.208.0 ([#51](https://github.com/linuxwolf/expecto/issues/51)) ([6c23047](https://github.com/linuxwolf/expecto/commit/6c23047f554b0c1a13500b7a28426a3a1f9a98ee))
+* **release:** decouple release PR from rest of builds ([#47](https://github.com/linuxwolf/expecto/issues/47)) ([7bfb63e](https://github.com/linuxwolf/expecto/commit/7bfb63ee3849395eee2fc7f2c27749daca5343ec))
+* **release:** give release-please write permissions ([#46](https://github.com/linuxwolf/expecto/issues/46)) ([fb18a1a](https://github.com/linuxwolf/expecto/commit/fb18a1ad17fa35474a590788ad06772ad19831ef))
+* **release:** update release preparations ([#44](https://github.com/linuxwolf/expecto/issues/44)) ([8f60bac](https://github.com/linuxwolf/expecto/commit/8f60bac1f4c5df658535d5a0913138f48add41e9))
+* **release:** use manifest-based releases ([#45](https://github.com/linuxwolf/expecto/issues/45)) ([2327ab4](https://github.com/linuxwolf/expecto/commit/2327ab4d9946fee00639e8ea6a4bb634537608f9))
+* **release:** workflows should have unique names ([#49](https://github.com/linuxwolf/expecto/issues/49)) ([2f1717c](https://github.com/linuxwolf/expecto/commit/2f1717c958254f93f345cd590138c2d088e5c760))
+
 ### [0.1.2](https://github.com/linuxwolf/expecto/compare/v0.1.1...v0.1.2) (2023-10-23)
 
 

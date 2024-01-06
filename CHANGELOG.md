@@ -1,5 +1,13 @@
 # Release Notes
 
+## [0.1.4](https://github.com/linuxwolf/expecto/compare/v0.1.3...v0.1.4) (2024-01-06)
+
+
+### Housekeeping
+
+* **ci:** verify title is conventional ([#53](https://github.com/linuxwolf/expecto/issues/53)) ([eb112b7](https://github.com/linuxwolf/expecto/commit/eb112b7abb3aa50ddbddb8898042f50a018c2bf8))
+* **deps:** update deno_std to 0.210.0 ([#56](https://github.com/linuxwolf/expecto/issues/56)) ([a69ade0](https://github.com/linuxwolf/expecto/commit/a69ade0586d41053b73c927634eb1647d646d737))
+
 ## [0.1.3](https://github.com/linuxwolf/expecto/compare/v0.1.2...v0.1.3) (2023-12-12)
 
 

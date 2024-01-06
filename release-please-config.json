@@ -13,7 +13,12 @@
       "changelog-sections": [
         {"type": "feat", "section": "Features"},
         {"type": "fix", "section": "Fixes"},
-        {"type": "chore", "section": "Housekeeping"}
+        {"type": "docs", "section": "Documentation"},
+        {"type": "refactor", "section": "Refactoring"},
+        {"type": "revert", "section": "Reverts"},
+        {"type": "chore", "section": "Housekeeping"},
+        {"type": "style", "hidden": true},
+        {"type": "test", "hidden": true}
       ]
     }
   },

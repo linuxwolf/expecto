@@ -7,13 +7,20 @@ jobs:
   release-pr:
     name: "Release Please"
     runs-on: ubuntu-latest
-    permissions: write-all
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
+      - name: "Generate access token"
+        id: gentoken
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.RELEASE_PLEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_PLEASE_PRIVATE_KEY }}
       - name: "Check out code"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: "Create/update release PR"
         uses: google-github-actions/release-please-action@v3
         with:
-          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
-          command: manifest
+          token: ${{ steps.gentoken.outputs.token }}
           

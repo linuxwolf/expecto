@@ -23,4 +23,5 @@ jobs:
         uses: google-github-actions/release-please-action@v3
         with:
           token: ${{ steps.gentoken.outputs.token }}
-          
+          release-type: simple
+          skip-github-release: true

@@ -7,8 +7,7 @@ jobs:
   release:
     name: "Tag Release"
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    permissions: write-all
     steps:
       - id: check-out
         name: "Check out code"
@@ -31,9 +30,6 @@ jobs:
           version=${{ steps.current-tag.outputs.version }}
           tag="v${version}"
           msg="Release ${version}"
-
-          git config user.name "${GITHUB_ACTOR}"
-          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
           git tag -a -m "${msg}" "${tag}"
           git push origin "${tag}"

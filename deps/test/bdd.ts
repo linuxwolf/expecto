@@ -2,4 +2,4 @@
  * @copyright 2023 Matthew A. Miller
  */
 
-export * from "https://deno.land/std@0.210.0/testing/bdd.ts";
+export * from "jsr:@std/testing@0.225.1/bdd";

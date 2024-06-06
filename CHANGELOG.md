@@ -1,5 +1,12 @@
 # Release Notes
 
+## [0.1.5](https://github.com/linuxwolf/expecto/compare/v0.1.4...v0.1.5) (2024-06-06)
+
+
+### Bug Fixes
+
+* **ci:** Fix issues with 'Release Please' action ([#62](https://github.com/linuxwolf/expecto/issues/62)) ([70095d7](https://github.com/linuxwolf/expecto/commit/70095d769bb7f235bc707c1ef7ee10653dd9df61))
+
 ## [0.1.4](https://github.com/linuxwolf/expecto/compare/v0.1.3...v0.1.4) (2024-01-06)
 
 
